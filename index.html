@@ -135,6 +135,28 @@
 #intro.intro-v7 .soundtrack-toggle:focus-visible{outline:3px solid #ffd98b;outline-offset:3px}
 @media(max-height:600px){#intro.intro-v7 .soundtrack-toggle{min-height:35px;font-size:10px;margin-top:5px;padding:5px 10px}}
 @media(max-height:455px){#intro.intro-v7 .soundtrack-toggle{position:fixed;right:12px;top:9px;margin:0;min-height:36px}}
+/* V10.1: mobiler Musikschalter dauerhaft im sichtbaren Bildschirmbereich. */
+@media (max-width:700px), (max-height:600px){
+ #intro.intro-v7 .soundtrack-toggle{
+  position:fixed;
+  top:max(12px, env(safe-area-inset-top, 0px) + 10px);
+  right:max(12px, env(safe-area-inset-right, 0px) + 10px);
+  bottom:auto;
+  left:auto;
+  width:auto;
+  max-width:calc(100vw - 24px);
+  min-height:44px;
+  margin:0;
+  padding:9px 14px;
+  font-size:11px;
+  letter-spacing:.035em;
+  white-space:nowrap;
+  background:rgba(16,22,45,.97);
+  border:2px solid rgba(255,225,182,.93);
+  box-shadow:0 7px 22px rgba(0,0,0,.58);
+  z-index:40;
+ }
+}
 </style>
 </head>
 <body>
@@ -365,7 +387,18 @@ for(const s of STATIONS){const b=document.createElement('button');b.className='m
 
 // Eigenständiger WebGL-Renderer: keine Bibliotheken, externen Server, Konten oder KI-APIs erforderlich.
 const gl=canvas.getContext('webgl',{antialias:true,alpha:false,powerPreference:'low-power'})||canvas.getContext('experimental-webgl');
-if(!gl){$('#intro .startbox').innerHTML='<h1>WebGL nicht verfügbar</h1><p>Der Browser unterstützt keine 3D-Darstellung. Bitte öffne das Spiel in aktuellem Safari auf einem iPad oder in einem modernen Browser.</p>'}else{start3d()}
+if(!gl){
+ // Das Intro und die Musik bleiben bedienbar, auch wenn die 3D-Grafik nicht unterstützt wird.
+ const start=$('#startBtn');
+ start.disabled=true;
+ start.textContent='3D-DARSTELLUNG HIER NICHT VERFÜGBAR';
+ start.setAttribute('aria-label','3D-Darstellung auf diesem Gerät nicht verfügbar');
+ const hint=document.createElement('p');
+ hint.setAttribute('role','status');
+ hint.className='trailer-smallprint';
+ hint.textContent='Der Browser unterstützt hier kein WebGL. Die Intro-Musik kannst du trotzdem einschalten.';
+ start.insertAdjacentElement('afterend',hint);
+}else{start3d()}
 function start3d(){
 const vertexSource=`attribute vec3 aP;attribute vec3 aN;uniform mat4 uM;uniform mat4 uVP;uniform vec3 uEye;varying float vLight;varying float vFog;void main(){vec4 world=uM*vec4(aP,1.0);gl_Position=uVP*world;vec3 n=normalize(mat3(uM)*aN);vLight=0.57+0.43*max(dot(n,normalize(vec3(-0.4,0.95,0.25))),0.0);vFog=smoothstep(42.0,102.0,distance(world.xyz,uEye));}`;
 const fragmentSource=`precision mediump float;uniform vec4 uCol;uniform vec3 uFog;varying float vLight;varying float vFog;void main(){vec3 c=mix(uCol.rgb*vLight,uFog,vFog*0.78);gl_FragColor=vec4(c,uCol.a);}`;
