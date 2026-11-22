@@ -158,6 +158,16 @@
   z-index:40;
  }
 }
+/* V11: Freiwillige, im Freien spielbare Gärtner-Nebenmission. */
+#miniHud{position:fixed;z-index:7;left:50%;bottom:max(19px,env(safe-area-inset-bottom));transform:translateX(-50%);display:none;align-items:center;gap:13px;border-radius:14px;border:1px solid #efd9a8;background:rgba(14,38,33,.95);color:#fff8e7;box-shadow:0 10px 30px #0008;padding:10px 15px;font-weight:800;font-size:13px;white-space:nowrap;pointer-events:none}
+#miniHud.active{display:flex}#miniHud .miniClock{color:#ffda8e}#miniHud .miniScore{color:#aff2bd}
+.marker.minimarker{border-color:#ffca7d;background:rgba(70,43,18,.94);color:#fff1d7}
+.marker.bugmarker{background:rgba(60,33,13,.94);border-color:#f6c676;color:#fff5da;font-weight:800;font-size:12px}
+.miniIntro{font-size:14px;line-height:1.55}.miniIntro strong{color:#f4d69b}
+.miniStart{display:block;width:100%;padding:14px 16px;margin-top:18px;border:1px solid #f9dda2;border-radius:12px;color:#203127;background:linear-gradient(120deg,#efd59a,#ffdf9e);font-weight:900;font-size:15px}
+.miniStart:focus-visible{outline:3px solid white;outline-offset:2px}
+@media(max-width:700px){#miniHud{bottom:max(8px,env(safe-area-inset-bottom));font-size:11px;padding:8px 11px;gap:9px;max-width:95vw}}
+@media(max-height:550px){#miniHud{bottom:5px;font-size:11px;padding:6px 9px}}
 </style>
 </head>
 <body>
@@ -170,6 +180,7 @@
 <div class="controls" id="movePad"><div class="joystick"><div class="stick" id="stick"></div></div><div class="controlcaption">BEWEGEN</div></div>
 <div class="turnControls" id="turnControls" aria-label="Kamera und Blick drehen"><div class="turnButtons"><button type="button" id="turnLeft" aria-label="Nach links drehen">↶</button><button type="button" id="turnRight" aria-label="Nach rechts drehen">↷</button></div><div class="controlcaption">DREHEN · ODER RECHTS WISCHEN</div></div>
 <div class="action"><button id="actionBtn" disabled>Ort untersuchen</button><small id="nearText">Bewege dich zu einem markierten Ort.</small></div>
+<div id="miniHud" aria-live="polite"><span>🐞 KÄFERJAGD</span><span class="miniScore" id="miniScore">0 / 6</span><span class="miniClock" id="miniClock">01:30</span></div>
 <div class="footer" id="footer">iPad: links laufen · rechts drehen · <b>Gehe zum goldenen Ort und löse dort die Frage.</b></div>
 <section id="infoPanel" class="panel" role="dialog" aria-label="Textinformation"><div class="panelheader"><div><div id="panelEyebrow" class="eyebrow">Fundstelle im Roman</div><h2 id="panelTitle">Spur</h2></div><button class="xbtn" id="closePanel" aria-label="Schließen">×</button></div><div class="panelbody" id="panelBody"></div></section>
 
@@ -189,7 +200,7 @@
     <div class="trailer-title" aria-label="Grand Theft Grundstück – Heimsuchung">
       <span class="title-pre">GRAND THEFT</span>
       <strong class="title-main">GRUNDSTÜCK</strong>
-      <span class="title-bottom">HEIMSUCHUNG <b>VI</b><span class="title-diamond" aria-hidden="true">◇</span></span>
+      <span class="title-bottom">HEIMSUCHUNG <b>VI</b></span>
     </div>
     <p class="trailer-tagline">24 Kapitel. Ein See.<br><em>Sehr viele Eigentumsfragen.</em></p>
     <div class="game-stats" aria-label="Informationen zum Spiel">
@@ -208,7 +219,7 @@
 'use strict';
 const chapters=JSON.parse(document.getElementById('chapterData').textContent);
 const $=s=>document.querySelector(s), canvas=$('#world'), mapCanvas=$('#map'), mapCtx=mapCanvas.getContext('2d');
-const state={chapter:0,visited:new Set(),solved:new Set(),passedFirst:new Set(),panel:false,started:false,keys:new Set(),joyX:0,joyY:0,yaw:0,facing:0,moving:false,turnDir:0,lookDragging:false,pitch:0.13,px:-3,pz:19,near:null,last:performance.now(),vp:null,eye:[0,0,0],walkTime:0,advanceTimer:null};
+const state={chapter:0,visited:new Set(),solved:new Set(),passedFirst:new Set(),panel:false,started:false,keys:new Set(),joyX:0,joyY:0,yaw:0,facing:0,moving:false,turnDir:0,lookDragging:false,pitch:0.13,px:-3,pz:19,near:null,last:performance.now(),vp:null,eye:[0,0,0],walkTime:0,advanceTimer:null,miniActive:false,miniCaught:new Set(),miniDeadline:0,miniTotal:6,nearBug:null};
 try{const save=JSON.parse(localStorage.getItem('heimsuchung-prog-v3')||'{}');state.visited=new Set(save.visited||[]);state.solved=new Set(save.solved||[])}catch(e){}
 function saveProg(){try{localStorage.setItem('heimsuchung-prog-v3',JSON.stringify({visited:[...state.visited],solved:[...state.solved]}))}catch(e){}}
 const STATIONS=[
@@ -216,6 +227,7 @@ const STATIONS=[
 {id:'woods',name:'Waldrand',x:29,z:29,note:'Der Gärtner lebt zu Beginn in einer verlassenen Jagdhütte am Waldrand.'},
 {id:'parcels',name:'Parzellen',x:15,z:20,note:'Wurrach teilt das ehemalige Waldgrundstück in drei Teile.'},
 {id:'garden',name:'Garten',x:-18,z:3,note:'Der Gärtner verändert und pflegt den Garten über Jahrzehnte.'},
+{id:'beetlegame',name:'🐞 Käferjagd · Minispiel',x:-29,z:14,note:'Freiwilliges Minispiel im Garten – inspiriert vom Kampf des Gärtners gegen Kartoffelkäfer.'},
 {id:'house',name:'Haus',x:-3,z:3,note:'Das Haus verbindet die wechselnden Figuren und ihre Geschichten.'},
 {id:'wardrobe',name:'Kleiderschrank',x:-6.5,z:5.4,note:'Der begehbare Kleiderschrank ist 1945 der Ort des Verstecks.'},
 {id:'willow',name:'Weide',x:21,z:-4,note:'Arthur pflanzt mit Angehörigen eine Weide am Seeufer.'},
@@ -230,8 +242,63 @@ function setChapter(i,stayHere=false){if(state.advanceTimer!==null){clearTimeout
 function escapeHtml(t){return String(t).replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
 function openPanel(title,eyebrow,html){state.panel=true;$('#panelTitle').textContent=title;$('#panelEyebrow').textContent=eyebrow;$('#panelBody').innerHTML=html;$('#infoPanel').classList.add('open')}
 function closePanel(){state.panel=false;$('#infoPanel').classList.remove('open')}
+const BEETLE_SITES=[[-34,8],[-29,6],[-24,8],[-21,15],[-34,18],[-26,20]];
+const miniMarkers=[]; // reale Marker und 3D-Käfer werden beim Initialisieren der Welt erstellt
+function updateMiniHud(now=performance.now()){
+ const el=$('#miniHud');el.classList.toggle('active',state.miniActive);
+ if(!state.miniActive)return;
+ $('#miniScore').textContent=state.miniCaught.size+' / '+state.miniTotal;
+ const sec=Math.max(0,Math.ceil((state.miniDeadline-now)/1000));
+ $('#miniClock').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+}
+function startBeetleGame(){
+ state.miniActive=true;state.miniCaught=new Set();state.miniDeadline=performance.now()+90000;state.nearBug=null;
+ closePanel();updateWorld();updateMiniHud();
+ $('#footer').innerHTML='<b>🐞 Gartenspiel gestartet!</b> Finde sechs Käfer. Gehe nahe heran und tippe auf »Käfer fangen«.';
+}
+function finishBeetleGame(won){
+ if(!state.miniActive)return;
+ const remaining=Math.max(0,Math.ceil((state.miniDeadline-performance.now())/1000));
+ state.miniActive=false;state.nearBug=null;
+ for(const el of miniMarkers)el.style.display='none';
+ updateMiniHud();updateWorld();
+ let best='';
+ if(won){
+  const elapsed=90-remaining;
+  try{
+   const old=Number(localStorage.getItem('heimsuchung-beetle-best-v1'))||0;
+   if(!old||elapsed<old)localStorage.setItem('heimsuchung-beetle-best-v1',String(elapsed));
+   best='Deine Bestzeit: <b>'+Math.min(old||elapsed,elapsed)+' Sekunden</b>.';
+  }catch(e){}
+ }
+ const content=won
+  ?'<p>🐞 <strong>Alle sechs Käfer gefunden!</strong></p><p>Du hast die Käfer in '+(90-remaining)+' Sekunden eingesammelt. '+best+'</p>'
+  :'<p>⏱️ <strong>Die Zeit ist um!</strong></p><p>Du hast '+state.miniCaught.size+' von sechs Käfern gefunden.</p>';
+ openPanel('Kartoffelkäfer-Jagd',won?'Nebenmission geschafft':'Nebenmission beendet',content+'<p class="small">Die Käferjagd ist eine spielerische Ergänzung zum Gärtner-Kapitel, keine zusätzlich behauptete Romanszene. Sie verändert die Kapitelwertung nicht.</p><button class="miniStart" type="button" id="miniAgain">↻ Noch einmal spielen</button>');
+ $('#miniAgain').onclick=startBeetleGame;
+}
+function catchBeetle(index){
+ if(!state.miniActive||state.miniCaught.has(index)||state.panel)return;
+ const pt=BEETLE_SITES[index];
+ if(!pt||Math.hypot(state.px-pt[0],state.pz-pt[1])>3.6){
+  $('#nearText').textContent='Komm noch näher an den Käfer heran.';
+  return;
+ }
+ state.miniCaught.add(index);
+ if(miniMarkers[index])miniMarkers[index].style.display='none';
+ updateMiniHud();
+ $('#footer').innerHTML='<b>🐞 '+state.miniCaught.size+'/6 Käfer gefunden</b> · Der nächste Käfer wartet im Garten.';
+ if(state.miniCaught.size===state.miniTotal)finishBeetleGame(true);
+}
+
 $('#closePanel').addEventListener('click',closePanel);
-function openStation(id){const s=STATIONS.find(x=>x.id===id),c=chapters[state.chapter];if(!s)return;let distance=Math.hypot(state.px-s.x,state.pz-s.z);if(distance>6.0){$('#footer').innerHTML='Du bist noch <b>'+Math.ceil(distance-6)+' Schritte</b> entfernt. Gehe näher an <b>'+escapeHtml(s.name)+'</b> heran.';return;}let focus=c.anchor===id;if(focus){state.visited.add(state.chapter);saveProg();updateHUD()}
+function openStation(id){const s=STATIONS.find(x=>x.id===id),c=chapters[state.chapter];if(!s)return;let distance=Math.hypot(state.px-s.x,state.pz-s.z);if(distance>6.0){$('#footer').innerHTML='Du bist noch <b>'+Math.ceil(distance-6)+' Schritte</b> entfernt. Gehe näher an <b>'+escapeHtml(s.name)+'</b> heran.';return;}if(id==='beetlegame'){
+ if(state.miniActive){openPanel('Kartoffelkäfer-Jagd','Nebenmission läuft','<p>Du bist mitten in der Käferjagd! Sammle die sechs markierten Käfer draußen im Garten ein.</p><p class="small">Der Zähler und die Restzeit stehen unten im Bild.</p>');return;}
+ openPanel('Kartoffelkäfer-Jagd','Freiwilliges Minispiel im Freien',`<p class="miniIntro"><strong>Der Gärtner bekämpft im Roman Kartoffelkäfer.</strong> Daraus wird hier ein spielerischer Sammelauftrag: Finde <strong>sechs Käfer innerhalb von 90 Sekunden</strong>.</p><p>Du bewegst dich dabei tatsächlich durch den Garten. Folge den orangefarbenen Käfer-Markierungen, gehe dicht heran und drücke <strong>»Käfer fangen«</strong> (oder tippe den Käfer direkt an).</p><div class="sourcebox"><b>Texttreue:</b> Die Käferbekämpfung ist im Roman belegt. Käferpositionen, Zeitlimit und Punktwertung sind ausschließlich Spielmechanik, keine erfundene Romanhandlung. Die 24 Lektürefragen laufen unverändert weiter.</div><button class="miniStart" type="button" id="miniBegin">🐞 Käferjagd starten</button>`);
+ $('#miniBegin').onclick=startBeetleGame;
+ return;
+ }
+ let focus=c.anchor===id;if(focus){state.visited.add(state.chapter);saveProg();updateHUD()}
 let html=`<p>${escapeHtml(s.note)}</p>`;
 if(focus){html+=`<div class="sep"></div><div class="eyebrow">${escapeHtml(c.era)} · ${escapeHtml(c.title)}</div><p style="font-size:15px;margin-top:10px">${escapeHtml(c.fact)}</p>`;if(c.flag)html+=`<div class="flag">${escapeHtml(c.flag)}</div>`;
 html+='<h3>Figur / Ereignis befragen</h3><p class="small">Die Antworten sind <b>Sachauskünfte</b> zum Roman, keine erfundene wörtliche Rede der Figuren.</p>';
@@ -275,7 +342,7 @@ for(const b of document.querySelectorAll('.proofChoice'))b.onclick=()=>{
 };
 }
 $('#prev').onclick=()=>setChapter(state.chapter-1);$('#next').onclick=()=>setChapter(state.chapter+1);$('#chapterSelect').onchange=e=>setChapter(Number(e.target.value));
-$('#helpBtn').onclick=()=>openPanel('Steuerung','So spielst du',`<p>Erkunde das Grundstück in der Third-Person-Ansicht.</p><h3>iPad und iPhone</h3><p>Mit dem runden Steuerfeld links gehen. Rechts über die Welt wischen oder die Drehtasten gedrückt halten, um die Kamera zu drehen. Die Figur schaut beim Gehen immer genau in ihre Laufrichtung; im Stand behält sie ihre Ausrichtung. Markierungen antippen oder nah an einen Ort herantreten und <b>Ort untersuchen</b> drücken.</p><h3>Computer</h3><p>W, A, S, D zum Gehen (Pfeil oben/unten gehen, Pfeil links/rechts drehen). Mit gedrückter Maus über die Welt ziehen, um die Blickrichtung zu ändern. Die Taste <b>E</b> untersucht den nächsten Ort. Mit <b>Esc</b> schließt du das Informationsfenster.</p><h3>Lernziel</h3><p>Arbeite dich nacheinander durch die 24 Romanabschnitte. Nur am gold markierten Ort wird die Lektüreprüfung freigeschaltet. Nach einer richtigen Deutung <em>und</em> einer dazu passenden Textbegründung folgt das nächste Kapitel automatisch. Bei falschen Antworten kannst du erneut versuchen. Bereits bearbeitete Kapitel kannst du erneut besuchen.</p><p class="small">Die Reihenfolge folgt der Komposition des Romans, nicht einem chronologischen Zeitstrahl.</p>`);
+$('#helpBtn').onclick=()=>openPanel('Steuerung','So spielst du',`<p>Erkunde das Grundstück in der Third-Person-Ansicht.</p><h3>iPad und iPhone</h3><p>Mit dem runden Steuerfeld links gehen. Rechts über die Welt wischen oder die Drehtasten gedrückt halten, um die Kamera zu drehen. Die Figur schaut beim Gehen immer genau in ihre Laufrichtung; im Stand behält sie ihre Ausrichtung. Markierungen antippen oder nah an einen Ort herantreten und <b>Ort untersuchen</b> drücken.</p><h3>Computer</h3><p>W, A, S, D zum Gehen (Pfeil oben/unten gehen, Pfeil links/rechts drehen). Mit gedrückter Maus über die Welt ziehen, um die Blickrichtung zu ändern. Die Taste <b>E</b> untersucht den nächsten Ort. Mit <b>Esc</b> schließt du das Informationsfenster.</p><h3>Lernziel</h3><p>Arbeite dich nacheinander durch die 24 Romanabschnitte. Nur am gold markierten Ort wird die Lektüreprüfung freigeschaltet. Nach einer richtigen Deutung <em>und</em> einer dazu passenden Textbegründung folgt das nächste Kapitel automatisch. Bei falschen Antworten kannst du erneut versuchen. Bereits bearbeitete Kapitel kannst du erneut besuchen. <b>Optionales Minispiel:</b> Draußen am Gartenrand findest du die Käferjagd-Station. Dort kannst du in 90 Sekunden sechs Kartoffelkäfer sammeln; deine Kapitelwertung ändert sich dadurch nicht.</p><p class="small">Die Reihenfolge folgt der Komposition des Romans, nicht einem chronologischen Zeitstrahl.</p>`);
 $('#sourcesBtn').onclick=()=>openPanel('Texttreue & Quellen','Didaktische Transparenz',`<p>Dieses Spiel ist eine <b>schematische Erkundung</b> von Jenny Erpenbecks Roman. Keine Figur spricht erfundene Sätze. Die Auskünfte sind knappe, paraphrasierte Inhaltsangaben, nicht der Originaltext.</p><p>Das Haus, der See, der Garten, die Werkstatt, die Weide, das Bienenhaus und der begehbare Kleiderschrank sind im Roman nachweisbare Orte bzw. Gegenstände. <b>Die exakten Maße, Wege, Positionen, Farben und die konkrete Raumanordnung im 3D-Modell sind nicht durch den Text belegt</b> und dienen allein der Steuerung und Orientierung.</p><p>Die bewegliche menschliche Person ist lediglich der Avatar der spielenden Person und keine zusätzlich erfundene Romanfigur. Die Figur Doris befindet sich in ihrem Kapitel im Warschauer Ghetto. Sie wird nicht irreführend als anwesende Figur am See dargestellt; ihre Erinnerungen sind dort als Spur verortet. Ebenso werden Gewalt und Verfolgung nicht nachgespielt.</p><h3>Quellengrundlage</h3><div class="sourcebox"><a href="https://www.reclam.de/produktdetail/heimsuchung-9783150143889" target="_blank" rel="noopener">Jenny Erpenbeck: Heimsuchung (Reclam, Werkinformation)</a><br><a href="https://st-ursula-gk.de/export/sites/einrichtungen/gymnasium-st-ursula-geilenkirchen/der-unterricht/fach/Deutsch/.galleries/downloads/Erpenbeck-Jenny_Heimsuchung.pdf" target="_blank" rel="noopener">Kapitel- und Figurenübersicht (Gymnasium St. Ursula)</a><br><a href="https://www.stark-verlag.de/blog/heimsuchung-jenny-erpenbeck-zusammenfassung-infos-pflichtlektuere" target="_blank" rel="noopener">Handlung und Figuren (STARK)</a></div><p class="small">Für vollständige Textgenauigkeit sind Abgleiche mit einer konkreten Romanausgabe nötig. Keine Seitenzahlen, direkten Zitate oder angeblichen Dialoge werden vorgetäuscht.</p>`);
 
 // Eigener, vollständig programmierter Intro-Track (keine GTA-Melodie oder Audiodateien).
@@ -366,7 +433,7 @@ function setupIntroSoundtrack(){
 const introSoundtrack=setupIntroSoundtrack();
 
 if(highestUnlocked()>0)$('#startBtn').textContent='Spiel fortsetzen · Kapitel '+(highestUnlocked()+1);$('#startBtn').onclick=()=>{introSoundtrack.stop();state.started=true;$('#intro').style.display='none';setChapter(highestUnlocked())};
-window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','e','escape'].includes(k))e.preventDefault();state.keys.add(k);if(k==='e'&&!state.panel&&state.near)openStation(state.near.id);if(k==='escape')closePanel()});window.addEventListener('keyup',e=>state.keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>state.keys.clear());
+window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','e','escape'].includes(k))e.preventDefault();state.keys.add(k);if(k==='e'&&!state.panel){if(state.miniActive&&state.nearBug!==null)catchBeetle(state.nearBug);else if(state.near)openStation(state.near.id)};if(k==='escape')closePanel()});window.addEventListener('keyup',e=>state.keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>state.keys.clear());
 const joy=$('#movePad'),stick=$('#stick');let joyId=null;
 function joyMove(e){let r=joy.getBoundingClientRect();let cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=(e.clientX-cx)/(r.width*.33),dy=(e.clientY-cy)/(r.width*.33);let v=Math.max(1,Math.hypot(dx,dy));state.joyX=dx/v;state.joyY=dy/v;stick.style.transform=`translate(${state.joyX*35}px,${state.joyY*35}px)`}
 joy.addEventListener('pointerdown',e=>{e.preventDefault();joyId=e.pointerId;joy.setPointerCapture(joyId);joyMove(e)});joy.addEventListener('pointermove',e=>{if(joyId===e.pointerId)joyMove(e)});function joyRelease(e){if(joyId!==e.pointerId)return;joyId=null;state.joyX=state.joyY=0;stick.style.transform='translate(0,0)'}joy.addEventListener('pointerup',joyRelease);joy.addEventListener('pointercancel',joyRelease);
@@ -379,12 +446,12 @@ function setTurnControl(button,dir){let current=null;
 }
 setTurnControl($('#turnLeft'),-1);setTurnControl($('#turnRight'),1);
 let camPointer=null,camX=0,camY=0;
-canvas.addEventListener('pointerdown',e=>{if(state.panel|| (e.pointerType==='touch'&&e.clientX<innerWidth*.39))return;camPointer=e.pointerId;camX=e.clientX;camY=e.clientY;state.lookDragging=true;canvas.setPointerCapture(camPointer)});
+canvas.addEventListener('pointerdown',e=>{if(state.panel||camPointer!==null|| (e.pointerType==='touch'&&e.clientX<innerWidth*.39))return;camPointer=e.pointerId;camX=e.clientX;camY=e.clientY;state.lookDragging=true;canvas.setPointerCapture(camPointer)});
 canvas.addEventListener('pointermove',e=>{if(e.pointerId!==camPointer)return;let dx=Math.max(-90,Math.min(90,e.clientX-camX)),dy=Math.max(-80,Math.min(80,e.clientY-camY));state.yaw+=dx*.0052;state.pitch=Math.max(-.2,Math.min(.4,state.pitch+dy*.0018));camX=e.clientX;camY=e.clientY});
 function camRelease(e){if(e.pointerId!==camPointer)return;camPointer=null;state.lookDragging=false}
 canvas.addEventListener('pointerup',camRelease);canvas.addEventListener('pointercancel',camRelease);canvas.addEventListener('lostpointercapture',camRelease);
-$('#actionBtn').onclick=()=>{if(state.near)openStation(state.near.id)};
-for(const s of STATIONS){const b=document.createElement('button');b.className='marker';b.dataset.id=s.id;b.textContent=s.name;b.addEventListener('click',()=>openStation(s.id));$('#markers').append(b);s.element=b}
+$('#actionBtn').onclick=()=>{if(state.miniActive&&state.nearBug!==null)catchBeetle(state.nearBug);else if(state.near)openStation(state.near.id)};
+for(const s of STATIONS){const b=document.createElement('button');b.className='marker'+(s.id==='beetlegame'?' minimarker':'');b.dataset.id=s.id;b.textContent=s.name;b.addEventListener('click',()=>openStation(s.id));$('#markers').append(b);s.element=b}
 
 // Eigenständiger WebGL-Renderer: keine Bibliotheken, externen Server, Konten oder KI-APIs erforderlich.
 const gl=canvas.getContext('webgl',{antialias:true,alpha:false,powerPreference:'low-power'})||canvas.getContext('experimental-webgl');
@@ -497,6 +564,31 @@ box(29,1.1,7.0,4.3,2.6,3.0,[.54,.43,.32,1],'bees');box(29,2.65,7.0,4.8,.65,3.6,[
 for(let k=0;k<3;k++){box(-18,.05,-.3+k*2.5,7,.16,1.4,[.29,.3,.18,1],'garden');for(let j=0;j<9;j++){let x=-21.1+j*.78;ball(x,.5,-.3+k*2.5,.35,.65,.35,[.7+(k===0?.05:0),k===1?.6:.44,k===2?.55:.34,1],'garden')}}
 // Grundstücksgrenze der Parzellen: grafische Markierung, keine behauptete Vermessung.
 for(let i=0;i<9;i++){let z=-5+i*3.7;box(18,.43,z,.24,.88,.23,[.65,.6,.5,1],'fence')};
+// V11: Kleiner, vom Roman angeregter Spielbereich außerhalb des Hauses.
+// Das Schild und die Käfer sind ausdrücklich Spielmechanik, keine Aussage über die Romanarchitektur.
+box(-29,-.055,13.7,18,.13,19,[.37,.46,.26,1],'miniarea');
+for(let k=0;k<4;k++){
+ box(-33+k*2.9,.07,13,1.35,.18,9.5,[.36,.27,.18,1],'miniarea');
+ for(let j=0;j<5;j++)ball(-33+k*2.9,.31,8.8+j*2.15,.6,.42,.58,[.34,.52,.25,1],'miniarea');
+}
+box(-29,1.30,14,.22,2.6,.20,[.42,.30,.17,1],'miniarea');
+box(-29,2.61,14,3.5,.83,.18,[.55,.39,.21,1],'miniarea');
+box(-29,2.82,13.86,3.7,.11,.28,[.77,.62,.39,1],'miniarea');
+const beetleMeshes=[];
+for(let i=0;i<BEETLE_SITES.length;i++){
+ const [x,z]=BEETLE_SITES[i],parts=[];
+ // Dunkler Körper, ockergelbe Flügeldecken mit Punkten – abstrakte Sammelobjekte.
+ parts.push(ball(x,.63,z,.76,.46,.62,[.24,.18,.13,1],'minibeetle'));
+ parts.push(ball(x,.82,z,.67,.32,.58,[.92,.54,.19,1],'minibeetle'));
+ parts.push(ball(x,.75,z-.31,.35,.30,.30,[.19,.14,.11,1],'minibeetle'));
+ parts.push(box(x,.99,z,.055,.03,.43,[.20,.17,.13,1],'minibeetle'));
+ for(let t=0;t<4;t++){
+  let xx=x+(t%2===0?-.21:.21),zz=z+(Math.floor(t/2)===0?-.15:.19);
+  parts.push(ball(xx,1.005,zz,.11,.045,.12,[.20,.14,.11,1],'minibeetle'));
+ }
+ for(const part of parts)part.beetleIndex=i;
+ beetleMeshes.push(parts);
+}
 // Eigenständiger, moderner Open-World-Avatar (KEINE Romanfigur / kein kopierter Spielecharakter).
 // Stil: strukturierte Baseballcap, volles lockiges Nackenhaar, offenes Freizeithemd,
 // T-Shirt, Jeans, Sneaker, Brusttaschen, Knöpfe, Gürtelschnalle und Uhr.
@@ -617,14 +709,39 @@ hs(0,3.247,-.01,.09,.055,.09,CAP_BRIM,'head');
 hb(0,3.075,.34,.20,.055,.027,CAP_STITCH,'head');
 // Kleine Bewegung des Brustkorbs beim Atmen wird im Renderloop ergänzt.
 
-function updateWorld(){let built=state.chapter>=3&&state.chapter!==23;let open=state.chapter===0||state.chapter===1||state.chapter===2;let dist=Math.hypot(state.px+3,state.pz-3);for(let o of items){o.hidden=(o.tag==='house'&&!built)||(o.tag==='built'&&!built)||(o.tag==='roof'&&(!built||dist<12))||(o.tag==='orchard'&&(state.chapter<7||state.chapter===23))||(o.tag==='willow'&&(state.chapter<6||state.chapter===23))||(o.tag==='bees'&&(state.chapter<9||state.chapter===23))||(o.tag==='garden'&&(state.chapter<3||state.chapter===23))||(o.tag==='fence'&&(state.chapter<17||state.chapter===23));}if(open)for(let o of items)if(o.tag==='roof')o.hidden=true}
+// Orangefarbene interaktive Käferhinweise auf dem Spielfeld.
+for(let i=0;i<BEETLE_SITES.length;i++){
+ const el=document.createElement('button');el.type='button';el.className='marker bugmarker';
+ el.setAttribute('aria-label','Kartoffelkäfer '+(i+1)+' fangen');el.textContent='🐞 Käfer fangen';
+ el.onclick=()=>catchBeetle(i);$('#markers').append(el);miniMarkers.push(el);
+}
+function updateWorld(){let built=state.chapter>=3&&state.chapter!==23;let open=state.chapter===0||state.chapter===1||state.chapter===2;let dist=Math.hypot(state.px+3,state.pz-3);for(let o of items){o.hidden=(o.tag==='house'&&!built)||(o.tag==='built'&&!built)||(o.tag==='roof'&&(!built||dist<12))||(o.tag==='orchard'&&(state.chapter<7||state.chapter===23))||(o.tag==='willow'&&(state.chapter<6||state.chapter===23))||(o.tag==='bees'&&(state.chapter<9||state.chapter===23))||(o.tag==='garden'&&(state.chapter<3||state.chapter===23))||(o.tag==='fence'&&(state.chapter<17||state.chapter===23))||(o.tag==='minibeetle'&&(!state.miniActive||state.miniCaught.has(o.beetleIndex)));}if(open)for(let o of items)if(o.tag==='roof')o.hidden=true}
 window.updateWorld=updateWorld;
 function drawMesh(o){let m=o.mesh;gl.bindBuffer(gl.ARRAY_BUFFER,m.b);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,m.ib);gl.enableVertexAttribArray(A.p);gl.enableVertexAttribArray(A.n);gl.vertexAttribPointer(A.p,3,gl.FLOAT,false,24,0);gl.vertexAttribPointer(A.n,3,gl.FLOAT,false,24,12);gl.uniformMatrix4fv(U.M,false,model(o));gl.uniform4fv(U.Col,o.col);gl.drawElements(gl.TRIANGLES,m.count,gl.UNSIGNED_SHORT,0)}
 function project(p,vp){let [x,y,z]=p,w=vp[3]*x+vp[7]*y+vp[11]*z+vp[15];if(w<=0)return null;let nx=(vp[0]*x+vp[4]*y+vp[8]*z+vp[12])/w,ny=(vp[1]*x+vp[5]*y+vp[9]*z+vp[13])/w;return[(nx*.5+.5)*innerWidth,(1-(ny*.5+.5))*innerHeight]}
-function mapdraw(){const w=mapCanvas.width,h=mapCanvas.height;mapCtx.clearRect(0,0,w,h);mapCtx.fillStyle='#243f37';mapCtx.fillRect(0,0,w,h);mapCtx.fillStyle='#235969';mapCtx.fillRect(0,195,w,55);mapCtx.fillStyle='#b6a87b';mapCtx.fillRect(0,187,w,7);let calc=(x,z)=>[w*(x+48)/96,h*(38-z)/56];for(let s of STATIONS){if(s.id==='wardrobe'||s.id==='dock')continue;let [x,y]=calc(s.x,s.z);mapCtx.beginPath();mapCtx.fillStyle=s.id===chapters[state.chapter].anchor?'#efd18e':'#d2dfd4';mapCtx.arc(x,y,s.id===chapters[state.chapter].anchor?6:3.5,0,6.283);mapCtx.fill()}let [x,y]=calc(state.px,state.pz);mapCtx.fillStyle='#fff';mapCtx.beginPath();mapCtx.arc(x,y,6,0,6.283);mapCtx.fill();mapCtx.strokeStyle='#fff';mapCtx.lineWidth=2;mapCtx.beginPath();mapCtx.moveTo(x,y);// Minimap-Z-Achse ist gegenüber Welt-Z gespiegelt: der alte Strich zeigte deshalb falsch herum.
-mapCtx.lineTo(x-Math.sin(state.yaw)*15,y+Math.cos(state.yaw)*15);mapCtx.stroke();mapCtx.font='16px system-ui';mapCtx.fillStyle='#eee';mapCtx.fillText('SEEUFER',12,221)}
+// Eine einzige Kamerabasis für Bewegung, Blick und Minimap: Yaw 0 blickt in Welt -Z.
+function cameraBasis(yaw){
+  const sin=Math.sin(yaw),cos=Math.cos(yaw);
+  return {fx:sin,fz:-cos,rx:cos,rz:sin};
+}
+// Die Figur blickt im lokalen Modell nach -Z und wird auf die echte Wegstrecke ausgerichtet.
+function headingFromDisplacement(dx,dz){return Math.atan2(dx,-dz)}
+function oppositeMapHeading(x,y,yaw,w,h){
+  const d=cameraBasis(yaw),sx=w/96,sy=h/56;
+  // Minimap kehrt die Welt-Z-Achse um. Der weiße Strich zeigt 180° GEGEN die Kamerablickrichtung.
+  const tx=-d.fx*sx,ty=d.fz*sy;
+  const mag=Math.hypot(tx,ty)||1;
+  return [x+15*tx/mag,y+15*ty/mag];
+}
+function mapdraw(){const w=mapCanvas.width,h=mapCanvas.height;mapCtx.clearRect(0,0,w,h);mapCtx.fillStyle='#243f37';mapCtx.fillRect(0,0,w,h);mapCtx.fillStyle='#235969';mapCtx.fillRect(0,195,w,55);mapCtx.fillStyle='#b6a87b';mapCtx.fillRect(0,187,w,7);let calc=(x,z)=>[w*(x+48)/96,h*(38-z)/56];for(let s of STATIONS){if(s.id==='wardrobe'||s.id==='dock')continue;let [x,y]=calc(s.x,s.z);mapCtx.beginPath();mapCtx.fillStyle=s.id===chapters[state.chapter].anchor?'#efd18e':s.id==='beetlegame'?'#ffb364':'#d2dfd4';mapCtx.arc(x,y,s.id===chapters[state.chapter].anchor?6:3.5,0,6.283);mapCtx.fill()}let [x,y]=calc(state.px,state.pz);mapCtx.fillStyle='#fff';mapCtx.beginPath();mapCtx.arc(x,y,6,0,6.283);mapCtx.fill();mapCtx.strokeStyle='#fff';mapCtx.lineWidth=2;mapCtx.beginPath();mapCtx.moveTo(x,y);
+const [tipX,tipY]=oppositeMapHeading(x,y,state.yaw,w,h);
+mapCtx.lineTo(tipX,tipY);mapCtx.stroke();mapCtx.font='16px system-ui';mapCtx.fillStyle='#eee';mapCtx.fillText('SEEUFER',12,221)}
 let frameCounter=0;
 function frame(now){requestAnimationFrame(frame);if(!state.started)return;let dt=Math.min(.05,(now-state.last)/1000||.017);state.last=now;
+if(state.miniActive){
+ if(now>=state.miniDeadline)finishBeetleGame(false);
+ else if(frameCounter%5===0)updateMiniHud(now);
+}
 if(!state.panel){
  const turn=(state.keys.has('arrowright')?1:0)-(state.keys.has('arrowleft')?1:0)+state.turnDir;
  state.yaw+=Math.max(-1,Math.min(1,turn))*dt*2.1;
@@ -635,15 +752,16 @@ if(!state.panel){
  state.moving=false;
  if(len>.085){
    f/=Math.max(1,len);r/=Math.max(1,len);
-   const vx=Math.sin(state.yaw)*f+Math.cos(state.yaw)*r;
-   const vz=-Math.cos(state.yaw)*f+Math.sin(state.yaw)*r;
+   const basis=cameraBasis(state.yaw);
+   const vx=basis.fx*f+basis.rx*r;
+   const vz=basis.fz*f+basis.rz*r;
    const oldX=state.px,oldZ=state.pz;
    state.px=Math.max(-48,Math.min(48,oldX+vx*dt*7.3));
    state.pz=Math.max(-15,Math.min(39,oldZ+vz*dt*7.3));
    const movedX=state.px-oldX,movedZ=state.pz-oldZ;
    // Auch beim Entlanglaufen an einer Weltgrenze zeigt er exakt in die echte Laufrichtung.
    if(Math.hypot(movedX,movedZ)>1e-5){
-     state.facing=Math.atan2(movedX,-movedZ);
+     state.facing=headingFromDisplacement(movedX,movedZ);
      state.moving=true;
    }
  }
@@ -670,8 +788,21 @@ for(const p of player){let swing=Math.sin(state.walkTime)*(.38*(running?1:0)),a=
   p.x=state.px+co*x-si*z;p.y=y;p.z=state.pz+si*x+co*z;
   p.rot=-state.facing;p.rx=pitch;
 }
-const roofObj=items.find(o=>o.tag==='roof');roofObj.hidden=state.chapter<3||state.chapter===23||Math.hypot(state.px+3,state.pz-3)<11;let cy=state.yaw,dx=Math.sin(cy),dz=-Math.cos(cy);let eye=[state.px-dx*10.4,7.4+state.pitch*9,state.pz-dz*10.4];let target=[state.px+dx*3,2.18,state.pz+dz*3];state.eye=eye;let W=gl.drawingBufferWidth,H=gl.drawingBufferHeight;gl.viewport(0,0,W,H);gl.clearColor(.40,.70,.94,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);let proj=persp(55*Math.PI/180,W/H,.1,150),vp=matMul(proj,lookAt(eye,target));state.vp=vp;gl.uniformMatrix4fv(U.VP,false,vp);gl.uniform3fv(U.Eye,eye);gl.uniform3fv(U.Fog,[.56,.74,.88]);for(let o of items){if(o.hidden)continue;drawMesh(o)}
-let closest=null,min=1e9;for(let s of STATIONS){let dist=Math.hypot(state.px-s.x,state.pz-s.z);if(dist<min){min=dist;closest=s}let xy=project([s.x,2.4,s.z],vp);let visible=xy&&dist<28&&xy[0]>45&&xy[0]<innerWidth-45&&xy[1]>95&&xy[1]<innerHeight-35;let el=s.element;el.style.display=visible?'block':'none';if(visible){el.style.left=xy[0]+'px';el.style.top=xy[1]+'px';el.innerHTML=(chapters[state.chapter].anchor===s.id?'<span class="star">✦</span>':'')+escapeHtml(s.name)}}let goal=STATIONS.find(s=>s.id===chapters[state.chapter].anchor);let goalDistance=Math.hypot(state.px-goal.x,state.pz-goal.z);state.near=goalDistance<6?goal:(min<6?closest:null);$('#actionBtn').disabled=!state.near;$('#actionBtn').textContent=state.near?'Untersuchen: '+state.near.name:'Ort untersuchen';$('#nearText').textContent=state.near?'Jetzt Ort untersuchen':'Gehe zuerst bis zur goldenen Markierung.';
+const roofObj=items.find(o=>o.tag==='roof');roofObj.hidden=state.chapter<3||state.chapter===23||Math.hypot(state.px+3,state.pz-3)<11;let cameraDir=cameraBasis(state.yaw),dx=cameraDir.fx,dz=cameraDir.fz;let eye=[state.px-dx*10.4,7.4+state.pitch*9,state.pz-dz*10.4];let target=[state.px+dx*3,2.18,state.pz+dz*3];state.eye=eye;let W=gl.drawingBufferWidth,H=gl.drawingBufferHeight;gl.viewport(0,0,W,H);gl.clearColor(.40,.70,.94,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);let proj=persp(55*Math.PI/180,W/H,.1,150),vp=matMul(proj,lookAt(eye,target));state.vp=vp;gl.uniformMatrix4fv(U.VP,false,vp);gl.uniform3fv(U.Eye,eye);gl.uniform3fv(U.Fog,[.56,.74,.88]);for(let o of items){if(o.hidden)continue;drawMesh(o)}
+let closest=null,min=1e9;for(let s of STATIONS){let dist=Math.hypot(state.px-s.x,state.pz-s.z);if(dist<min){min=dist;closest=s}let xy=project([s.x,2.4,s.z],vp);let visible=xy&&dist<28&&xy[0]>45&&xy[0]<innerWidth-45&&xy[1]>95&&xy[1]<innerHeight-35;let el=s.element;el.style.display=visible?'block':'none';if(visible){el.style.left=xy[0]+'px';el.style.top=xy[1]+'px';el.innerHTML=(chapters[state.chapter].anchor===s.id?'<span class="star">✦</span>':'')+escapeHtml(s.name)}}let closestBug=null,closestBugDist=Infinity;
+for(let i=0;i<BEETLE_SITES.length;i++){
+ const b=BEETLE_SITES[i],el=miniMarkers[i],d=Math.hypot(state.px-b[0],state.pz-b[1]);
+ const active=state.miniActive&&!state.miniCaught.has(i);
+ const xy=active?project([b[0],1.5,b[1]],vp):null;
+ const visible=active&&xy&&d<25&&xy[0]>20&&xy[0]<innerWidth-20&&xy[1]>55&&xy[1]<innerHeight-30;
+ el.style.display=visible?'block':'none';
+ if(visible){el.style.left=xy[0]+'px';el.style.top=xy[1]+'px'}
+ if(active&&d<closestBugDist){closestBug=i;closestBugDist=d}
+}
+state.nearBug=(closestBugDist<3.6?closestBug:null);
+let goal=STATIONS.find(s=>s.id===chapters[state.chapter].anchor);let goalDistance=Math.hypot(state.px-goal.x,state.pz-goal.z);state.near=goalDistance<6?goal:(min<6?closest:null);$('#actionBtn').disabled=!(state.near||state.nearBug!==null);
+$('#actionBtn').textContent=state.nearBug!==null?'🐞 Käfer fangen':state.near?'Untersuchen: '+state.near.name:'Ort untersuchen';
+$('#nearText').textContent=state.nearBug!==null?'Käfer in Reichweite – jetzt einsammeln!':state.near?'Jetzt Ort untersuchen':state.miniActive?'Folge den orangefarbenen Käfermarkierungen.':'Gehe zuerst bis zur goldenen Markierung.';
 if(frameCounter++%8===0)mapdraw()}
 function resize(){let dpr=Math.min(1.6,devicePixelRatio||1);canvas.width=Math.min(2300,Math.round(innerWidth*dpr));canvas.height=Math.min(1600,Math.round(innerHeight*dpr));canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px'}window.addEventListener('resize',resize);resize();updateWorld();updateHUD();requestAnimationFrame(frame);
 }
