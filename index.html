@@ -374,6 +374,15 @@ body.boat-mode .mobility-controls,body.boat-mode #collectButton{display:none!imp
 #gfx23Btn{font-size:11px;white-space:nowrap;min-height:42px;border-color:rgba(177,219,203,.48)}
 #gfx23Btn[aria-pressed="true"]{background:rgba(42,83,74,.87);color:#f6eccd;border-color:rgba(239,207,153,.78)}
 @media(max-width:760px){#gfx23Btn{display:none}}
+/* V24: Avatar camera and non-blocking Easter egg display. */
+#avatar24View{position:absolute;right:22px;bottom:max(326px,calc(env(safe-area-inset-bottom) + 326px));z-index:7;min-width:46px;min-height:44px;padding:8px 12px;border:1px solid #e1cea36a;border-radius:13px;background:rgba(13,47,51,.89);color:#f6e5c8;font-size:12px;font-weight:850;box-shadow:0 6px 19px #00161d80;cursor:pointer;touch-action:manipulation}
+#avatar24View[aria-pressed="true"]{background:#74572c;border-color:#ffdf99;color:white}
+#avatar24Toast{position:absolute;left:50%;bottom:max(76px,calc(env(safe-area-inset-bottom) + 76px));transform:translateX(-50%);z-index:8;pointer-events:none;opacity:0;transition:opacity .3s;background:#182f38e8;border:1px solid #efd293;border-radius:15px;padding:12px 19px;color:#ffebaf;font:800 14px/1.4 system-ui;letter-spacing:.05em;text-shadow:0 1px 6px #000;box-shadow:0 8px 22px #0008;text-align:center}
+#avatar24Toast.show{opacity:1}
+@media(max-width:760px){#avatar24View{right:11px;bottom:max(304px,calc(env(safe-area-inset-bottom) + 304px));min-width:44px;padding:9px;font-size:19px}#avatar24Toast{bottom:65px;font-size:11px;max-width:75vw;padding:9px 12px}}
+@media(max-height:600px){#avatar24View{bottom:250px}}
+@media(max-width:760px){.avatar-view-label{display:none}}
+
 .v23-help{padding:12px 14px;border:1px solid rgba(203,220,198,.38);border-radius:12px;background:rgba(255,255,255,.055)}
 .v23-help button{padding:10px 13px;border-radius:10px;border:1px solid #dfd0a5;background:#24494c;color:#f4e9cc;font-weight:800}
 </style>
@@ -384,7 +393,7 @@ body.boat-mode .mobility-controls,body.boat-mode #collectButton{display:none!imp
 <header class="top"><div><div class="eyebrow">Jenny Erpenbeck · Romanerkundung in 3D</div><div class="brand">HEIMSUCHUNG</div><div class="sub">Ein Ort. Viele Zeiten. Entdecke die Spuren des Romans.</div></div><div class="topright"><button class="pillbtn" id="helpBtn">Steuerung</button><button class="pillbtn" id="sourcesBtn">Texttreue</button><button class="pillbtn" id="gfx23Btn" type="button" aria-pressed="true" title="Grafikqualität umschalten">✦ Grafik: Detail</button><button class="pillbtn" id="env15Audio" type="button" aria-pressed="false" aria-label="Naturgeräusche einschalten" title="Naturgeräusche einschalten">🔇</button></div></header>
 <div class="chapterbar" role="group" aria-label="Romankapitel"><button id="prev" class="nav" aria-label="voriges Kapitel">‹</button><select id="chapterSelect" aria-label="Kapitel auswählen"></select><button id="next" class="nav" aria-label="nächstes Kapitel">›</button><span class="meta" id="chapterCount">01 / 24</span></div>
 <div class="stat"><div class="eyebrow">Aktuelle Textschicht</div><div id="era" style="margin:5px 0 3px;color:#f1e9c6">Eiszeit</div><div id="storyPlace" style="color:#c2d2c6">See</div><div class="progressline"><div id="progress"></div></div><div id="progressNum">0 / 24 Kapitel gelöst</div></div>
-<div class="minimap"><canvas id="map" width="340" height="250"></canvas></div>
+<div class="minimap"><canvas id="map" width="340" height="250"></canvas></div><button id="avatar24View" type="button" aria-pressed="false" title="Spielfigur aus der Nähe ansehen (V)">👤 <span class="avatar-view-label">Figur</span></button><div id="avatar24Toast" aria-live="polite"></div>
 
 <!-- V18: Menü und frei erkundbare, textgestützte Zeitleiste. -->
 <nav class="discovery-tools" aria-label="Zeitleiste und Sammelalbum">
@@ -463,7 +472,7 @@ body.boat-mode .mobility-controls,body.boat-mode #collectButton{display:none!imp
     <div class="trailer-smallprint"><span>Bildmotive sind illustrative, nicht textbelegte Szenen</span><span>Literarisches Lernspiel · iPad und PC · eigenständige Parodie</span></div>
   </main>
   <div class="trailer-corner" aria-hidden="true"><span>◇ SEEUFER EDITION</span><b>EST. EISZEIT</b></div>
-  <div class="intro-version" aria-label="Spielversion">V23.0 · GRAFIK-EDITION</div>
+  <div class="intro-version" aria-label="Spielversion">V24.1 · GESICHTS-EDITION</div>
 </div>
 
 <script type="application/json" id="chapterData">[{"title":"Prolog","era":"Eisrückzug und spätere Entstehung des Sees","place":"See","anchor":"see","fact":"Der Prolog beschreibt mehrere zeitlich getrennte Phasen: Vor rund 24.000 Jahren reicht das Gletschereis bis zur Landschaft; beim Abschmelzen bleibt Toteis zurück, das viel später schmilzt. Erst dadurch bildet sich der See. Die im Spiel gleichzeitig sichtbaren Fische, Krebse und schwimmenden Eisschollen verdichten diese lange Entwicklung zu einer bildhaften Szene – eine solche Gleichzeitigkeit behauptet der Roman nicht.","qa":[["Was steht am Anfang?","Die wechselnden erdgeschichtlichen Phasen der Gletscherausbreitung, des Toteises und der späteren Seeentstehung."],["Welche Funktion hat der See?","Der See entsteht nach dem Rückzug des Gletschers und verweist auf einen weitaus längeren Zeitmaßstab als alle späteren Besitzgeschichten."]],"quiz":"Welche Funktion übernimmt die geologische Perspektive des Prologs für die spätere Hausgeschichte?","options":["Sie erklärt die späteren Eigentumswechsel als naturgesetzliche Entwicklung.","Sie rückt menschliche Besitzansprüche in den Maßstab einer viel längeren, nichtmenschlichen Zeit.","Sie legt einen historisch zuverlässigen Zeitpunkt der ersten Besiedlung fest.","Sie kennzeichnet das Seegrundstück von Beginn an als unveränderliche Heimat."],"answer":1,"flag":"","proofQuestion":"Welche Beobachtung aus dem Romananfang trägt diese Deutung am deutlichsten?","proofOptions":["Der Text beginnt mit der eiszeitlichen Entstehung der Landschaft, bevor menschliche Eigentümer auftreten.","Der Text eröffnet mit den Erinnerungen der letzten Bewohnerin an den See.","Die Geschichte beginnt mit dem notariellen Kaufvertrag des Architekten."],"proofAnswer":0,"explanation":"Die geologischen Phasen überdauern jeden individuellen Besitzanspruch; die Wasser- und Tierdarstellung ist im Spiel ein ausdrücklich nicht maßstabsgetreuer Zeitraffer.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 9–10","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"Inseln von Eis, verwaistes Eis","zitatstelle":"S. 9","quellenhinweis":"Die Eisschollen zeigen hier im Zeitraffer Toteis/Schmelzvorgänge. Schwimmende Schollen im bereits entstandenen See sowie Fische und Krebse sind für diese frühe Phase nicht als gemeinsamer Zeitpunkt belegt."},{"title":"Der Gärtner I","era":"Vor der Bebauung des Grundstücks","place":"Waldrand","anchor":"woods","fact":"Der Gärtner verrichtet Arbeiten im Dorf und lebt in einer verlassenen Jagdhütte am Waldrand. Seine Herkunft bleibt unbekannt.","qa":[["Woher kommt er?","Der Roman gibt keine gesicherte Auskunft über seine Herkunft."],["Wo wohnt er zunächst?","In einer verlassenen Jagdhütte am Waldrand."]],"quiz":"Welche erzählstrukturelle Wirkung hat die weitgehend ungeklärte Biografie des Gärtners?","options":["Er erscheint als historisch exakt verorteter Erzähler aller Figurenkapitel.","Seine Herkunft dient als Kriminalrätsel, das im Epilog eindeutig aufgelöst wird.","Seine Rolle entsteht vor allem aus wiederkehrender Arbeit und Präsenz, nicht aus einer vollständig erzählten Lebensgeschichte.","Die fehlende Herkunft ermöglicht ihm, die wechselnden Eigentümer persönlich zu verurteilen."],"answer":2,"flag":"","proofQuestion":"Welcher Befund stützt diese funktionale Figurenzeichnung?","proofOptions":["Der Roman nennt durchgehend seinen bürgerlichen Namen und Geburtsort.","Er wird über seine Tätigkeiten erkennbar; seine Herkunft bleibt im Roman offen.","Der Gärtner berichtet in allen Kapiteln selbst aus der Ich-Perspektive."],"proofAnswer":1,"explanation":"Die namenlose Figur dient als wiederkehrender Bezugspunkt, ohne eine abgeschlossene Biografie zu erhalten.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 11","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"Woher er gekommen ist, weiß im Dorf niemand.","zitatstelle":"S. 11"},{"title":"Der Großbauer und seine vier Töchter","era":"Vor der Bebauung / Parzellierung","place":"Grundstück","anchor":"parcels","fact":"Der Schulze Wurrach verkauft Klaras Wald am See in drei Parzellen, obwohl er ihr als Erbteil zusteht. Die dritte Parzelle veräußert er ausdrücklich im Namen seiner entmündigten Tochter; dort wird der Architekt sein Haus errichten lassen. Klara geht später in den See und stirbt.","qa":[["Wer ist Klara?","Sie ist die jüngste der vier Töchter des Schulzen Wurrach; ihr Erbteil ist der Wald am See."],["An wen werden die Parzellen verkauft?","An einen Kaffee- und Teeimporteur, einen Tuchfabrikanten aus Guben und einen Berliner Architekten (die dritte Parzelle wird auf dessen Verlobte überschrieben)."]],"quiz":"Wie lässt sich die Aufteilung des Grundstücks im Verhältnis zum zentralen Heimatmotiv lesen?","options":["Das Land wird durch die Teilung für alle Beteiligten zu einer dauerhaft gesicherten Heimat.","Die Teilung ist ausschließlich eine neutrale Vermessung ohne biografische Bedeutung.","Die Teilung beweist, dass die Geschichte des Hauses erst nach 1945 beginnt.","Ein zunächst familiär zugedachter Ort wird durch die Aufteilung zum veräußerbaren Besitz, an den neue Lebensgeschichten gebunden werden."],"answer":3,"flag":"","proofQuestion":"Welcher Textbefund verbindet Familiengeschichte und Besitzveränderung?","proofOptions":["Klaras Wald ist ihr Erbteil; ihr Vater verkauft die Fläche in drei Parzellen, die dritte in ihrem Namen, weil sie entmündigt ist.","Der Gärtner erbt die Fläche von Klara und übergibt sie der Schriftstellerin.","Der Staat macht aus dem Wald zunächst ein öffentliches Naturschutzgebiet."],"proofAnswer":0,"explanation":"Die Verkäufe verknüpfen die Geschichte von Klara, ihre Entmündigung und ihre fehlende Verfügungsmacht mit der Entstehung neuer Eigentumsverhältnisse. Vgl. S. 17–18, 22–23.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 12–24","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"Das erste Drittel von Klaras Wald","zitatstelle":"S. 22","quellenhinweis":"Der Vater verkauft Klaras Erbe in ihrem Namen; ihre Entmündigung und ihr Tod gehören wesentlich zum Handlungskomplex."},{"title":"Der Gärtner II","era":"Planung und Umgestaltung des Gartens","place":"Garten","anchor":"garden","fact":"Der Architekt lässt Teile des ehemaligen Waldgrundstücks nach einem von seinem Vetter mitgestalteten Gartenplan umformen. Der Gärtner legt Wiesen, Wege und Beete an; unten am Ufer werden eine Werkstatt und ein Holzschuppen vorgesehen. An dieser Stelle ist ein Steg ausdrücklich erst für später im Gespräch.","qa":[["Welche Veränderung erfährt das Land?","Aus einem Waldgrundstück wird ein gestalteter Garten."],["Welche Gebäude gehören zur Anlage?","Eine Werkstatt und ein Holzschuppen sollen am trockengelegten Uferstreifen entstehen; der Steg ist zunächst erst geplant."]],"quiz":"Was zeigt die Umgestaltung des Waldgrundstücks zum Garten über das Verhältnis von Natur und menschlichem Gestaltungsanspruch?","options":["Der Garten entsteht ohne menschlichen Eingriff und bewahrt den ursprünglichen Waldzustand.","Die Arbeit zeigt, wie ein vorgefundener Ort kulturell geformt und einem Nutzungsentwurf untergeordnet wird.","Der Gärtner verweigert jede Mitarbeit an der Umgestaltung.","Die Gestaltung beweist, dass spätere politische Ereignisse keinen Einfluss auf das Anwesen haben."],"answer":1,"flag":"","proofQuestion":"Welche konkrete Handlung lässt diese Deutung zu?","proofOptions":["Die Werkstatt wird vollständig von der Natur zurückerobert, ehe sie gebaut ist.","Der Großbauer lässt das Haus am Ende des Romans errichten.","Der Gärtner verwandelt im Auftrag des Architekten Teile des ehemaligen Waldgrundstücks in einen Garten."],"proofAnswer":2,"explanation":"Der Garten ist kein von Menschen unabhängiger Naturraum; er trägt die Spuren von Arbeit und Gestaltung.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 25–30","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"Wo später ein Steg aufgestellt werden kann, wird man sehen.","zitatstelle":"S. 28"},{"title":"Der Architekt","era":"Sechs Jahre nach Kriegsende (etwa 1951); Rückblenden","place":"Haus","anchor":"house","fact":"Sechs Jahre nach Kriegsende verlässt der Architekt wegen politisch-wirtschaftlicher Verfolgung in der DDR sein Haus und fährt nach West-Berlin. Rückblenden zeigen seinen Erwerb des Nachbargrundstücks für die Hälfte des Verkehrswertes: Arthur und Hermine hatten auf einen Ausweg vor nationalsozialistischer Verfolgung gehofft. Der Architekt rechtfertigt den Kauf aus seiner eigenen Perspektive.","qa":[["Warum verlässt er das Haus?","Ein Beamter hat ihn im Zusammenhang mit dem Zugriff auf sein Unternehmen bedroht; er flieht etwa 1951 nach West-Berlin."],["Welche Rolle spielt das Nachbargrundstück?","Er kaufte das Grundstück unter den Bedingungen der NS-Verfolgung für die Hälfte des Verkehrswertes; die Familie versuchte damit ihre Ausreise zu finanzieren."]],"quiz":"Welche Spannung prägt die Darstellung des Architekten im Zusammenhang mit dem Haus?","options":["Das Haus ist für ihn ein identitätsstiftender Ort; sein Besitz ist zugleich in die Verfolgung der jüdischen Nachbarn verstrickt.","Sein Haus bleibt dauerhaft ein sicherer Zufluchtsort, weil politische Umbrüche ausgeschlossen werden.","Die Rückblenden zeigen, dass er den jüdischen Nachbarn das Grundstück zurückgibt.","Der Text bewertet seine Entscheidungen ausdrücklich nur aus der Perspektive des Gärtners."],"answer":0,"flag":"","proofQuestion":"Welche Verknüpfung zweier Handlungsmomente trägt diese Lesart?","proofOptions":["Er verkauft seine Parzelle vor 1933 und hält sich danach von dem Haus fern.","1951 muss er fliehen; zuvor hat er das Grundstück der verfolgten jüdischen Nachbarn unter Wert erworben.","Er lebt bis zum Ende des Romans im Haus, ohne dass andere es nutzen."],"proofAnswer":1,"explanation":"Die Verbindung von Heimatsuche, Besitz und historisch belasteten Erwerbsbedingungen verhindert eine ungebrochene Idylle.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 31–42","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"sechs Jahre nach Kriegsende","zitatstelle":"S. 38"},{"title":"Der Gärtner III","era":"Arbeiten im Garten in der Vorkriegszeit","place":"Garten","anchor":"garden","fact":"Der Gärtner pflegt die Beete, setzt Pflanzen und bekämpft Kartoffelkäfer. Ein Engelstrompetenbusch wird durch die Käfer so stark beschädigt, dass an seiner Stelle eine Zypresse eingesetzt wird. Die wiederkehrenden Arbeitsbeschreibungen strukturieren die Handlung zwischen den Figurenkapiteln.","qa":[["Was beschäftigt ihn in diesem Abschnitt?","Er pflegt ein Blumenbeet; Kartoffelkäfer zerstören einen Engelstrompetenbusch, den er durch eine Zypresse ersetzt."],["Ist die erzählte Zeit stets chronologisch?","Nein. Die Figurenkapitel und Gärtner-Kapitel springen zwischen Zeiten und Perspektiven."]],"quiz":"Welche Wirkung kann die wiederkehrende Beschreibung von Gartenarbeit zwischen den Figurenkapiteln entfalten?","options":["Sie löscht alle historischen Unterschiede zwischen den Figuren vollständig aus.","Sie ordnet den gesamten Roman streng nach Jahreszahlen.","Sie stellt jahreszeitliche Abläufe neben historische Umbrüche und macht Veränderungen gerade durch Wiederholung sichtbar.","Sie dient allein dazu, dem Gärtner alle historischen Ereignisse als direkte Rede zuzuschreiben."],"answer":2,"flag":"","proofQuestion":"Welche konkrete Beobachtung stützt das?","proofOptions":["Der Gärtner führt in jedem Kapitel ein politisches Tagebuch.","Die Gartenarbeit wird durch einen einzigen durchgehenden Monolog ersetzt.","Der Gärtner pflegt ein Blumenbeet und muss nach einem Kartoffelkäferbefall einen beschädigten Engelstrompetenbusch ersetzen."],"proofAnswer":2,"explanation":"Wiederholung und Variation bilden eine Gegenzeit zu den Brüchen der Figurenbiografien.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 43–44","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen"},{"title":"Der Tuchfabrikant","era":"NS-Zeit und Verfolgung; Erinnerungsrückblenden","place":"Seeufer / Nachbargrundstück","anchor":"willow","fact":"Ludwig, Sohn von Arthur und Hermine, und seine Familie leben nach der Emigration in Südafrika. Am märkischen See pflanzt Ludwig im Beisein der Angehörigen eine Weide; Arthur setzt den Stamm in das Loch und Doris hält ihn fest. 1939 veräußern Arthur und Hermine Ludwigs Grundstück mit Steg und Badehaus an den Architekten für die Hälfte des Verkehrswertes. Ihre erhoffte Ausreise scheitert; Arthur und Hermine werden in Kulmhof ermordet. Doris wird später im Warschauer Ghetto verfolgt.","qa":[["Wer pflanzt die Weide?","Ludwig pflanzt die Weide; sein Vater Arthur, Doris und weitere Familienmitglieder helfen dabei."],["Weshalb wird das Grundstück verkauft?","Arthur und Hermine verkaufen Ludwigs Grundstück 1939 in der Hoffnung, ihre Ausreise aus NS-Deutschland finanzieren zu können."],["Was geschieht mit Ludwig und Anna?","Ludwig und seine Frau Anna wandern mit ihren Kindern nach Südafrika aus."]],"quiz":"Welche Deutung der Weide ist im Kontext der Familiengeschichte des Tuchfabrikanten tragfähig?","options":["Sie garantiert der Familie, dass das Grundstück trotz der Verfolgung in ihrem Besitz bleibt.","Sie markiert familiäre Verbundenheit mit einem Ort, die durch Entrechtung und Vertreibung gewaltsam unterbrochen wird.","Sie ist ein rein technisches Mittel zur Vermessung des Besitzes.","Sie steht für den freiwilligen und wirtschaftlich günstigen Verkauf des Grundstücks."],"answer":1,"flag":"Nationalsozialistische Verfolgung und Ermordung werden sachlich behandelt.","proofQuestion":"Wodurch wird diese Spannung im Text konkret?","proofOptions":["Die Familie pflanzt die Weide gemeinsam; später wird ihr Grundstück unter Verfolgungsdruck weit unter Wert verkauft.","Ludwig pflanzt mit Arthur und Doris die Weide; Arthur und Hermine verkaufen das Grundstück später unter Verfolgungsdruck.","Die Weide wird erst nach der Rückerstattung des Grundstücks angepflanzt."],"proofAnswer":0,"explanation":"Die Weide verknüpft Familienerinnerung und erzwungenen Verlust. Die Verkaufsbedingungen (S. 57) und die Deportations- und Mordgeschichte (S. 58) dürfen nicht als freiwillig günstiges Geschäft erscheinen.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 45–58","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"für die Hälfte des Verkehrswertes","zitatstelle":"S. 57","quellenhinweis":"Der Grundstücksverkauf findet in einem Kontext der NS-Verfolgung statt. Ludwig, Doris und Arthur/Hermine sind unterschiedliche Familienmitglieder."},{"title":"Der Gärtner IV","era":"Nach dem erzwungenen Grundstücksverkauf","place":"Früheres Nachbargrundstück","anchor":"orchard","fact":"Nach dem Kauf des Nachbargrundstücks rodet der Gärtner dort Gehölze und pflanzt Obstbäume im Auftrag des Architekten.","qa":[["Wer beauftragt ihn?","Der Architekt."],["Was geschieht mit dem Grundstück?","Es wird gerodet und mit Obstbäumen bepflanzt."]],"quiz":"Wie verändert sich die Bedeutung der Obstbaumpflanzungen durch die Vorgeschichte des Grundstücks?","options":["Die Pflanzung ist unverbunden mit den Eigentumsverhältnissen, weil sie in der Eiszeit spielt.","Sie dient als Beweis dafür, dass Natur alle politischen Gewaltverhältnisse ausgleicht.","Sie folgt der Rückgabe des Bodens an die vertriebene Familie.","Die neue Nutzung überformt ein Grundstück, dessen Besitzer durch nationalsozialistische Verfolgung zum Verkauf gedrängt wurden."],"answer":3,"flag":"","proofQuestion":"Welche zwei Textinformationen müssen dazu zusammengedacht werden?","proofOptions":["Der Architekt übernimmt das Nachbargrundstück; der Gärtner rodet dort und pflanzt Obstbäume.","Die Schriftstellerin lässt zuerst die Bäume roden und verkauft dann das Haus.","Die Obstwiese wird von Doris im Warschauer Ghetto angelegt."],"proofAnswer":0,"explanation":"Die sichtbare Gestaltung des Grundstücks verdeckt nicht seine vorausgegangene Enteignungs- und Verlustgeschichte.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 59","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen"},{"title":"Die Frau des Architekten","era":"Nachkriegszeit; Erinnerung an 1945","place":"Haus / Versteck","anchor":"wardrobe","fact":"Die Frau erinnert sich vor dem Verlassen des Hauses an das gemeinsame Leben dort und an eine traumatische Begegnung mit einem sowjetischen Soldaten 1945, als sie sich im begehbaren Kleiderschrank versteckt hatte.","qa":[["Wo versucht sie 1945 Schutz zu finden?","Im begehbaren Kleiderschrank des Hauses."],["Welche Zeitebenen verbinden sich?","Der Abschied 1951 und Erinnerungen an frühere Jahre, besonders 1945."]],"quiz":"Wie prägt die Erinnerung an 1945 die erzählte Gegenwart der Frau des Architekten?","options":["Der Abschied 1951 wird ausschließlich in neutraler chronologischer Reihenfolge berichtet.","Das frühere Gewalterlebnis beeinflusst ihre Wahrnehmung des Hauses und ihres Abschieds; Zeitebenen greifen ineinander.","Ihre Erinnerungen behandeln ausschließlich den Kauf des Hauses.","Der Text macht 1945 rückgängig, indem er die Begegnung auslässt."],"answer":1,"flag":"Hinweis: Diese Kapitel enthalten sexualisierte Gewalt. Das Spiel stellt sie nicht nach.","proofQuestion":"Welche formale Beobachtung unterstützt die Deutung?","proofOptions":["Die Frau verlässt das Haus 1951; der Text verbindet ihren Abschied mit Erinnerungen an das Versteck 1945.","Die Frau berichtet als neutrale Historikerin ausschließlich über den Prolog.","Die Szene aus dem Kleiderschrank wird erst im Epilog erfunden."],"proofAnswer":0,"explanation":"Das Kapitel erzählt nicht nur Ereignisse nacheinander, sondern verknüpft gegenwärtige Wahrnehmung und traumatische Erinnerung.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 60–72","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen"},{"title":"Der Gärtner V","era":"Nach Erweiterung des Grundstücks","place":"Bienenhaus","anchor":"bees","fact":"Nach der Erweiterung des Grundstücks richtet der Gärtner Arbeiten am Bienenhaus aus und pflegt die Bienenstöcke. Die Imkerei ist Teil der wiederkehrenden Tätigkeiten, die die verschiedenen Zeiten des Grundstücks miteinander verknüpfen.","qa":[["Welche neue Tätigkeit übernimmt er?","Die Imkerei."],["Wo wohnt er zeitweise?","Im Schleuderraum des Bienenhauses."]],"quiz":"Welche Bedeutung hat die Einrichtung des Bienenhauses im wiederkehrenden Gärtner-Erzählstrang?","options":["Sie beendet die Gartenarbeit und ersetzt den Gärtner durch eine neue Hauptfigur.","Sie zeigt, dass mit neuen Nutzungen des Grundstücks auch die Routinen des Gärtners um neue Arbeiten erweitert werden.","Sie beweist, dass das Grundstück außerhalb der politischen Geschichte steht.","Sie ist eine nachträgliche Rückkehr des jüdischen Tuchfabrikanten an den See."],"answer":1,"flag":"","proofQuestion":"Welcher konkrete Befund ist einschlägig?","proofOptions":["Der Gärtner baut im Warschauer Ghetto Bienenstöcke auf.","Das Bienenhaus existiert nur als Traum der Schriftstellerin.","Auf dem übernommenen Grundstück entsteht ein Bienenhaus; der Gärtner betreibt Imkerei und wohnt zeitweise im Schleuderraum."],"proofAnswer":2,"explanation":"Die scheinbar gleichförmige Arbeit verändert sich mit der materiellen und sozialen Geschichte des Ortes.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 73","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen"},{"title":"Das Mädchen","era":"1942; Erinnerungen an die Jahre am See","place":"Erinnerungsort am See","anchor":"willow","fact":"Doris, die zwölfjährige Tochter von Ernst und Elisabeth und Enkelin von Arthur und Hermine, hält sich 1942 in einem engen Versteck im Warschauer Ghetto auf. Sie erinnert sich an ihre Zeit am See, an die Weide und an das Schwimmen. Das Kapitel verknüpft ihre Entdeckung und ihren Weg in den Tod mit dem gewaltsamen Verlust ihres gesamten bisherigen Lebens. Die Rahmenhandlung spielt nicht am See.","qa":[["Wo befindet sich Doris im Figurenkapitel?","Im Warschauer Ghetto, nicht am See."],["Woran erinnert sie sich?","Unter anderem an die gemeinsamen Aufenthalte am See und die Weide."],["Wie endet ihr Schicksal?","Die Zwölfjährige wird entdeckt, muss ihr Versteck verlassen und wird Opfer des nationalsozialistischen Massenmords."]],"quiz":"Welche Funktion erhält die Erinnerung an den See im Kapitel über Doris?","options":["Sie ersetzt die historische Realität der Verfolgung vollständig durch ein glückliches Gegenwartsbild.","Sie liefert den Beleg, Doris halte sich während des Kapitels tatsächlich am See auf.","Der erinnerte Ort steht der existenziellen Bedrohung im Ghetto gegenüber und eröffnet eine innere, nicht reale Gegenwelt.","Sie bestätigt, dass Heimkehr für Doris am Ende gelingt."],"answer":2,"flag":"Hinweis: Dieses Kapitel behandelt den Holocaust. Keine nachgespielte Verfolgung.","proofQuestion":"Welche Kombination von Handlungsebenen stützt dies?","proofOptions":["Doris kehrt aus Südafrika ins Haus zurück und besucht die Weide.","Doris versteckt sich im Warschauer Ghetto und erinnert sich an frühere Aufenthalte am See.","Doris arbeitet im Bienenhaus und erzählt den übrigen Bewohnern ihre Geschichte."],"proofAnswer":1,"explanation":"Die Erinnerung an den See ist keine räumliche Rückkehr: Der Gegensatz von geschützter Vergangenheit und Vernichtung im Warschauer Ghetto prägt das Kapitel (S. 74–87).","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 74–87","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"Doris Tochter von Ernst und Elisabeth zwölf Jahre alt","zitatstelle":"S. 80","quellenhinweis":"Doris und ihre Mutter sind im Ghetto. Es gibt im Spiel keine spielbare Verfolgungs- oder Gewaltszene."},{"title":"Der Gärtner VI","era":"Endphase des Zweiten Weltkriegs","place":"Garten","anchor":"garden","fact":"Vor dem Einmarsch der Roten Armee hilft der Gärtner beim Sichern von Wertgegenständen. Pferde der sowjetischen Armee beschädigen den Garten.","qa":[["Welche Veränderung trifft den Garten?","Die Pferde der vorrückenden Armee verwüsten Teile der Anlage."],["Was tut der Gärtner zuvor?","Er hilft dabei, Wertgegenstände zu sichern."]],"quiz":"Inwiefern verändert der Krieg die Bedeutung des Gartens in diesem Abschnitt?","options":["Der Garten bleibt ein von Kriegsereignissen vollständig abgetrennter, geschützter Naturraum.","Die Kriegshandlungen werden ausschließlich durch spätere Gerichtsakten vermittelt.","Der Gärtner übernimmt die Rolle eines historisch allwissenden Berichterstatters.","Der Krieg greift materiell in einen zuvor gepflegten Ort ein: Sichern und Zerstören treten neben die bisherigen Pflegehandlungen."],"answer":3,"flag":"","proofQuestion":"Welcher Textbefund belegt das?","proofOptions":["Der Gärtner hilft beim Sichern von Wertgegenständen; Pferde der sowjetischen Armee beschädigen den Garten.","Das Kapitel zeigt ausschließlich den Verkauf der ursprünglichen Parzellen.","Die Gartenarbeit findet ohne Berührung mit den Ereignissen von 1944/45 statt."],"proofAnswer":0,"explanation":"Die Eingriffe in den Garten lassen die sogenannte große Geschichte auf der Ebene konkreter Dinge erfahrbar werden.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 88","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen"},{"title":"Der Rotarmist","era":"1945","place":"Haus / Versteck","anchor":"wardrobe","fact":"Das Kapitel erzählt die Ereignisse des Jahres 1945 aus der Sicht eines sowjetischen Rotarmisten, der im Haus die Frau des Architekten im verborgenen Schrank entdeckt. Diese Gegenperspektive liefert keine Rechtfertigung oder Relativierung der von ihr erlebten sexualisierten Gewalt.","qa":[["Welche Figur rückt in den Mittelpunkt?","Ein sowjetischer Rotarmist; im Vordergrund steht seine Wahrnehmung des Krieges und der Frau im Haus."],["Welche Verbindung gibt es zum vorigen Figurenkapitel?","Beide Kapitel beziehen sich auf die Begegnung im Haus 1945, erzählen sie aber aus unterschiedlicher Perspektive."]],"quiz":"Was leistet die erneute Darstellung der Begegnung von 1945 aus der Perspektive des Rotarmisten?","options":["Sie hebt die frühere Darstellung auf und liefert eine eindeutige, allgemein verbindliche Entschuldigung der Gewalt.","Sie setzt beide Perspektiven in ein Verhältnis und macht die Bindung von Wahrnehmung an eine Figur erkennbar, ohne das Gewalterlebnis dadurch aufzuheben.","Sie ändert den Zeitpunkt und Ort der Ereignisse vollständig.","Sie ersetzt die Figurenwahrnehmung durch ein sachliches Gerichtsprotokoll."],"answer":1,"flag":"Hinweis: Im Roman geht es hier um sexualisierte Gewalt. Keine Inszenierung im Spiel.","proofQuestion":"Welches erzähltechnische Verfahren ist dafür zentral?","proofOptions":["Eine Folge unabhängiger Naturbeschreibungen ohne Figurenfokalisierung.","Eine chronologische Zusammenfassung aller nachfolgenden Kapitel.","Ein Wechsel der fokalisierten Figur bei der Darstellung miteinander verbundener Ereignisse von 1945."],"proofAnswer":2,"explanation":"Ein Perspektivwechsel macht unterschiedliche Wahrnehmungen sichtbar; er darf nicht mit einer Relativierung erlebter Gewalt verwechselt werden.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 89–101","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","quellenhinweis":"Die Darstellung sexualisierter Gewalt wird nicht als Aufgabe nachgespielt und nicht durch den Perspektivwechsel entschuldigt."},{"title":"Der Gärtner VII","era":"Nach 1945; Wechsel der Hausnutzung","place":"Haus und Garten","anchor":"garden","fact":"Der Gärtner bleibt am Grundstück, obwohl die Eigentums- und Nutzungsverhältnisse wechseln. Nach der Flucht des Architekten übernehmen neue Pächter das Haus.","qa":[["Was bleibt über verschiedene Zeiten hinweg?","Die Arbeit des Gärtners auf dem Grundstück."],["Was ändert sich?","Die Bewohner sowie die rechtlichen Besitz- und Nutzungsverhältnisse."]],"quiz":"Welche strukturelle Funktion erfüllt der Gärtner beim Wechsel der Nutzer des Hauses?","options":["Er garantiert dauerhaft unveränderte Eigentumsverhältnisse.","Er erzählt sämtliche politischen Entscheidungen im Namen der Bewohner.","Seine fortgesetzte Arbeit verbindet unterschiedliche Bewohnerzeiten, ohne die historischen Brüche aufzuheben.","Er überträgt nach 1951 das Haus durch Kauf an die Schriftstellerin."],"answer":2,"flag":"","proofQuestion":"Welche Ereignisse zeigen diese doppelte Struktur von Kontinuität und Bruch?","proofOptions":["Der Gärtner bleibt, während nach der Flucht des Architekten andere Personen das Haus nutzen.","Der Gärtner flieht zusammen mit dem Architekten nach West-Berlin.","Die Besitz- und Nutzungsverhältnisse bleiben im gesamten Roman gleich."],"proofAnswer":0,"explanation":"Die Figur bildet einen Kontinuitätsfaden, der gerade die Veränderungen im Hintergrund sichtbar macht.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 102–106","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen"},{"title":"Die Schriftstellerin","era":"DDR-Zeit; Rückblicke ins Exil","place":"Haus","anchor":"house","fact":"Die Schriftstellerin nutzt das Haus während der DDR-Zeit. Sie hat während des Nationalsozialismus in der Sowjetunion im Exil gelebt und reflektiert ihre Geschichte, das Überleben, die Rückkehr und die politische Heimat. Die Erzählung verwechselt ihren Zufluchtsort nicht mit einer ungebrochenen Heimkehr.","qa":[["Welche Erfahrungen prägen ihre Biografie?","Die Verfolgung beziehungsweise das Exil in der Zeit des Nationalsozialismus und die Rückkehr in die DDR."],["Wie gelangt sie an das Haus?","Sie nutzt das nach der Flucht des Architekten staatlich übernommene Haus als Pächterin."]],"quiz":"Wie problematisiert das Kapitel der Schriftstellerin die Vorstellung einer endgültigen Heimkehr?","options":["Das Exil wird als folgenlose Unterbrechung dargestellt; Erinnerung spielt keine Rolle.","Heimkehr wird ausschließlich als erfolgreicher Rückerwerb des eigenen Hauses definiert.","Die Rückkehr nach Deutschland hebt Brüche der Verfolgungs- und Exilgeschichte nicht einfach auf.","Die Schriftstellerin hat keinerlei Bezug zur deutschen Geschichte des 20. Jahrhunderts."],"answer":2,"flag":"","proofQuestion":"Welche biografische Konstellation liegt dieser Deutung zugrunde?","proofOptions":["Sie wurde aus Masuren vertrieben und erbt unmittelbar das Haus des Großbauern.","Sie hat im Nationalsozialismus in der Sowjetunion im Exil gelebt und nutzt später das Haus in der DDR.","Sie flieht 1951 als Architektin nach West-Berlin."],"proofAnswer":1,"explanation":"Der politische Ortswechsel beendet nicht automatisch die Arbeit an Erinnerung, Verlust und Zugehörigkeit.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 107–118","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen"},{"title":"Der Gärtner VIII","era":"DDR-Zeit; der Gärtner altert","place":"Garten / Obstbäume","anchor":"orchard","fact":"Bei der Kirschernte stürzt der Gärtner von einer Leiter und bricht sich ein Bein. Nach längerer Rekonvaleszenz kann er seine Arbeit nur noch eingeschränkt verrichten; andere übernehmen zunehmend schwerere Aufgaben.","qa":[["Welches Ereignis verändert seine Arbeit?","Er stürzt bei der Kirschernte von einer Leiter und bricht sich ein Bein."],["Wodurch unterscheidet er sich von den anderen Figuren?","Seine Tätigkeit verknüpft die vielen Zeiten und Lebensgeschichten."]],"quiz":"Welche Funktion hat der Unfall bei der Kirschernte für die Darstellung des Gärtners?","options":["Er unterbricht die Vorstellung einer völlig unveränderlichen Figur und zeigt den Körper als Teil vergangener Zeit.","Er beweist, dass die Gärtnerfigur außerhalb jeder biologischen Zeit existiert.","Er führt zur sofortigen Übergabe des Hauses an die Familie Wurrach.","Er erklärt abschließend das bis dahin unbekannte Herkunftsland des Gärtners."],"answer":0,"flag":"","proofQuestion":"Welcher Befund stützt die zeitliche Lesart?","proofOptions":["Der Gärtner wird im Text weder müde noch verletzt.","Die Kirschernte findet in Doris' Erinnerung an das Warschauer Ghetto statt.","Der Gärtner verunglückt bei der Arbeit und bleibt danach beeinträchtigt."],"proofAnswer":2,"explanation":"Die wiederkehrenden Arbeitsabläufe dürfen nicht als körperliche Unsterblichkeit des Gärtners missverstanden werden.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 119–121","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"Bei der Kirschernte stürzt der Gärtner von der Leiter","zitatstelle":"S. 119"},{"title":"Die Besucherin","era":"DDR-Zeit; Erinnerungen an Masuren","place":"Garten / See","anchor":"garden","fact":"Die Besucherin ist die Großmutter der Schwiegertochter der Schriftstellerin. Sie wurde am Ende des Zweiten Weltkriegs aus Masuren vertrieben. Der Aufenthalt am See verbindet sich mit Erinnerungen an den Verlust ihrer Heimat.","qa":[["Woher stammt die Besucherin?","Aus Masuren."],["Welches Thema bestimmt ihre Erinnerungen?","Vertreibung und der Verlust des bisherigen Lebensortes."]],"quiz":"Welche Beziehung zwischen dem See und Masuren prägt das Kapitel der Besucherin?","options":["Der neue Ort löst ihre Erinnerung an die verlorene Herkunftsregion vollständig auf.","Der Aufenthalt am See aktiviert Erinnerungen an einen anderen, verlorenen Ort; zwei Raumebenen überlagern sich.","Die Besucherin ist Eigentümerin beider Grundstücke.","Das Kapitel verlegt die Haupthandlung des Romans dauerhaft nach Masuren."],"answer":1,"flag":"","proofQuestion":"Welche Beobachtung trägt diese Deutung?","proofOptions":["Die Besucherin ist wegen des Zweiten Weltkriegs aus Masuren vertrieben worden; der Aufenthalt am See verbindet sich mit diesem Verlust.","Sie baut das Haus am märkischen See und zieht ohne Ortsverlust dort ein.","Sie verwechselt das Haus mit der Jagdhütte des Gärtners."],"proofAnswer":0,"explanation":"Der besuchte Ort wird zur Resonanzfläche eines anderen, nicht mehr erreichbaren Herkunftsraums.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 122–133","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"Die Hauptsache ist, daß sie hier wieder schwimmen kann.","zitatstelle":"S. 122"},{"title":"Der Gärtner IX","era":"Spätere DDR-Zeit; neue Grundstücksnutzungen","place":"Werkstatt / Grundstücksgrenze","anchor":"workshop","fact":"Die Nachbarschaftsverhältnisse ändern sich; es gibt einen Grenzzaun. Die Werkstatt am See wird einem Paar als Wochenendhaus verpachtet.","qa":[["Was wird aus der Werkstatt?","Sie wird als Wochenendhaus verpachtet."],["Was markiert die Grenze?","Ein Zaun zwischen den Grundstücken."]],"quiz":"Wie lassen sich Grenzzaun und Umnutzung der Werkstatt als Motive lesen?","options":["Beide zeigen, dass Grenzen und Nutzungsansprüche in der Geschichte des Grundstücks stets unverändert bleiben.","Sie belegen, dass nur der Gärtner das Grundstück besitzen darf.","Sie markieren, dass der Raum durch neue Abgrenzungen und Gebrauchsweisen immer wieder neu geordnet wird.","Sie verdeutlichen eine Rückkehr der natürlichen Waldlandschaft ohne menschliche Eingriffe."],"answer":2,"flag":"","proofQuestion":"Welcher Textbefund lässt diese Lesart zu?","proofOptions":["Die Werkstatt wird nach Kriegsende abgerissen und nie wieder genutzt.","Eine Grundstücksgrenze wird durch einen Zaun kenntlich; die Werkstatt wird als Wochenendhaus verpachtet.","Die alten Parzellen werden zu einem unveränderlichen Naturschutzgebiet zusammengelegt."],"proofAnswer":1,"explanation":"Raum wird durch Besitz, Grenzen und Nutzung wiederholt sozial definiert.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 134–136","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen"},{"title":"Die Unterpächter","era":"DDR-Zeit bis nach dem Mauerfall","place":"Werkstatt","anchor":"workshop","fact":"Ein Paar nutzt die frühere Werkstatt am See als Wochenendunterkunft und segelt dort. Der Mann erinnert sich an einen gescheiterten Fluchtversuch aus der DDR, das Gefängnis und seine berufliche Laufbahn. Nach dem Mauerfall erfährt die Frau durch einen Anruf, dass der Mann, den sie für ihren Vater hielt, nicht ihr leiblicher Vater war und dass sie eine Schwester hat.","qa":[["Was pachten die beiden?","Die zum Wochenendhaus umgenutzte Werkstatt am See."],["Welche übergeordnete Rolle spielt die Zeit nach 1989?","Der Mauerfall bildet den Rahmen einer neuen Erfahrung von Freiheit und Unsicherheit; die Frau erfährt zugleich bisher unbekannte Tatsachen über ihre Familie."]],"quiz":"Wie verbindet das Kapitel politische Grenzerfahrung und persönliche Unsicherheit über die eigene Herkunft?","options":["Der Mann erinnert sich an den gescheiterten Fluchtversuch und die Haft; die Frau wird durch einen Anruf über ihre Herkunft und ihre Schwester erschüttert.","Er lässt die zuvor erzählten Lebensläufe vollständig aus dem Text verschwinden.","Er beendet jede Verbindung zwischen persönlicher Vergangenheit und gesellschaftlichen Ereignissen.","Er führt dazu, dass die Unterpächter das gesamte Anwesen bereits vor 1933 besitzen."],"answer":0,"flag":"","proofQuestion":"Welcher Handlungskomplex stützt diese Deutung konkret?","proofOptions":["Die Unterpächter führen den Großbauern durch die Eiszeit.","Der Mann erinnert sich an einen gescheiterten Fluchtversuch und die Haft; die Frau erhält nach dem Mauerfall unerwartete Auskunft über Vater und Schwester.","Die Unterpächter siedeln unmittelbar aus dem Warschauer Ghetto an den See."],"proofAnswer":1,"explanation":"Die beiden Lebensgeschichten verknüpfen die Erfahrung einer politisch kontrollierten Grenze mit der Erschütterung einer vermeintlich sicheren Familienidentität (S. 137–149).","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 137–149","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","quellenhinweis":"Neue biografische Erkenntnis: nicht ein DDR-Aktenfund, sondern der Telefonanruf über die Herkunft der Frau."},{"title":"Der Gärtner X","era":"DDR-Zeit; Fund einer verborgenen Kiste","place":"Leitungstrasse zwischen Haus und Werkstatt","anchor":"workshop","fact":"Die Unterpächter sägen einen großen, innen hohlen Tannenbusch ab, um eine Telefonleitung zur Werkstatt zu verlegen. Beim Entfernen der Wurzeln entdecken sie eine Kiste mit Porzellan. Der Gärtner sitzt dabei auf der Schwelle, greift aber nicht selbst in die Entdeckung ein. Der Fund erinnert an die vom Architekten vor seiner Flucht vergrabenen Wertgegenstände.","qa":[["Wer entdeckt die Kiste?","Die Unterpächter stoßen beim Entfernen der Wurzeln eines Tannenbuschs auf die Kiste mit Porzellan."],["Was zeigt der Fund?","Ein früher vom Architekten vergrabenes Objekt taucht beim Entfernen der Wurzeln wieder auf."]],"quiz":"Welche Funktion erhält die von den Unterpächtern entdeckte Porzellankiste für das Erinnerungsmotiv?","options":["Er dient nur als Beweis für eine zufällige, erzähltechnisch bedeutungslose Gartentätigkeit.","Er klärt endgültig sämtliche ungeklärten Figurenbiografien.","Sie macht die frühere Geschichte des Architekten und die materiellen Spuren des Grundstücks in einer späteren Zeit sichtbar.","Er dokumentiert einen juristisch gültigen neuen Eigentümer des Grundstücks."],"answer":2,"flag":"","proofQuestion":"Welche konkrete Beobachtung stützt den Deutungsvorschlag?","proofOptions":["Die Unterpächter stoßen unter den Wurzeln eines abgesägten Tannenbuschs auf eine Kiste mit Porzellan.","Eine Figur liest aus einem vollständigen Tagebuch alle Jahrzehnte lückenlos ab.","Der See wird trockengelegt und gibt den Kaufvertrag des Großbauern frei."],"proofAnswer":0,"explanation":"Wer findet die Kiste? Die Unterpächter, nicht der Gärtner (S. 150). Der Roman nennt den Architekten zuvor beim Vergraben von Meißner Porzellan (S. 31–32); die Gegenstände verbinden zwei Zeitschichten.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 150","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"Beim Entfernen des gewaltigen Wurzelstrunks","zitatstelle":"S. 150","quellenhinweis":"Die Unterpächter entdecken die Porzellankiste, der Gärtner ist anwesend; der ursprüngliche Verbergende ist der Architekt."},{"title":"Der Kinderfreund","era":"Spätere Jahre nach der Wiedervereinigung","place":"Haus","anchor":"house","fact":"Der Kinderfreund hat die Enkelin der Schriftstellerin seit der Kindheit gekannt. In der späteren Gegenwart versucht er, das schadhaft gewordene Schilfdach des Badehauses provisorisch mit Folie zu schützen; außerdem unterbricht er Leitungen zum leerstehenden Haus. Seine Handgriffe verschränken Gegenwart, Erinnerungen und drohenden Verlust. Weitere, belastende Kindheitserinnerungen sind im Roman Teil seiner Perspektive.","qa":[["Was tut der Kinderfreund am Anwesen?","Er sichert das beschädigte Schilfdach des Badehauses notdürftig und legt am später leerstehenden Haus Versorgungsleitungen still."],["Wen kennt er aus Kindertagen?","Die Enkelin der Schriftstellerin."]],"quiz":"Wie verbindet das Kapitel des Kinderfreundes unterschiedliche Zeitebenen?","options":["Das leer stehende Haus wird ausschließlich aus der Perspektive seines ursprünglichen Bauherrn beschrieben.","Die Rückblicke des Kinderfreundes ersetzen jede Gegenwartsbeschreibung.","Provisorische Sicherungsarbeiten und das Stilllegen von Leitungen treffen auf Erinnerungen an die gemeinsame Kindheit und den Verfall des Anwesens.","Die erzählte Zeit kehrt vollständig zum geologischen Prolog zurück."],"answer":2,"flag":"Hinweis: Der Roman enthält auch hier Berichte über sexualisierte Gewalt; diese werden nicht nachgespielt.","proofQuestion":"Welcher Befund bildet die Grundlage dieser Lesart?","proofOptions":["Der Kinderfreund erwirbt das Haus als erster Eigentümer.","Der Kinderfreund befestigt eine Folie auf dem beschädigten Badehausdach und unterbricht später Leitungen zum leerstehenden Haus.","Der Gärtner erzählt von den Tagen der Weimarer Republik als Ich-Erzähler."],"proofAnswer":1,"explanation":"Die Arbeiten sind keine ungebrochenen Reparaturerfolge: Sie zeigen den Verlust von Funktion und Zugehörigkeit. Der Rückblick verbindet dies mit ihrer gemeinsamen Kindheit (S. 151–163).","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 151–163","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","quellenhinweis":"Die Folie liegt auf dem Schilfdach des Badehauses, nicht auf dem Dach des Hauptgebäudes."},{"title":"Der Gärtner XI","era":"Nach dem Mauerfall","place":"Garten / Waldrand","anchor":"woods","fact":"Der zunehmend gebrechliche Gärtner zieht sich im Gästezimmer zurück. Nach dem Mauerfall ist er eines Tages verschwunden; der Text berichtet von einer Suche und lässt seinen weiteren Verbleib ausdrücklich offen.","qa":[["Weiß man, was aus ihm wird?","Nein. Sein weiterer Verbleib bleibt offen."],["Welche Funktion hat sein Verschwinden?","Mit ihm verschwindet eine über die Zeiten hinweg bestehende Verbindung des Grundstücks."]],"quiz":"Welche Bedeutung hat das ungeklärte Verschwinden des Gärtners für die Romankomposition?","options":["Es beendet einen wiederkehrenden Orientierungspunkt, ohne ihn durch eine geschlossene biografische Auflösung zu ersetzen.","Es löst alle zuvor dargestellten Eigentumskonflikte rückwirkend auf.","Es beweist, dass der Gärtner eigentlich der Architekt war.","Es leitet eine neue Reihe gleichförmiger Gärtner-Kapitel ein."],"answer":0,"flag":"","proofQuestion":"Welche Beobachtung bestätigt diese Lesart?","proofOptions":["Sein vollständiger weiterer Lebenslauf wird bis zum Tod dokumentiert.","Der Gärtner kehrt als rechtmäßiger Besitzer zurück.","Der Gärtner zieht sich zurück und verschwindet; wohin er geht, bleibt offen."],"proofAnswer":2,"explanation":"Der Text belässt eine zentrale Figur als Leerstelle und beendet damit die Wiederkehr seiner Kapitel.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 164–165","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"Der Gärtner wird seitdem nicht wieder gesehen","zitatstelle":"S. 165"},{"title":"Die unberechtigte Eigenbesitzerin","era":"Nach der Wiedervereinigung / Restitution","place":"Haus","anchor":"house","fact":"Die Enkelin der Schriftstellerin muss das Haus nach einem Restitutionsverfahren aufgeben. Vor der Übergabe räumt sie das Gebäude und erinnert sich an ihre Zeit dort.","qa":[["Wer ist die unberechtigte Eigenbesitzerin?","Die Enkelin der Schriftstellerin."],["Weshalb verliert sie das Haus?","Die Rechtslage nach der Wiedervereinigung und die geltend gemachten Ansprüche der Erben der Architektenfrau führen zur Rückgabe."]],"quiz":"Welche Spannung wird durch den Titel »Die unberechtigte Eigenbesitzerin« sichtbar?","options":["Die juristische Bewertung des Besitzes und das subjektive Erleben des Hauses als vertrauter Lebensort fallen auseinander.","Die Erzählerin nennt die Figur so, weil sie das Gebäude selbst erbaut hat.","Der Titel bestätigt, dass die Enkelin niemals im Haus gewesen ist.","Der Titel erklärt sämtliche Ansprüche der früheren jüdischen Besitzer für irrelevant."],"answer":0,"flag":"","proofQuestion":"Welcher Kontrast im Kapitel stützt dies?","proofOptions":["Die Enkelin kauft das Grundstück beim Großbauern und verlässt es freiwillig.","Die Enkelin muss infolge des Restitutionsverfahrens gehen und räumt das Haus unter Erinnerungen an ihre Zeit dort.","Das Haus gehört ununterbrochen der Schriftstellerin und bleibt ihr auch nach der Wiedervereinigung."],"proofAnswer":1,"explanation":"Der rechtliche Terminus steht einer persönlich gewachsenen Zugehörigkeit gegenüber, ohne die Besitzgeschichte zu vereinfachen.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 166–180","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen","kurzzitat":"Herausgabe und Räumung des Grundstücks","zitatstelle":"S. 166"},{"title":"Epilog","era":"Nach der Räumung des Hauses / Abriss","place":"Grundstück nach dem Abriss","anchor":"house","fact":"Der Epilog erzählt den Abriss in der sachlich-technischen Sprache eines Arbeitsablaufs: Entkernung, Trennung der Materialien und Abtransport. Das Haus verschwindet; seine jahrzehntelang geschichteten menschlichen Erinnerungen lassen sich nicht wie Bauschutt sortieren. Die Landschaft bleibt als räumlicher Bezug bestehen.","qa":[["Was geschieht mit dem Haus?","Es wird abgerissen."],["Wie steht der Epilog zum Prolog?","Beide richten den Blick auf die Landschaft jenseits der Lebenszeit der Bewohner."]],"quiz":"Welche Gesamtwirkung entsteht aus der Gegenüberstellung von Prolog und Epilog?","options":["Der Abriss beendet auch die geologische Geschichte des Sees.","Die Rahmung erklärt alle historischen Konflikte für bloße Missverständnisse.","Die zeitliche Rahmung relativiert menschliche Lebens- und Besitzspannen: Das Haus wird gebaut und beseitigt, während der Landschaftsraum fortbesteht.","Der Epilog führt den Roman zu einer stabilen Eigentümerfamilie zurück."],"answer":2,"flag":"","proofQuestion":"Welche Beobachtung ist dafür entscheidend?","proofOptions":["Der Prolog schildert den Bau des Hauses, der Epilog die Hochzeit des Großbauern.","Der Prolog richtet den Blick auf die Entstehung des Sees; der Epilog beschreibt den Abriss des Hauses.","Beide Rahmenkapitel erzählen aus der Ich-Perspektive der Schriftstellerin."],"proofAnswer":1,"explanation":"Die Verbindung von Erdgeschichte und Abriss lässt die Dauer menschlicher Eingriffe begrenzt erscheinen.","beleg":"Jenny Erpenbeck: Heimsuchung, Reclam 2024, S. 181–183","belegtyp":"Primärtext der hochgeladenen Reclam-Ausgabe; gedruckte Seitenzahlen"}]</script>
@@ -554,7 +563,7 @@ $('#npcTalkBtn').onclick=openNpcDialogue;
 $('#npcMarker').onclick=openNpcDialogue;
 
 function updateHUD(){let c=chapters[state.chapter],unlocked=highestUnlocked();$('#chapterSelect').value=state.chapter;$('#era').textContent=c.era;$('#storyPlace').textContent=c.place;$('#chapterCount').textContent=String(state.chapter+1).padStart(2,'0')+' / 24';$('#prev').disabled=state.chapter===0;$('#next').disabled=state.chapter===23||state.chapter>=unlocked;$('#progress').style.width=100*state.solved.size/24+'%';$('#progressNum').textContent=state.solved.size+' / 24 Kapitel gelöst';for(const [i,o] of [...$('#chapterSelect').options].entries()){o.disabled=i>unlocked;o.textContent=(i===0?'Prolog':i===23?'Epilog':String(i).padStart(2,'0')+' · '+chapters[i].title)+(state.solved.has(i)?' ✓':i>unlocked?' 🔒':'')};for(let x of document.querySelectorAll('.marker'))x.classList.toggle('primary',x.dataset.id===c.anchor)}
-function setChapter(i,stayHere=false){if(typeof discoveryClose==='function')discoveryClose();state.jumpHeight=0;state.jumpVelocity=0;window.heimsuchungCancelJump?.();state.sprinting=false;if(typeof boatState!=='undefined'&&boatState.active)boatDisembark(true);if(state.advanceTimer!==null){clearTimeout(state.advanceTimer);state.advanceTimer=null;}closeNpcDialogue();state.chapter=Math.max(0,Math.min(highestUnlocked(),i));updateHUD();updateWorld();closePanel();if(!stayHere){let anchor=STATIONS.find(s=>s.id===chapters[state.chapter].anchor);if(anchor){state.px=Math.min(40,Math.max(-40,anchor.x-4));state.pz=Math.min(35,Math.max(-12,anchor.z+8));}state.yaw=0;state.facing=state.yaw;if(['house','wardrobe'].includes(cH())&&state.chapter!==23){state.px=-4;state.pz=-10;state.yaw=Math.PI;state.facing=state.yaw}window.heimsuchungFixSpawn?.()}function cH(){return chapters[state.chapter].anchor}$('#footer').innerHTML='Kapitel <b>'+(state.chapter+1)+'/24</b>: '+escapeHtml(chapters[state.chapter].title)+' · Finde den gold markierten Ort und beantworte die Frage.'}
+function setChapter(i,stayHere=false){window.heimsuchung24Stop?.();if(typeof discoveryClose==='function')discoveryClose();state.jumpHeight=0;state.jumpVelocity=0;window.heimsuchungCancelJump?.();state.sprinting=false;if(typeof boatState!=='undefined'&&boatState.active)boatDisembark(true);if(state.advanceTimer!==null){clearTimeout(state.advanceTimer);state.advanceTimer=null;}closeNpcDialogue();state.chapter=Math.max(0,Math.min(highestUnlocked(),i));updateHUD();updateWorld();closePanel();if(!stayHere){let anchor=STATIONS.find(s=>s.id===chapters[state.chapter].anchor);if(anchor){state.px=Math.min(40,Math.max(-40,anchor.x-4));state.pz=Math.min(35,Math.max(-12,anchor.z+8));}state.yaw=0;state.facing=state.yaw;if(['house','wardrobe'].includes(cH())&&state.chapter!==23){state.px=-4;state.pz=-10;state.yaw=Math.PI;state.facing=state.yaw}window.heimsuchungFixSpawn?.()}function cH(){return chapters[state.chapter].anchor}$('#footer').innerHTML='Kapitel <b>'+(state.chapter+1)+'/24</b>: '+escapeHtml(chapters[state.chapter].title)+' · Finde den gold markierten Ort und beantworte die Frage.'}
 function escapeHtml(t){return String(t).replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
 function openPanel(title,eyebrow,html){state.panel=true;$('#panelTitle').textContent=title;$('#panelEyebrow').textContent=eyebrow;$('#panelBody').innerHTML=html;$('#infoPanel').classList.add('open')}
 function closePanel(){if(state.npcOpen)closeNpcDialogue();state.panel=false;$('#infoPanel').classList.remove('open')}
@@ -788,7 +797,7 @@ for(const b of document.querySelectorAll('.proofChoice'))b.onclick=()=>{
 };
 }
 $('#prev').onclick=()=>setChapter(state.chapter-1);$('#next').onclick=()=>setChapter(state.chapter+1);$('#chapterSelect').onchange=e=>setChapter(Number(e.target.value));
-$('#helpBtn').onclick=()=>openPanel('Steuerung','So spielst du',`<p>Erkunde das Grundstück in der Third-Person-Ansicht.</p><h3>iPad und iPhone</h3><p>Mit dem runden Steuerfeld links gehen. Mit <b>⚡ Rennen</b> und <b>⬆ Springen</b> läufst und springst du auf dem Touchscreen. Rechts über die Welt wischen oder die Drehtasten gedrückt halten, um die Kamera zu drehen. Die Figur schaut beim Gehen immer genau in ihre Laufrichtung; im Stand behält sie ihre Ausrichtung. Markierungen antippen oder nah an einen Ort herantreten und <b>Ort untersuchen</b> drücken.</p><h3>Computer</h3><p>W, A, S, D zum Gehen (Pfeil oben/unten gehen, Pfeil links/rechts drehen). Mit gedrückter Maus über die Welt ziehen, um die Blickrichtung zu ändern. <b>Shift</b> = rennen, <b>Leertaste</b> = springen. Die Taste <b>E</b> untersucht den nächsten Ort. Mit <b>T</b> sprichst du mit einer nahen Romanfigur. Mit <b>Esc</b> schließt du Dialoge.</p><h3>Lernziel</h3><p>Arbeite dich nacheinander durch die 24 Romanabschnitte. Nur am gold markierten Ort wird die Lektüreprüfung freigeschaltet. Nach einer richtigen Deutung <em>und</em> einer dazu passenden Textbegründung folgt das nächste Kapitel automatisch. Bei falschen Antworten kannst du erneut versuchen. Bereits bearbeitete Kapitel kannst du erneut besuchen. <b>Neue, freiwillige Figurenbegegnungen:</b> Suche nach türkisfarbenen Gesprächsmarkierungen und tippe auf „Ansprechen“. Die Sätze der Figuren sind frei formuliert und keine Originalzitate. <b>Optionales Minispiel:</b> Draußen am Gartenrand findest du die Käferjagd-Station. Dort kannst du in 90 Sekunden sechs Kartoffelkäfer sammeln; deine Kapitelwertung ändert sich dadurch nicht.</p><p class="small">Die Erzählreihenfolge folgt der Komposition des Romans. Im neuen Menü <b>Zeitleiste</b> kannst du sie mit den historisch geordneten Zeitschichten vergleichen. <b>Sammelobjekte</b> sind symbolische Lesezeichen und keine zusätzlich belegten Romanfunde.</p><div class="v23-help"><b>Grafikqualität</b><p class="small">Verbesserte Lichtstimmung, strukturierte Oberflächen und Wasserreflexe. Bei niedriger Bildrate kannst du auf die sparsame Darstellung umschalten.</p><button type="button" id="gfx23Help">Grafikmodus wechseln</button><p class="small">Die Grafikänderungen sind gestalterische Visualisierungen, keine zusätzlich belegten Romandetails.</p></div>`);
+$('#helpBtn').onclick=()=>openPanel('Steuerung','So spielst du',`<p>Erkunde das Grundstück in der Third-Person-Ansicht.</p><h3>iPad und iPhone</h3><p>Mit dem runden Steuerfeld links gehen. Mit <b>⚡ Rennen</b> und <b>⬆ Springen</b> läufst und springst du auf dem Touchscreen. Rechts über die Welt wischen oder die Drehtasten gedrückt halten, um die Kamera zu drehen. Die Figur schaut beim Gehen immer genau in ihre Laufrichtung; im Stand behält sie ihre Ausrichtung. Markierungen antippen oder nah an einen Ort herantreten und <b>Ort untersuchen</b> drücken.</p><h3>Computer</h3><p>W, A, S, D zum Gehen (Pfeil oben/unten gehen, Pfeil links/rechts drehen). Mit gedrückter Maus über die Welt ziehen, um die Blickrichtung zu ändern. <b>Shift</b> = rennen, <b>Leertaste</b> = springen. Mit <b>V</b> kannst du die Spielfigur näher ansehen. Im Spiel gibt es außerdem eine geheime Taste – auf dem iPad kannst du das 👤-Symbol auch etwas länger gedrückt halten. Die Taste <b>E</b> untersucht den nächsten Ort. Mit <b>T</b> sprichst du mit einer nahen Romanfigur. Mit <b>Esc</b> schließt du Dialoge.</p><h3>Lernziel</h3><p>Arbeite dich nacheinander durch die 24 Romanabschnitte. Nur am gold markierten Ort wird die Lektüreprüfung freigeschaltet. Nach einer richtigen Deutung <em>und</em> einer dazu passenden Textbegründung folgt das nächste Kapitel automatisch. Bei falschen Antworten kannst du erneut versuchen. Bereits bearbeitete Kapitel kannst du erneut besuchen. <b>Neue, freiwillige Figurenbegegnungen:</b> Suche nach türkisfarbenen Gesprächsmarkierungen und tippe auf „Ansprechen“. Die Sätze der Figuren sind frei formuliert und keine Originalzitate. <b>Optionales Minispiel:</b> Draußen am Gartenrand findest du die Käferjagd-Station. Dort kannst du in 90 Sekunden sechs Kartoffelkäfer sammeln; deine Kapitelwertung ändert sich dadurch nicht.</p><p class="small">Die Erzählreihenfolge folgt der Komposition des Romans. Im neuen Menü <b>Zeitleiste</b> kannst du sie mit den historisch geordneten Zeitschichten vergleichen. <b>Sammelobjekte</b> sind symbolische Lesezeichen und keine zusätzlich belegten Romanfunde.</p><div class="v23-help"><b>Grafikqualität</b><p class="small">Verbesserte Lichtstimmung, strukturierte Oberflächen und Wasserreflexe. Bei niedriger Bildrate kannst du auf die sparsame Darstellung umschalten.</p><button type="button" id="gfx23Help">Grafikmodus wechseln</button><p class="small">Die Grafikänderungen sind gestalterische Visualisierungen, keine zusätzlich belegten Romandetails.</p></div>`);
 $('#sourcesBtn').onclick=()=>openPanel('Texttreue & Quellen','Didaktische Transparenz',`<p>Dieses Spiel ist eine <b>schematische Erkundung</b> von Jenny Erpenbecks Roman. Die Kapitelinformationen sind paraphrasierte Sachauskünfte. Jede Station nennt ihre gedruckten Reclam-Seiten, einige zusätzlich kurze, im hochgeladenen Roman geprüfte Originalzitate. Die zusätzlichen Figurenbegegnungen sind ausdrücklich frei gestaltete, textnahe Dialoge – keine Originalzitate, keine belegten Roman-Szenen.</p><p>Das Haus, der See, der Garten, die Werkstatt, die Weide, das Bienenhaus und der begehbare Kleiderschrank sind im Roman nachweisbare Orte bzw. Gegenstände. <b>Die exakten Maße, Wege, Positionen, Farben und die konkrete Raumanordnung im 3D-Modell sind nicht durch den Text belegt</b> und dienen allein der Steuerung und Orientierung.</p><p>Die spielende Person besitzt einen Avatar. Zusätzlich zeigen die freiwilligen Figurenbegegnungen stilisierte Romanfiguren; deren Aussagen sind didaktisch frei verfasst und nicht als Originalrede zu lesen. Doris befindet sich in ihrem Kapitel im Warschauer Ghetto und wird nicht irreführend als am See anwesende Figur gezeigt. Gewalt und Verfolgung werden nicht nachgespielt.</p><h3>Quellengrundlage</h3><div class="sourcebox"><a href="https://www.reclam.de/produktdetail/heimsuchung-9783150143889" target="_blank" rel="noopener">Jenny Erpenbeck: Heimsuchung (Reclam, Werkinformation)</a><br><strong>Primärbeleg:</strong> hochgeladene Reclam-Ausgabe 2024, S. 9–183. Die Stationsfenster nennen jeweils die genaue Buchseite bzw. den Kapitelbereich.</div><p class="small">Geprüfte Textgrundlage: Jenny Erpenbeck, <em>Heimsuchung</em>, Reclam Universal-Bibliothek Nr. 14388, 2024, ISBN 978-3-15-014388-9, Roman S. 9–183. Zeitangaben ohne exakte Kalenderjahre werden als historische Einordnung und nicht als Datumszitat ausgewiesen. <strong>Spielerische Ergänzungen sind entsprechend gekennzeichnet.</strong></p>`);
 
 // Eigener, vollständig programmierter Intro-Track (keine GTA-Melodie oder Audiodateien).
@@ -890,6 +899,12 @@ window.addEventListener('keydown',e=>{
   if(!state.started||state.panel||/^(INPUT|SELECT|TEXTAREA)$/.test(tag)||e.target?.isContentEditable)return;
   e.preventDefault(); // verhindert Scrollen und ein versehentliches Klicken fokussierter Buttons
   if(!e.repeat)window.heimsuchungJump?.(); // erst nach WebGL-Initialisierung registrierter Sprungbefehl
+  return;
+ }
+ if(k==='m'||k==='v'){
+  if(state.started&&!state.panel&&!(e.target?.isContentEditable)&&!['INPUT','TEXTAREA','SELECT'].includes(e.target?.tagName)){
+   e.preventDefault();if(!e.repeat){if(k==='m')window.heimsuchung24Dance?.();else window.heimsuchung24View?.();}
+  }
   return;
  }
  if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','e','t','b','f','escape','shift'].includes(k))e.preventDefault();
@@ -1007,6 +1022,16 @@ void main(){
  }else if(m>8.5 && m<9.5){ // floating ice
   float frost=n21(pos*0.80);
   base*=vec3(0.95+0.08*frost,0.98+0.04*frost,1.00);
+ }else if(m>9.5 && m<10.5){ // fabric – close woven threads and soft folds
+  float weave=sin(vWorld.x*151.0)*sin(vWorld.y*142.0);
+  float fold=sin(vLocal.y*15.0+vLocal.x*9.0)*sin(vLocal.x*5.0);
+  base*=0.964+0.028*weave+0.022*fold;
+ }else if(m>10.5 && m<11.5){ // denim, subtle twill
+  float twill=sin((vWorld.x+vWorld.y*0.55)*185.0);
+  base*=0.952+0.032*twill+0.02*n21(vWorld.xy*14.0);
+ }else if(m>11.5 && m<12.5){ // skin – very soft shading, without speckles
+  float soft=0.5+0.5*sin(vWorld.y*4.0);
+  base*=0.976+0.042*soft;
  }
  vec3 color=base*shade;
  // A subtle warm rim light makes silhouettes easier to read without cartoon outlines.
@@ -1265,127 +1290,334 @@ for(let i=0;i<BEETLE_SITES.length;i++){
  for(const part of parts)part.beetleIndex=i;
  beetleMeshes.push(parts);
 }
-// Eigenständiger, moderner Open-World-Avatar (KEINE Romanfigur / kein kopierter Spielecharakter).
-// Stil: strukturierte Baseballcap, volles lockiges Nackenhaar, offenes Freizeithemd,
-// T-Shirt, Jeans, Sneaker, Brusttaschen, Knöpfe, Gürtelschnalle und Uhr.
-// Alle Teile werden im selben WebGL-Modell mit der Spielfigur gedreht und animiert.
+// V24: Organisch modellierte Spielfigur. Glatte, geschlossene Loft-Flächen bilden
+// Kleidung und Körper statt einzelner schwebender Rechtecke. Alle Körperteile
+// werden an festen anatomischen Gelenkpunkten animiert.
+// Originalfigur; nicht als Darstellung einer Romanfigur gemeint.
 const player=[];
-const SKIN=[.72,.49,.36,1],SKIN_SHADE=[.60,.37,.26,1],HAIR=[.205,.135,.087,1],HAIR_DARK=[.145,.092,.064,1],HAIR_HIGHLIGHT=[.27,.177,.115,1];
+const SKIN=[.75,.525,.408,1],SKIN_SHADE=[.64,.42,.31,1],SKIN_LIT=[.82,.61,.49,1];
+const HAIR=[.205,.135,.087,1],HAIR_DARK=[.145,.092,.064,1],HAIR_HIGHLIGHT=[.28,.184,.114,1];
 const CAP=[.105,.153,.177,1],CAP_PANEL=[.153,.218,.244,1],CAP_BRIM=[.075,.105,.120,1],CAP_STITCH=[.35,.41,.41,1];
 const SHIRT=[.29,.49,.48,1],SHIRT_DARK=[.205,.385,.391,1],SHIRT_LIGHT=[.41,.61,.55,1],SHIRT_PATTERN=[.52,.66,.54,1];
 const TEE=[.84,.80,.70,1],TEE_SHADOW=[.71,.70,.63,1],TROUSERS=[.23,.30,.41,1],DENIM_LIGHT=[.32,.42,.52,1];
-const SHOES=[.16,.19,.20,1],SOLE=[.81,.82,.77,1],METAL=[.79,.68,.43,1];
-function hpart(mesh,x,y,z,sx,sy,sz,color,piece='still',side=0){let p=add(mesh,state.px,0,state.pz,sx,sy,sz,color,'avatar');p.hx=x;p.hy=y;p.hz=z;p.piece=piece;p.side=side;player.push(p);return p}
-const hs=(x,y,z,sx,sy,sz,color,piece='still',side=0)=>hpart(humanSphere,x,y,z,sx,sy,sz,color,piece,side);
-const hb=(x,y,z,sx,sy,sz,color,piece='still',side=0)=>hpart(cube,x,y,z,sx,sy,sz,color,piece,side);
-// Anatomisch getrennte Beine, Sneaker mit Seitenstreifen, Jeanssäume.
-for(const side of [-1,1]){
- hs(side*.225,1.14,0,.43,.82,.48,TROUSERS,'thigh',side);
- hs(side*.225,.67,.017,.37,.73,.41,TROUSERS,'shin',side);
- hs(side*.225,.33,.008,.40,.16,.43,DENIM_LIGHT,'foot',side);
- hs(side*.225,.205,-.135,.455,.275,.72,SHOES,'foot',side);
- hs(side*.225,.105,-.17,.48,.092,.77,SOLE,'foot',side);
- hs(side*.225,.231,-.42,.37,.065,.17,SOLE,'foot',side);
- hs(side*.225,.262,-.49,.34,.06,.10,[.36,.43,.43,1],'foot',side);
- // Sportlich gekrempeltes, kurzärmeliges Hemd mit sichtbaren Unterarmen.
- hs(side*.55,2.115,.008,.39,.61,.42,SHIRT,'armUpper',side);
- hs(side*.58,1.83,-.01,.39,.15,.42,SHIRT_DARK,'armUpper',side);
- hs(side*.582,1.615,-.018,.285,.51,.29,SKIN,'armLower',side);
- hs(side*.59,1.32,-.032,.21,.22,.22,SKIN_SHADE,'hand',side);
- // Ärmelumschlag und dekorativer Streifen.
- hs(side*.55,1.86,-.205,.29,.055,.035,SHIRT_LIGHT,'armUpper',side);
- // Jeans: hintere Naht und Taschen.
- hb(side*.225,1.36,.263,.31,.025,.023,DENIM_LIGHT,'body');
- hb(side*.226,1.20,.264,.26,.22,.019,DENIM_LIGHT,'body');
- // Hemdbrusttaschen, aus der Nähe auch vorne sichtbar.
- hb(side*.31,2.13,-.326,.26,.20,.022,SHIRT_DARK,'body');
- hb(side*.31,2.23,-.346,.26,.025,.028,SHIRT_LIGHT,'body');
+const SHOES=[.16,.19,.20,1],SOLE=[.81,.82,.77,1],METAL=[.79,.68,.43,1],SOCK=[.72,.70,.64,1];
+function hpart(mesh,x,y,z,sx,sy,sz,color,piece='still',side=0,material=0){
+ const p=add(mesh,state.px,0,state.pz,sx,sy,sz,color,'avatar');
+ p.hx=x;p.hy=y;p.hz=z;p.piece=piece;p.side=side;p.gfxMat=material;
+ player.push(p);return p;
 }
-// Silhouette: solide Schulterpartie mit offenem Hemd über hellem Shirt.
-hs(0,1.48,.007,.78,.41,.51,TROUSERS,'body');
-hs(0,1.98,.028,.99,1.05,.60,SHIRT,'body');
-hs(0,2.04,-.266,.49,.80,.105,TEE,'body');
-hs(0,2.02,-.325,.20,.63,.025,TEE_SHADOW,'body');
-// Offene vordere Stoffbahnen (front = negatives Z) mit Kontrastnähten.
-for(const side of [-1,1]){
- hs(side*.346,2.025,-.303,.30,.91,.12,SHIRT_DARK,'body');
- hb(side*.22,2.08,-.371,.043,.72,.025,SHIRT_LIGHT,'body');
- hs(side*.22,2.40,-.323,.28,.19,.14,SHIRT_LIGHT,'body');
- hb(side*.32,1.60,-.302,.26,.070,.08,SHIRT_DARK,'body');
- // grafisches, sehr dezentes Muster, statt harter einfarbiger Fläche
- for(let n=0;n<5;n++){
-  let y=1.70+n*.13;
-  hb(side*(.36+(n%2)*.044),y,-.371,.055,.045,.012,SHIRT_PATTERN,'body');
+const hs=(x,y,z,sx,sy,sz,c,piece='still',side=0,mat=0)=>hpart(humanSphere,x,y,z,sx,sy,sz,c,piece,side,mat);
+const hb=(x,y,z,sx,sy,sz,c,piece='still',side=0,mat=0)=>hpart(cube,x,y,z,sx,sy,sz,c,piece,side,mat);
+// Open cylindrical ring mesh with smooth per-vertex normals, curved profiles,
+// sealed at neck/waist. Mesh is shared by all body parts using this shape.
+function avatarLoft(rings,segments=20){
+ const data=[],indices=[];
+ for(let j=0;j<rings.length;j++){
+  const [y,wide,deep,shiftX=0,shiftZ=0]=rings[j];
+  for(let i=0;i<=segments;i++){
+   const a=i*Math.PI*2/segments,c=Math.cos(a),sn=Math.sin(a);
+   const nx=c/Math.max(.12,wide),nz=sn/Math.max(.12,deep);
+   const sz=Math.hypot(nx,nz);
+   data.push(shiftX+c*wide*.5,y,shiftZ+sn*deep*.5,nx/sz,0,nz/sz);
+  }
  }
-}
-// Rückseite des Hemdes: Stofffalten und doppelte Schulterpasse.
-hb(0,2.35,.322,.76,.045,.045,SHIRT_LIGHT,'body');
-hb(0,1.67,.307,.78,.05,.04,SHIRT_DARK,'body');
-for(const x of [-.31,-.13,.13,.31]){
- hb(x,1.89,.322,.037,.56,.025,x>0?SHIRT_LIGHT:SHIRT_DARK,'body');
-}
-// Gürtel mit Schnalle; sichtbarer Hosenbund hinten.
-hb(0,1.43,-.271,.72,.095,.065,[.17,.17,.16,1],'body');
-hb(0,1.42,-.309,.14,.09,.018,METAL,'body');
-hb(0,1.43,.257,.72,.07,.035,[.17,.18,.18,1],'body');
-// Kragen / Nacken.
-hs(0,2.42,.00,.26,.31,.25,SKIN_SHADE,'body');
-for(const side of [-1,1])hs(side*.17,2.425,-.16,.31,.14,.27,SHIRT_LIGHT,'body');
-// Uhr mit dunklem Armband am linken Arm.
-hs(-.584,1.50,-.018,.301,.095,.318,CAP_BRIM,'armLower',-1);
-hs(-.584,1.50,-.166,.16,.11,.055,METAL,'armLower',-1);
-// Gesicht – natürliche Kopfform, Ohren, Nase, Augen, Brauen, Mund und Kinn.
-hs(0,2.77,-.017,.64,.77,.60,SKIN,'head');
-hs(0,2.55,-.058,.43,.20,.43,SKIN_SHADE,'head');
-for(const side of [-1,1]){
- hs(side*.313,2.74,.015,.11,.22,.14,SKIN_SHADE,'head');
- hs(side*.124,2.80,-.307,.112,.077,.045,[.94,.91,.84,1],'head');
- hs(side*.126,2.80,-.336,.047,.061,.021,[.20,.28,.29,1],'head');
- hs(side*.132,2.88,-.303,.175,.044,.030,HAIR_DARK,'head');
-}
-hs(0,2.67,-.347,.126,.19,.125,SKIN_SHADE,'head');
-hs(0,2.563,-.308,.185,.032,.029,[.45,.26,.23,1],'head');
-// Deutlich volleres, in Wellen gelegtes Haar hinten und an den Seiten.
-// Die Cap liegt AUF dem Haar; an Hinterkopf und Nacken ragen viele Locken heraus.
-hs(0,2.90,.225,.61,.49,.42,HAIR,'head');
-hs(0,2.68,.263,.58,.44,.31,HAIR_DARK,'head');
-for(const side of [-1,1]){
- hs(side*.273,2.86,.15,.20,.43,.38,HAIR,'head');
- hs(side*.282,2.62,.167,.20,.31,.30,HAIR_HIGHLIGHT,'head');
- hs(side*.298,2.51,.14,.16,.25,.25,HAIR,'head');
-}
-for(let row=0;row<3;row++){
- for(let j=0;j<7;j++){
-  let x=(j-3)*.085+(row%2)*.022;
-  let y=2.91-row*.15 + Math.sin(j*2.6+row)*.025;
-  let z=.315 + .016*(3-Math.abs(j-3));
-  let c=(j+row)%3===0?HAIR_HIGHLIGHT:((j+row)%2?HAIR:HAIR_DARK);
-  hs(x,y,z,.145,.19+row*.019,.19,c,'head');
+ for(let j=0;j<rings.length-1;j++)for(let i=0;i<segments;i++){
+  const a=j*(segments+1)+i,b=a+segments+1;
+  // Two-sided silhouette is unnecessary: outward facing triangles only.
+  indices.push(a,b,a+1,a+1,b,b+1);
  }
+ // Cap both ends so no hollow silhouette is visible from above/below.
+ for(const top of [false,true]){
+  const j=top?rings.length-1:0,r=rings[j],idx=data.length/6;
+  data.push(r[3]||0,r[0],r[4]||0,0,top?1:-1,0);
+  for(let i=0;i<segments;i++){
+   const a=j*(segments+1)+i,b=a+1;
+   if(top)indices.push(idx,a,b);else indices.push(idx,b,a);
+  }
+ }
+ const vb=gl.createBuffer(),ib=gl.createBuffer();
+ gl.bindBuffer(gl.ARRAY_BUFFER,vb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.STATIC_DRAW);
+ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(indices),gl.STATIC_DRAW);
+ return{b:vb,ib,count:indices.length};
 }
-// Haarspitzen über dem Hemdkragen, von hinten besonders sichtbar.
-for(let j=0;j<9;j++){
- let x=(j-4)*.067,y=2.48+.048*Math.sin(j*1.5),z=.205+Math.cos(j*2.1)*.056;
- hs(x,y,z,.12,.22,.17,j%3?HAIR_DARK:HAIR_HIGHLIGHT,'head');
+const avatarTorso=avatarLoft([[-.5,.72,.75],[-.34,.84,.86],[-.05,.98,.90],[.22,1.08,.91],[.42,1.02,.83],[.5,.63,.64]]);
+// Open outer-shirt shell: only the front centre is cut out, revealing the
+// t-shirt, while the fabric forms a single continuous back/side surface.
+function avatarOpenShirt(rings,segments=32){
+ const vertices=[],indices=[];
+ for(let j=0;j<rings.length;j++){
+  const [y,wide,deep]=rings[j];
+  for(let i=0;i<=segments;i++){
+   const a=i*2*Math.PI/segments,c=Math.cos(a),sn=Math.sin(a);
+   const d=Math.hypot(c/wide,sn/deep)||1;
+   vertices.push(c*wide*.5,y,sn*deep*.5,(c/wide)/d,0,(sn/deep)/d);
+  }
+ }
+ for(let j=0;j<rings.length-1;j++)for(let i=0;i<segments;i++){
+  const a0=(i+.5)*2*Math.PI/segments;
+  // The forward-facing centre (negative Z) is a real open seam.
+  const diff=Math.atan2(Math.sin(a0+Math.PI/2),Math.cos(a0+Math.PI/2));
+  if(Math.abs(diff)<.36)continue;
+  const a=j*(segments+1)+i,b=a+segments+1;
+  indices.push(a,b,a+1,a+1,b,b+1);
+ }
+ const vb=gl.createBuffer(),ib=gl.createBuffer();
+ gl.bindBuffer(gl.ARRAY_BUFFER,vb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.STATIC_DRAW);
+ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(indices),gl.STATIC_DRAW);
+ return{b:vb,ib,count:indices.length};
 }
-// Baseball-Cap: gewölbte Krone, geformter Schirm, Nähte, Logo-Raute und Verschluss.
-// Die Cap wird wie der Kopf über die gesamte Spielfigur ausgerichtet.
-hs(0,3.105,-.012,.74,.255,.68,CAP,'head');
-hs(0,3.181,-.001,.60,.21,.57,CAP_PANEL,'head');
-hs(0,3.058,-.020,.765,.100,.69,CAP_BRIM,'head');
-hs(0,3.045,-.423,.77,.085,.56,CAP_BRIM,'head');
-hs(0,3.083,-.477,.72,.025,.47,CAP_PANEL,'head');
-// Sichtbare Schirmkante sowie Nähte längs der Cap.
-hs(0,3.040,-.675,.61,.032,.09,CAP_STITCH,'head');
+const avatarOpenCoat=avatarOpenShirt([[-.5,.74,.78],[-.34,.88,.91],[-.05,1.03,.95],[.22,1.12,.96],[.42,1.08,.88],[.5,.65,.68]]);
+const avatarTee=avatarLoft([[-.5,.80,.70],[-.3,.83,.71],[.18,.91,.77],[.40,.84,.70],[.5,.52,.47]]);
+const avatarThigh=avatarLoft([[-.5,.73,.75],[-.40,.88,.87],[0,1.0,1.0],[.37,1.03,1.04],[.5,.84,.89]]);
+const avatarShin=avatarLoft([[-.5,.82,.86],[-.24,.89,.87],[.15,.89,.90],[.43,.96,.96],[.5,1,1]]);
+const avatarSleeve=avatarLoft([[-.5,.89,.87],[-.40,1,1],[.16,1.07,1.06],[.40,1.06,1.02],[.5,.79,.82]]);
+const avatarForearm=avatarLoft([[-.5,.80,.77],[-.22,.91,.88],[.20,1,1],[.49,.92,.93]]);
+const avatarNeck=avatarLoft([[-.5,.86,.85],[-.15,1,1],[.5,.96,.92]]);
+const avatarShoe=avatarLoft([[-.5,.70,.72],[-.25,.93,.93],[.15,1.0,1.0],[.42,.91,.82],[.5,.68,.66]]);
+// Shirt-front panels as curved, almost flush cloth surfaces. Seam and fold
+// vertices are attached to the torso, rather than floating cuboids.
+function avatarShirtPanel(side){
+ const rows=[
+  [1.46,.12,.35,-.255],[1.65,.10,.46,-.305],[1.89,.10,.49,-.333],
+  [2.11,.12,.51,-.341],[2.32,.15,.47,-.305],[2.47,.16,.38,-.230]
+ ],faces=[];
+ for(let j=0;j<rows.length-1;j++){
+  const strip=(rr,k)=>{
+   const x=rr[1]+(rr[2]-rr[1])*k/3;
+   const z=rr[3]+.032*(k/3)+.017*Math.sin(j*.9+k*1.8);
+   return[side*x,rr[0],z];
+  };
+  for(let k=0;k<3;k++){
+   const a=strip(rows[j],k),b=strip(rows[j],k+1),c=strip(rows[j+1],k+1),d=strip(rows[j+1],k);
+   faces.push(face([a,b,c,d]),face([d,c,b,a]));
+  }
+ }
+ return makeMesh(faces);
+}
+// Two trouser legs share the same skeleton, including sewn hems.
 for(const side of [-1,1]){
- hs(side*.23,3.20,-.047,.040,.045,.44,CAP_STITCH,'head');
+ hpart(avatarThigh,side*.245,1.13,.007,.43,.77,.47,TROUSERS,'thigh',side,11);
+ hs(side*.244,.81,.01,.43,.30,.45,TROUSERS,'thigh',side,11); // sewn knee
+ hpart(avatarShin,side*.244,.54,.009,.375,.64,.39,TROUSERS,'shin',side,11);
+ hs(side*.244,.37,.009,.392,.145,.405,DENIM_LIGHT,'shin',side,11); // fixed hem
+ // Socks do not use an independent gait animation: they follow ankle/foot.
+ hs(side*.244,.284,-.007,.305,.148,.335,SOCK,'foot',side,10);
+ // Layered sneaker; upper, rounded toe, seamless rubber sole and tongue.
+ hs(side*.244,.179,-.162,.46,.27,.72,SHOES,'foot',side,10);
+ hs(side*.244,.114,-.18,.465,.105,.765,SOLE,'foot',side);
+ hs(side*.244,.22,-.438,.40,.15,.24,SHOES,'foot',side,10);
+ hs(side*.244,.281,-.344,.245,.065,.28,SHIRT_LIGHT,'foot',side);
+ for(let l=0;l<4;l++)hs(side*.244,.283-l*.015,-.355-l*.045,.205,.015,.020,SOLE,'foot',side);
+ hs(side*.244,.184,-.520,.34,.045,.09,[.45,.49,.48,1],'foot',side);
+ // Sleeves and skin form a continuous line through shoulder and elbow.
+ hs(side*.53,2.205,.018,.45,.40,.47,SHIRT,'armUpper',side,10);
+ hpart(avatarSleeve,side*.595,2.005,.014,.39,.56,.40,SHIRT,'armUpper',side,10);
+ hs(side*.616,1.751,.018,.40,.125,.415,SHIRT_DARK,'armUpper',side,10);
+ hs(side*.628,1.78,.013,.28,.265,.30,SKIN_SHADE,'armLower',side,12);
+ hpart(avatarForearm,side*.631,1.57,-.008,.30,.46,.315,SKIN,'armLower',side,12);
+ hs(side*.631,1.416,-.016,.245,.17,.25,SKIN,'armLower',side,12);
+ // Real hand proportions: palm with four individually separated fingers,
+ // knuckles, two joints per finger and angled thumb.
+ hs(side*.634,1.324,-.064,.248,.25,.21,SKIN,'hand',side,12);
+ hs(side*.637,1.237,-.071,.225,.092,.20,SKIN_LIT,'hand',side,12);
+ for(let f=0;f<4;f++){
+  const fx=side*.634+(f-1.5)*.058;
+  const length=[.177,.217,.206,.169][f];
+  hs(fx,1.186,-.076,.059,.090,.075,SKIN,'hand',side,12);
+  hs(fx,1.152-length*.22,-.075,.056,length*.60,.066,SKIN,'hand',side,12);
+  hs(fx,1.142-length*.60,-.070,.053,length*.43,.066,SKIN_LIT,'hand',side,12);
+  hs(fx,1.123-length*.72,-.116,.041,.039,.020,[.85,.64,.56,1],'hand',side,12);
+ }
+ hs(side*.76,1.278,-.142,.105,.14,.119,SKIN,'hand',side,12);
+ hs(side*.797,1.232,-.17,.087,.106,.095,SKIN_LIT,'hand',side,12);
+ // Shirt details sit on the same moving fabric instead of hovering apart.
+ hs(side*.319,2.13,-.332,.26,.18,.047,SHIRT_DARK,'body',0,10);
+ hs(side*.31,2.224,-.323,.24,.022,.035,SHIRT_LIGHT,'body',0,10);
 }
-hs(0,3.247,-.01,.09,.055,.09,CAP_BRIM,'head');
-// Kleine Raute an der Vorderseite; bewusst neutrales grafisches Symbol.
-hb(0,3.075,.34,.20,.055,.027,CAP_STITCH,'head');
-// Kleine Bewegung des Brustkorbs beim Atmen wird im Renderloop ergänzt.
-
-
+// Solid waist and connected cloth silhouette.
+hpart(avatarTorso,0,1.98,.025,1.10,1.08,.68,TEE,'body',0,10);
+hpart(avatarOpenCoat,0,1.98,.025,1.13,1.09,.72,SHIRT,'body',0,10);
+hpart(avatarTee,0,2.03,-.245,.58,.83,.20,TEE,'body',0,10);
+for(const side of [-1,1]){
+ hpart(avatarShirtPanel(side),0,0,0,1,1,1,side<0?SHIRT_DARK:SHIRT,'body',0,10);
+ // Collar folds into the neck opening, laid over the curved fabric.
+ hs(side*.20,2.43,-.19,.31,.13,.25,SHIRT_LIGHT,'body',0,10);
+ hs(side*.18,2.37,-.278,.23,.052,.085,SHIRT_DARK,'body',0,10);
+}
+hs(0,1.46,.01,.86,.27,.56,TROUSERS,'body',0,11);
+hs(0,1.465,-.263,.77,.105,.12,[.16,.18,.19,1],'body');
+hs(0,1.464,-.321,.19,.099,.038,METAL,'body');
+for(const side of [-1,1]){
+ hs(side*.267,1.51,.268,.31,.038,.03,DENIM_LIGHT,'body',0,11);
+ hs(side*.28,1.23,.259,.32,.035,.030,DENIM_LIGHT,'body',0,11);
+}
+// Stitching and fabric relief: shared chest, no free-floating planks.
+for(const side of [-1,1])for(let j=0;j<3;j++)
+ hs(side*(.37+j*.014),1.70+j*.18,-.319,.035,.105,.018,SHIRT_PATTERN,'body',0,10);
+// Neck, visible throat, connected jawline.
+hpart(avatarNeck,0,2.44,-.006,.285,.34,.275,SKIN_SHADE,'body',0,12);
+hs(0,2.50,-.095,.355,.16,.30,SKIN,'body',0,12);
+// Wristwatch stays on the left forearm (same articulated limb).
+hs(-.632,1.459,-.025,.305,.075,.334,CAP_BRIM,'armLower',-1);
+hs(-.632,1.459,-.186,.135,.075,.06,METAL,'armLower',-1);
+// V24.1: The face is ONE continuously sculpted surface. Previously separate
+// cheekbone, chin, lip and nose ellipsoids produced visible bulges on the skin.
+// This unified mesh integrates the nose/cheeks/jaw into the head profile, while
+// extremely thin, contour-fitted eye and mouth patches add detail without lumps.
+const AVATAR_FACE_CY=2.796,AVATAR_FACE_CZ=-.012;
+const avatar24Gaussian=(x,y,sx,sy)=>Math.exp(-.5*((x/sx)**2+(y/sy)**2));
+function avatar24Jaw(y){return 1-.16*Math.max(0,Math.min(1,(2.71-y)/.30));}
+function avatar24Relief(x,y){
+ const noseTip=.077*avatar24Gaussian(x,y-2.678,.063,.065);
+ const noseBridge=.019*avatar24Gaussian(x,y-2.778,.042,.110);
+ const cheeks=.009*(avatar24Gaussian(x-.166,y-2.680,.084,.095)+avatar24Gaussian(x+.166,y-2.680,.084,.095));
+ const brow=.006*(avatar24Gaussian(x-.130,y-2.890,.089,.042)+avatar24Gaussian(x+.130,y-2.890,.089,.042));
+ const lip=.006*avatar24Gaussian(x,y-2.548,.080,.026);
+ return noseTip+noseBridge+cheeks+brow+lip;
+}
+function avatar24FacePoint(theta,phi){
+ const s=Math.sin(theta),f=Math.sin(phi),y=AVATAR_FACE_CY+.370*Math.cos(theta);
+ const x=.312*s*Math.cos(phi)*avatar24Jaw(y);
+ let z=AVATAR_FACE_CZ+.298*s*f;
+ if(f<0)z-=avatar24Relief(x,y)*(-f);
+ return[x,y,z];
+}
+function avatar24FaceFrontZ(x,y){
+ const yy=(y-AVATAR_FACE_CY)/.370,xx=x/(.312*avatar24Jaw(y));
+ return AVATAR_FACE_CZ-.298*Math.sqrt(Math.max(.000001,1-xx*xx-yy*yy))-avatar24Relief(x,y);
+}
+function avatar24MeshFromVertices(vertices,triangles){
+ const v=gl.createBuffer(),i=gl.createBuffer();
+ gl.bindBuffer(gl.ARRAY_BUFFER,v);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.STATIC_DRAW);
+ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,i);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(triangles),gl.STATIC_DRAW);
+ return{b:v,ib:i,count:triangles.length};
+}
+function avatar24FaceMesh(){
+ const vertices=[],triangles=[],S=48,R=32,eps=.002;
+ for(let j=0;j<=R;j++)for(let i=0;i<=S;i++){
+  const theta=Math.PI*j/R,phi=2*Math.PI*i/S;
+  const p=avatar24FacePoint(theta,phi);
+  const a=avatar24FacePoint(Math.min(Math.PI,theta+eps),phi),b=avatar24FacePoint(Math.max(0,theta-eps),phi);
+  const c=avatar24FacePoint(theta,phi+eps),d=avatar24FacePoint(theta,phi-eps);
+  const n=norm(cross(sub(c,d),sub(a,b)));
+  vertices.push(p[0],p[1]-AVATAR_FACE_CY,p[2]-AVATAR_FACE_CZ,...n);
+ }
+ for(let j=0;j<R;j++)for(let i=0;i<S;i++){
+  const a=j*(S+1)+i,b=a+S+1;
+  triangles.push(a,a+1,b,a+1,b+1,b);
+ }
+ return avatar24MeshFromVertices(vertices,triangles);
+}
+// A curved face decal follows the actual facial skin at every point. Layer
+// depth is just a few millimetres, so eyes and mouth no longer appear as balls.
+function avatar24FacePatch(cx,cy,rx,ry,depth,shape=0){
+ const vertices=[],triangles=[],N=24;
+ function point(x,y){return[x,y-AVATAR_FACE_CY,avatar24FaceFrontZ(x,y)-depth-AVATAR_FACE_CZ,0,0,-1];}
+ vertices.push(...point(cx,cy));
+ for(let k=0;k<=N;k++){
+  const ang=k*2*Math.PI/N;
+  let yy=cy+Math.sin(ang)*ry;
+  if(shape===1)yy+=ry*.16*Math.cos(ang); // eye: gentle almond shape
+  vertices.push(...point(cx+Math.cos(ang)*rx,yy));
+ }
+ for(let k=0;k<N;k++)triangles.push(0,k+2,k+1);
+ return avatar24MeshFromVertices(vertices,triangles);
+}
+function avatar24Feature(cx,cy,rx,ry,depth,color,material=0,shape=0){
+ return hpart(avatar24FacePatch(cx,cy,rx,ry,depth,shape),0,AVATAR_FACE_CY,AVATAR_FACE_CZ,1,1,1,color,'head',0,material);
+}
+// The head is one smooth, anatomically tapered mesh; eyebrows, eyes and lips
+// are almost flush decals and keep the same articulated head orientation.
+hpart(avatar24FaceMesh(),0,AVATAR_FACE_CY,AVATAR_FACE_CZ,1,1,1,SKIN,'head',0,12);
+for(const side of [-1,1]){
+ // Slim ear profile: no swollen side-of-face cheeks.
+ hs(side*.314,2.714,.005,.068,.128,.070,SKIN,'head',0,12);
+ hs(side*.333,2.720,-.030,.016,.050,.019,SKIN_SHADE,'head',0,12);
+ const x=side*.131;
+ avatar24Feature(x,2.832,.078,.027,.004,[.88,.84,.77,1],0,1); // sclera
+ avatar24Feature(x-side*.004,2.831,.021,.024,.007,[.34,.41,.38,1]); // iris
+ avatar24Feature(x-side*.004,2.831,.010,.014,.010,[.11,.12,.12,1]); // pupil
+ avatar24Feature(x-side*.015,2.842,.006,.007,.013,[.97,.95,.91,1]); // tiny catchlight
+ avatar24Feature(x,2.867,.085,.007,.004,SKIN_SHADE,12); // top lid
+ avatar24Feature(x,2.804,.071,.006,.003,SKIN_LIT,12); // bottom lid
+ avatar24Feature(x+side*.010,2.921,.081,.010,.004,HAIR_DARK); // eyebrows
+ // Two subtle nostril shadows are surface detail, not protruding spheres.
+ avatar24Feature(side*.043,2.655,.012,.006,.004,[.59,.40,.32,1],12);
+}
+avatar24Feature(0,2.555,.057,.006,.004,[.53,.34,.32,1],12); // closed mouth line
+avatar24Feature(0,2.540,.042,.007,.003,[.78,.54,.47,1],12); // muted lower lip
+// Smooth scalp underneath the baseball cap. Hairline fades down behind the ears
+// as a single shell instead of a ring of detached bead-like hair tufts.
+function avatar24ScalpMesh(){
+ const vertices=[],indices=[],S=64,R=18;
+ for(let i=0;i<=S;i++){
+  const phi=2*Math.PI*i/S,front=Math.max(0,-Math.sin(phi));
+  const cut=1.48-.63*front;
+  for(let j=0;j<=R;j++){
+   const theta=cut*j/R,p=avatar24FacePoint(theta,phi);
+   const n=norm([p[0]/.31,(p[1]-AVATAR_FACE_CY)/.37,(p[2]-AVATAR_FACE_CZ)/.30]);
+   vertices.push(p[0]+n[0]*.011,p[1]-AVATAR_FACE_CY+n[1]*.011,p[2]-AVATAR_FACE_CZ+n[2]*.011,...n);
+  }
+ }
+ for(let i=0;i<S;i++)for(let j=0;j<R;j++){
+  const a=i*(R+1)+j,b=(i+1)*(R+1)+j;
+  indices.push(a,b,a+1,a+1,b,b+1);
+ }
+ return avatar24MeshFromVertices(vertices,indices);
+}
+hpart(avatar24ScalpMesh(),0,AVATAR_FACE_CY,AVATAR_FACE_CZ,1,1,1,HAIR_DARK,'head');
+// Baseball cap retained, with a cleaner brim and no spherical hair tufts.
+hs(0,3.112,-.005,.728,.253,.668,CAP,'head',0,10);
+hs(0,3.176,-.010,.616,.190,.548,CAP_PANEL,'head',0,10);
+hs(0,3.057,-.145,.765,.072,.676,CAP_BRIM,'head',0,10);
+hs(0,3.045,-.462,.765,.073,.51,CAP_BRIM,'head',0,10);
+hs(0,3.036,-.680,.645,.027,.095,CAP_STITCH,'head');
+for(const side of [-1,1])hs(side*.224,3.215,-.036,.028,.023,.42,CAP_STITCH,'head');
+hs(0,3.257,-.010,.084,.055,.087,CAP_BRIM,'head');
+// V24 Easter egg: a short original 'Zeittanz' in place, with drifting golden
+// leaves. It changes no chapter, points, or collection state.
+const avatar24Leaves=[];
+for(let i=0;i<18;i++){
+ const leaf=add(humanSphere,state.px,0,state.pz,.16,.038,.09,
+    i%3===0?[.89,.76,.35,1]:i%3===1?[.75,.53,.24,1]:[.57,.74,.49,1],'avatar24-leaf');
+ leaf.hidden=true;avatar24Leaves.push(leaf);
+}
+let avatar24DanceStart=0,avatar24DanceUntil=0,avatar24Facing=0;
+function avatar24Dancing(now){return now<avatar24DanceUntil&&avatar24DanceUntil>0;}
+function avatar24BeginDance(){
+ const now=performance.now();
+ if(!state.started||state.panel||boatState.active||state.miniActive||avatar24Dancing(now))return false;
+ avatar24DanceStart=now;avatar24DanceUntil=now+4450;
+ avatar24Facing=state.facing;state.avatarView=false;
+ const b=$('#avatar24View');b.setAttribute('aria-pressed','false');
+ const label=$('#avatar24Toast');label.textContent='✦ GEHEIMES EASTER EGG: ZEITTANZ ✦';label.classList.add('show');
+ return true;
+}
+state.avatarView=false;
+function avatar24ToggleView(){
+ if(!state.started||state.panel||boatState.active)return;
+ state.avatarView=!state.avatarView;
+ $('#avatar24View').setAttribute('aria-pressed',String(state.avatarView));
+ $('#avatar24View').title=state.avatarView?'Normale Kamera (V)':'Spielfigur aus der Nähe ansehen (V)';
+}
+// On touch devices a long press on the portrait button reveals the same
+// secret. Short taps only toggle the camera and never trigger the dance.
+let avatar24HoldTimer=null,avatar24SuppressClick=false;
+const avatar24ViewButton=$('#avatar24View');
+avatar24ViewButton.addEventListener('pointerdown',e=>{
+ if(e.pointerType!=='touch'&&e.pointerType!=='pen')return;
+ clearTimeout(avatar24HoldTimer);avatar24SuppressClick=false;
+ avatar24HoldTimer=setTimeout(()=>{avatar24SuppressClick=true;avatar24BeginDance();},820);
+});
+for(const action of ['pointerup','pointercancel','pointerleave'])
+ avatar24ViewButton.addEventListener(action,()=>clearTimeout(avatar24HoldTimer));
+avatar24ViewButton.addEventListener('click',()=>{
+ if(avatar24SuppressClick){avatar24SuppressClick=false;return;}
+ avatar24ToggleView();
+});
+window.heimsuchung24Stop=()=>{avatar24DanceUntil=0;state.avatarView=false;$('#avatar24View').setAttribute('aria-pressed','false');$('#avatar24Toast').classList.remove('show');};
+window.heimsuchung24Dance=avatar24BeginDance;
+window.heimsuchung24View=avatar24ToggleView;
 
 // V14.1: Hierarchisch animiertes Figurenmodell. Körper, Gesicht, Hände, Kleidung und Schuhe sind geschlossen.
 // Pro Szene wird eine Figur wiederverwendet; keine externen 3D-Dateien, keine Netzwerkzugriffe.
@@ -2778,6 +3010,7 @@ function boatResetAtDock(){boatState.x=BOAT_HOME.x;boatState.z=BOAT_HOME.z;boatS
 function boatBoard(){
  if(!state.started||state.panel||state.miniActive||traceState.active||!boatEnabled()||boatState.active)return;
  if(Math.hypot(state.px-BOAT_DOCK.x,state.pz-BOAT_DOCK.z)>4.0)return;
+ window.heimsuchung24Stop?.();
  boatState.active=true;boatState.speed=0;boatState.yaw=0;
  state.px=boatState.x;state.pz=boatState.z;state.yaw=boatState.yaw;state.facing=boatState.yaw;boatState.lookBack=false;
  state.keys.clear();state.joyX=state.joyY=0;state.moving=false;state.jumpHeight=0;state.jumpVelocity=0;
@@ -2853,7 +3086,7 @@ function boatAnimate(now){
    }else if(role==='armLower'){
     lx=x;ly=y-.64-.08*stroke;lz=z+.045-.10*stroke;pitch=-.49-.25*stroke;
    }else if(role==='hand'){
-    lx=x*.93;ly=.55+.025*recover;lz=.20-.16*stroke;pitch=-.10;
+    lx=x*.93;ly=.55+(y-1.28)*.72+.025*recover;lz=.20+(z+.05)*.66-.16*stroke;pitch=-.10;
    }else if(role==='head'){
     lx=x;ly=y-.68+.025*stroke;lz=z-.04-.07*stroke;pitch=.035*stroke;
    }else{
@@ -3123,7 +3356,7 @@ function collectionMarkers(vp){
 let jumpBufferedUntil=0;
 window.heimsuchungCancelJump=()=>{jumpBufferedUntil=0;};
 function jumpStart(){
- if(!state.started||state.panel||boatState.active)return false;
+ if(!state.started||state.panel||boatState.active||avatar24Dancing(performance.now()))return false;
  if(state.jumpVelocity!==0||state.jumpHeight>.001){
   // Sehr kurz vor der Landung gedruecktes Space nicht verschlucken.
   if(state.jumpVelocity<0&&state.jumpHeight<.85)jumpBufferedUntil=performance.now()+180;
@@ -3443,7 +3676,7 @@ if(state.miniActive){
  else if(frameCounter%5===0)updateMiniHud(now);
 }
 state.sprinting=false;
-if(boatState.active){boatMove(dt)}else if(!state.panel){
+if(boatState.active){boatMove(dt)}else if(!state.panel&&!state.avatarView&&!avatar24Dancing(now)){
  const turn=(state.keys.has('arrowright')?1:0)-(state.keys.has('arrowleft')?1:0)+state.turnDir;
  state.yaw+=Math.max(-1,Math.min(1,turn))*dt*2.1;
  let f=(state.keys.has('w')||state.keys.has('arrowup')?1:0)-(state.keys.has('s')||state.keys.has('arrowdown')?1:0)-state.joyY;
@@ -3477,20 +3710,73 @@ for(const o of items){
  }
 }
 env15Animate(now,dt);boatAnimate(now);seaLifeAnimate(now);jumpTick(dt);collectionAnimate(now);
-// Gelenkbewegung: gegenläufige Beine und Arme, ruhiger Körper im Stand.
-let running=false;const kF=(state.keys.has('w')||state.keys.has('arrowup')?1:0)-(state.keys.has('s')||state.keys.has('arrowdown')?1:0)-state.joyY,kR=(state.keys.has('d')?1:0)-(state.keys.has('a')?1:0)+state.joyX;
-running=!state.panel&&!boatState.active&&!!state.moving;state.walkTime+=dt*(running?(state.sprinting?13.4:8.4):1.2);
-for(const p of player){let swing=Math.sin(state.walkTime)*(.38*(running?(state.sprinting?1.42:1):0)),a=p.side*swing;let x=p.hx,y=p.hy,z=p.hz,pitch=0;
- if(['thigh','shin','foot'].includes(p.piece)){let q=p.piece==='thigh'?1:p.piece==='shin'?.55:.75;z-=a*.42*q;if(p.piece==='foot')y+=Math.max(0,-a)*.18;pitch=-a*(p.piece==='shin'?.50:1)}
- if(p.piece==='armUpper'||p.piece==='armLower'||p.piece==='hand'){z+=a*(p.piece==='hand'?.40:.20);pitch=a*.78}
- if(p.piece==='body')y+=running?Math.abs(Math.sin(state.walkTime))*(state.sprinting?.058:.035):Math.sin(state.walkTime*.3)*.008;
-  if(state.jumpHeight>.01&&['thigh','shin','foot'].includes(p.piece)){y+=.10;pitch+=p.side*.23;}
- // Das Modell blickt lokal in die -Z-Richtung: seine Y-Rotation hat das umgekehrte Vorzeichen zur Kamera-Yaw.
-  const co=Math.cos(state.facing),si=Math.sin(state.facing);
-  p.x=state.px+co*x-si*z;p.y=y+state.jumpHeight;p.z=state.pz+si*x+co*z;
-  p.rot=-state.facing;p.rx=pitch;
+// V24: echtes hierarchisches Gelenkmodell. Alle Schuh-/Socken-Elemente
+// folgen dem Knöchel. Alle Finger folgen derselben Handgelenks-Transformation.
+const dancing=avatar24Dancing(now);
+if(!dancing&&avatar24DanceUntil>0){
+ avatar24DanceUntil=0;
+ $('#avatar24Toast').classList.remove('show');
+ state.facing=avatar24Facing;
 }
-const roofObj=items.find(o=>o.tag==='roof');roofObj.hidden=state.chapter<3||state.chapter===23||eraStages[state.chapter]==='construction'||Math.hypot(state.px+3,state.pz-3)<11;for(const r of eraRoofPieces)r.hidden=!r.eraStages.includes(eraStages[state.chapter])||Math.hypot(state.px+3,state.pz-3)<11;let cameraDir=cameraBasis(state.yaw),dx=cameraDir.fx,dz=cameraDir.fz;let eye=boatState.active?[state.px-dx*11.9,5.9+state.pitch*7,state.pz-dz*11.9]:[state.px-dx*10.4,7.4+state.pitch*9+state.jumpHeight*.18,state.pz-dz*10.4];let target=boatState.active?[state.px+dx*5.5,1.05,state.pz+dz*5.5]:[state.px+dx*3,2.18+state.jumpHeight*.43,state.pz+dz*3];state.eye=eye;let W=gl.drawingBufferWidth,H=gl.drawingBufferHeight;gl.viewport(0,0,W,H);gl.clearColor(env15Render.sky[0],env15Render.sky[1],env15Render.sky[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);v23DrawSky();let proj=persp(55*Math.PI/180,W/H,.1,150),vp=matMul(proj,lookAt(eye,target));state.vp=vp;gl.uniformMatrix4fv(U.VP,false,vp);gl.uniform3fv(U.Eye,eye);gl.uniform3fv(U.Fog,env15Render.fog);gl.uniform3fv(U.Sun,env15Render.sun);gl.uniform1f(U.Ambient,env15Render.ambient);gl.uniform1f(U.Time,(now*.001)%120);gl.uniform1f(U.Detail,v23Quality);npcAnimate(now);
+if(dancing)state.moving=false;
+let running=!state.panel&&!boatState.active&&!!state.moving&&!dancing;
+state.walkTime+=dt*(running?(state.sprinting?13.4:8.4):1.2);
+const danceT=dancing?(now-avatar24DanceStart)/1000:0;
+const danceAmount=dancing?Math.min(1,danceT*3,Math.max(0,(4.45-danceT)*4)):0;
+const stride=running?(state.sprinting?.57:.41):0;
+const bodyBob=(running?Math.abs(Math.sin(state.walkTime))*(state.sprinting?.06:.034):Math.sin(now*.0018)*.008)
+ +(dancing?.058*Math.abs(Math.sin(danceT*11))*danceAmount:0);
+// A pivot transform only rotates parts about a shared anatomical joint.
+function rotAround(point,pivot,angle){
+ const dy=point[1]-pivot[1],dz=point[2]-pivot[2],c=Math.cos(angle),si=Math.sin(angle);
+ return[point[0],pivot[1]+dy*c-dz*si,pivot[2]+dy*si+dz*c];
+}
+const angleFacing=dancing?avatar24Facing+2*Math.PI*Math.min(1,Math.max(0,(danceT-.55)/2.95)):state.avatarView?(state.yaw+Math.PI):state.facing;
+const co=Math.cos(angleFacing),si=Math.sin(angleFacing);
+for(const p of player){
+ const side=p.side||0,phase=state.walkTime+(side===1?0:Math.PI);
+ let point=[p.hx,p.hy,p.hz],tilt=0;
+ if(p.piece==='thigh'||p.piece==='shin'||p.piece==='foot'){
+  const hip=[side*.245,1.44,.007],knee=[side*.245,.81,.009],ankle=[side*.245,.262,.008];
+  const hAng=side*Math.sin(state.walkTime)*stride+(dancing?side*.43*Math.sin(danceT*9)*danceAmount:0);
+  const kAng=running?-.49*Math.max(0,Math.sin(phase)):
+              dancing?-.27*Math.abs(Math.sin(danceT*9))*danceAmount:0;
+  const fAng=-hAng*.36-kAng*.75;
+  if(p.piece==='foot'){point=rotAround(point,ankle,fAng);tilt+=fAng;}
+  if(p.piece==='shin'||p.piece==='foot'){point=rotAround(point,knee,kAng);tilt+=kAng;}
+  point=rotAround(point,hip,hAng);tilt+=hAng;
+  if(state.jumpHeight>.03){point[1]+=.075;tilt+=side*.16;}
+ }else if(p.piece==='armUpper'||p.piece==='armLower'||p.piece==='hand'){
+  const shoulder=[side*.53,2.25,0],elbow=[side*.625,1.785,.013],wrist=[side*.635,1.416,-.018];
+  const aAng=-side*Math.sin(state.walkTime)*stride*.89+
+    (dancing?(side===-1?2.52:2.15)*danceAmount:0);
+  const eAng=running?.18+.16*Math.abs(Math.sin(state.walkTime)):
+    dancing?.28*Math.sin(danceT*13):.09;
+  const wAng=dancing?.30*Math.sin(danceT*18):0;
+  if(p.piece==='hand'){point=rotAround(point,wrist,wAng);tilt+=wAng;}
+  if(p.piece==='armLower'||p.piece==='hand'){point=rotAround(point,elbow,eAng);tilt+=eAng;}
+  point=rotAround(point,shoulder,aAng);tilt+=aAng;
+ }else if(p.piece==='head'){
+  tilt=(dancing?-.15*Math.sin(danceT*7):0)+.018*Math.sin(now*.0019);
+ }
+ // The entire rig, including each knuckle, cuff, sole, shirt fold and belt,
+ // shares the same root elevation. No independent sock offset is possible.
+ p.x=state.px+co*point[0]-si*point[2];
+ p.y=point[1]+state.jumpHeight+bodyBob;
+ p.z=state.pz+si*point[0]+co*point[2];
+ p.rot=-angleFacing;p.rx=tilt;
+}
+for(let i=0;i<avatar24Leaves.length;i++){
+ const leaf=avatar24Leaves[i];leaf.hidden=!dancing;
+ if(!dancing)continue;
+ const u=Math.max(0,danceT-.20),angle=i*2.399+u*2.85;
+ const radius=.85+(i%5)*.17+Math.sin(u*4+i)*.11;
+ leaf.x=state.px+radius*Math.cos(angle);
+ leaf.z=state.pz+radius*Math.sin(angle);
+ leaf.y=.35+(u*.7+i*.22)%2.65;
+ leaf.rot=angle;leaf.rx=.55*Math.sin(u*7+i);
+}
+const roofObj=items.find(o=>o.tag==='roof');roofObj.hidden=state.chapter<3||state.chapter===23||eraStages[state.chapter]==='construction'||Math.hypot(state.px+3,state.pz-3)<11;for(const r of eraRoofPieces)r.hidden=!r.eraStages.includes(eraStages[state.chapter])||Math.hypot(state.px+3,state.pz-3)<11;let cameraDir=cameraBasis(state.yaw),dx=cameraDir.fx,dz=cameraDir.fz;let eye=boatState.active?[state.px-dx*11.9,5.9+state.pitch*7,state.pz-dz*11.9]:state.avatarView?[state.px-dx*4.10,3.15+state.jumpHeight*.18,state.pz-dz*4.10]:[state.px-dx*10.4,7.4+state.pitch*9+state.jumpHeight*.18,state.pz-dz*10.4];let target=boatState.active?[state.px+dx*5.5,1.05,state.pz+dz*5.5]:state.avatarView?[state.px,2.06+state.jumpHeight*.43,state.pz]:[state.px+dx*3,2.18+state.jumpHeight*.43,state.pz+dz*3];state.eye=eye;let W=gl.drawingBufferWidth,H=gl.drawingBufferHeight;gl.viewport(0,0,W,H);gl.clearColor(env15Render.sky[0],env15Render.sky[1],env15Render.sky[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);v23DrawSky();let proj=persp(55*Math.PI/180,W/H,.1,150),vp=matMul(proj,lookAt(eye,target));state.vp=vp;gl.uniformMatrix4fv(U.VP,false,vp);gl.uniform3fv(U.Eye,eye);gl.uniform3fv(U.Fog,env15Render.fog);gl.uniform3fv(U.Sun,env15Render.sun);gl.uniform1f(U.Ambient,env15Render.ambient);gl.uniform1f(U.Time,(now*.001)%120);gl.uniform1f(U.Detail,v23Quality);npcAnimate(now);
 for(const o of items){if(o.hidden||o.tag==='water'||o.tag==='wave')continue;drawMesh(o)}
 gl.depthMask(false);
 for(const o of items){if(!o.hidden&&o.tag==='water')drawMesh(o)}
