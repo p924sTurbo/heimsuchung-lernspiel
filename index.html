@@ -232,6 +232,28 @@
 @media(max-width:700px){#traceHud{left:10px;top:max(calc(env(safe-area-inset-top) + 256px),262px);width:min(194px,53vw);padding:9px}#traceHud strong{font-size:10px}#traceHud .traceSub{font-size:10px;margin:4px 0 6px}#traceHud button{font-size:11px;min-height:43px}#traceHud .traceStatus{font-size:10px}}
 @media(max-height:570px){#traceHud{top:180px}}
 
+
+
+/* See in allen Epochen · Eiszeitschollen und zeitlich begrenztes Ruderboot. */
+#boatBoard{display:none;position:absolute;right:max(12px,env(safe-area-inset-right));bottom:max(94px,calc(env(safe-area-inset-bottom) + 94px));z-index:11;min-height:52px;max-width:min(260px,72vw);padding:11px 17px;border:1px solid #d9d9a9;border-radius:14px;color:#f9f4d9;background:rgba(12,69,79,.94);box-shadow:0 7px 23px #061b26a8;font-weight:850;font-size:14px;touch-action:manipulation}
+#boatBoard:focus-visible,#boatInspectBtn:focus-visible,.boat-discovery:focus-visible{outline:3px solid #f7dea7;outline-offset:3px}
+#boatHud{display:none;position:absolute;left:173px;bottom:max(95px,calc(env(safe-area-inset-bottom) + 95px));width:min(325px,calc(100vw - 370px));min-width:215px;z-index:10;border:1px solid #d9c996aa;border-radius:15px;padding:12px 14px;background:rgba(11,44,55,.92);box-shadow:0 8px 28px #051b2396;backdrop-filter:blur(14px);color:#eef2e7}
+#boatHud strong{display:block;color:#f7dfa1;font-size:12px;letter-spacing:.10em}
+#boatHud p{margin:7px 0;color:#d9e6e2;font-size:12px;line-height:1.4}
+#boatHud .boat-progress{font-size:12px;color:#f2dbac;font-weight:750}
+#boatInspectBtn{display:none;min-height:45px;width:100%;margin-top:8px;border:1px solid #e9d4a6;border-radius:10px;background:#dbc797;color:#163940;font-weight:850;font-size:13px;touch-action:manipulation}
+.boat-discovery{position:absolute;z-index:13;display:none;min-height:50px;min-width:154px;max-width:min(270px,75vw);padding:11px 14px;border:2px solid #f4dc9a;border-radius:15px;color:#fff4d2;background:rgba(13,57,66,.96);font-size:13px;line-height:1.25;font-weight:850;box-shadow:0 7px 25px #04141dbd;transform:translate(-50%,-110%);touch-action:manipulation}
+#boatDockMarker{position:absolute;display:none;z-index:12;min-height:48px;min-width:140px;padding:10px 14px;border:1px solid #edda9a;border-radius:14px;background:rgba(9,61,69,.94);color:#fbefd2;font-weight:800;transform:translate(-50%,-105%);touch-action:manipulation}
+
+
+
+
+
+
+body.boat-mode .action,body.boat-mode #npcTalkBtn,body.boat-mode #npcMarker,body.boat-mode #traceHud{display:none!important}
+@media(max-width:760px){#boatHud{left:9px;bottom:max(260px,calc(env(safe-area-inset-bottom) + 260px));width:min(220px,53vw);min-width:0;padding:10px}#boatHud strong{font-size:11px}#boatHud p{font-size:11px;margin:5px 0}#boatBoard{bottom:max(94px,calc(env(safe-area-inset-bottom) + 94px));font-size:12px;min-height:46px;max-width:52vw;padding:10px 12px}}
+@media(max-height:620px){#boatHud{bottom:178px;max-width:225px}#boatBoard{bottom:65px}}
+
 </style>
 </head>
 <body>
@@ -266,6 +288,11 @@
   <div class="traceStatus" id="traceStatus">Freiwillige Nebenmission · ohne Kapitelpunkte</div>
 </aside>
 
+
+<!-- See-Expedition: Boot und didaktische Beobachtungen. -->
+<button id="boatBoard" type="button" aria-label="Boot betreten oder verlassen">🚣 Ins Ruderboot steigen</button>
+<button id="boatDockMarker" type="button" aria-label="Ruderboot am Steg betreten">🚣 Ruderboot</button>
+<aside id="boatHud" aria-live="polite"><strong>🚣 SEEUFER-EXPEDITION</strong><p id="boatHelp">W/S rudern · A/D steuern. Auf dem iPad den linken Joystick benutzen.</p><div class="boat-progress" id="boatProgress">0 / 3 Beobachtungen</div><button id="boatLookBack" type="button" style="margin-top:8px;min-height:38px;border:1px solid #e3d29a;border-radius:9px;padding:7px 10px;background:#204d54;color:#fbefcd;font-weight:750;font-size:12px;touch-action:manipulation">🏠 Zum Haus blicken</button><button id="boatInspectBtn" type="button">🔎 Spur auf dem See untersuchen</button></aside>
 <section id="infoPanel" class="panel" role="dialog" aria-label="Textinformation"><div class="panelheader"><div><div id="panelEyebrow" class="eyebrow">Fundstelle im Roman</div><h2 id="panelTitle">Spur</h2></div><button class="xbtn" id="closePanel" aria-label="Schließen">×</button></div><div class="panelbody" id="panelBody"></div></section>
 
 <div id="intro" class="intro-v7" aria-label="Startbildschirm – Heimsuchung">
@@ -296,7 +323,7 @@
     <div class="trailer-smallprint"><span>Bildmotive sind illustrative, nicht textbelegte Szenen</span><span>Literarisches Lernspiel · iPad und PC · eigenständige Parodie</span></div>
   </main>
   <div class="trailer-corner" aria-hidden="true"><span>◇ SEEUFER EDITION</span><b>EST. EISZEIT</b></div>
-  <div class="intro-version" aria-label="Spielversion">Version 16.1 · Spurensuche</div>
+  <div class="intro-version" aria-label="Spielversion">V17.3 · SEEUFER-EDITION</div>
 </div>
 
 <script type="application/json" id="chapterData">[{"title":"Prolog","era":"Eiszeit / lange vor dem Haus","place":"See","anchor":"see","fact":"Der Prolog beschreibt die eiszeitliche Entstehung der Landschaft und des Sees. Das menschliche Wohnen ist hier noch nicht vorhanden.","qa":[["Was steht am Anfang?","Die erdgeschichtliche Entwicklung der Landschaft, nicht eine menschliche Figur."],["Welche Funktion hat der See?","Er bildet einen Ort, dessen Geschichte weit über die Zeit der Hausbewohner hinausreicht."]],"quiz":"Welche Funktion übernimmt die geologische Perspektive des Prologs für die spätere Hausgeschichte?","options":["Sie erklärt die späteren Eigentumswechsel als naturgesetzliche Entwicklung.","Sie rückt menschliche Besitzansprüche in den Maßstab einer viel längeren, nichtmenschlichen Zeit.","Sie legt einen historisch zuverlässigen Zeitpunkt der ersten Besiedlung fest.","Sie kennzeichnet das Seegrundstück von Beginn an als unveränderliche Heimat."],"answer":1,"flag":"","proofQuestion":"Welche Beobachtung aus dem Romananfang trägt diese Deutung am deutlichsten?","proofOptions":["Der Text beginnt mit der eiszeitlichen Entstehung der Landschaft, bevor menschliche Eigentümer auftreten.","Der Text eröffnet mit den Erinnerungen der letzten Bewohnerin an den See.","Die Geschichte beginnt mit dem notariellen Kaufvertrag des Architekten."],"proofAnswer":0,"explanation":"Der weit gespannte geologische Zeitmaßstab relativiert die Dauer aller späteren menschlichen Besitzverhältnisse."},{"title":"Der Gärtner I","era":"Ende der 1920er / frühe 1930er","place":"Waldrand","anchor":"woods","fact":"Der Gärtner verrichtet Arbeiten im Dorf und lebt in einer verlassenen Jagdhütte am Waldrand. Seine Herkunft bleibt unbekannt.","qa":[["Woher kommt er?","Der Roman gibt keine gesicherte Auskunft über seine Herkunft."],["Wo wohnt er zunächst?","In einer verlassenen Jagdhütte am Waldrand."]],"quiz":"Welche erzählstrukturelle Wirkung hat die weitgehend ungeklärte Biografie des Gärtners?","options":["Er erscheint als historisch exakt verorteter Erzähler aller Figurenkapitel.","Seine Herkunft dient als Kriminalrätsel, das im Epilog eindeutig aufgelöst wird.","Seine Rolle entsteht vor allem aus wiederkehrender Arbeit und Präsenz, nicht aus einer vollständig erzählten Lebensgeschichte.","Die fehlende Herkunft ermöglicht ihm, die wechselnden Eigentümer persönlich zu verurteilen."],"answer":2,"flag":"","proofQuestion":"Welcher Befund stützt diese funktionale Figurenzeichnung?","proofOptions":["Der Roman nennt durchgehend seinen bürgerlichen Namen und Geburtsort.","Er wird über seine Tätigkeiten erkennbar; seine Herkunft bleibt im Roman offen.","Der Gärtner berichtet in allen Kapiteln selbst aus der Ich-Perspektive."],"proofAnswer":1,"explanation":"Die namenlose Figur dient als wiederkehrender Bezugspunkt, ohne eine abgeschlossene Biografie zu erhalten."},{"title":"Der Großbauer und seine vier Töchter","era":"Frühe 1930er","place":"Grundstück","anchor":"parcels","fact":"Klara war für den Wald am See als Erbin vorgesehen. Wurrach teilt das Grundstück in drei Parzellen und verkauft sie an einen Importeur, einen Tuchfabrikanten und einen Architekten.","qa":[["Wer ist Klara?","Die jüngste Tochter des Großbauern Wurrach; das Waldgrundstück war für sie vorgesehen."],["An wen werden die Parzellen verkauft?","An einen Importeur, einen Tuchfabrikanten und einen Architekten."]],"quiz":"Wie lässt sich die Aufteilung des Grundstücks im Verhältnis zum zentralen Heimatmotiv lesen?","options":["Das Land wird durch die Teilung für alle Beteiligten zu einer dauerhaft gesicherten Heimat.","Die Teilung ist ausschließlich eine neutrale Vermessung ohne biografische Bedeutung.","Die Teilung beweist, dass die Geschichte des Hauses erst nach 1945 beginnt.","Ein zunächst familiär zugedachter Ort wird durch die Aufteilung zum veräußerbaren Besitz, an den neue Lebensgeschichten gebunden werden."],"answer":3,"flag":"","proofQuestion":"Welcher Textbefund verbindet Familiengeschichte und Besitzveränderung?","proofOptions":["Klara ist als Erbin vorgesehen; der Großbauer teilt und verkauft das Grundstück dennoch in drei Parzellen.","Der Gärtner erbt die Fläche von Klara und übergibt sie der Schriftstellerin.","Der Staat macht aus dem Wald zunächst ein öffentliches Naturschutzgebiet."],"proofAnswer":0,"explanation":"Die Aufteilung verdeutlicht, dass Grundstück, Besitzrecht und persönliche Bindung nicht deckungsgleich sein müssen."},{"title":"Der Gärtner II","era":"1930er","place":"Garten","anchor":"garden","fact":"Der Architekt beschäftigt den Gärtner bei der Umgestaltung des ehemaligen Waldgrundstücks zu einem Garten. Am Ufer entstehen Werkstatt und Holzschuppen.","qa":[["Welche Veränderung erfährt das Land?","Aus einem Waldgrundstück wird ein gestalteter Garten."],["Welche Gebäude gehören zur Anlage?","Unter anderem eine Werkstatt und ein Holzschuppen am Seeufer."]],"quiz":"Was zeigt die Umgestaltung des Waldgrundstücks zum Garten über das Verhältnis von Natur und menschlichem Gestaltungsanspruch?","options":["Der Garten entsteht ohne menschlichen Eingriff und bewahrt den ursprünglichen Waldzustand.","Die Arbeit zeigt, wie ein vorgefundener Ort kulturell geformt und einem Nutzungsentwurf untergeordnet wird.","Der Gärtner verweigert jede Mitarbeit an der Umgestaltung.","Die Gestaltung beweist, dass spätere politische Ereignisse keinen Einfluss auf das Anwesen haben."],"answer":1,"flag":"","proofQuestion":"Welche konkrete Handlung lässt diese Deutung zu?","proofOptions":["Die Werkstatt wird vollständig von der Natur zurückerobert, ehe sie gebaut ist.","Der Großbauer lässt das Haus am Ende des Romans errichten.","Der Gärtner verwandelt im Auftrag des Architekten Teile des ehemaligen Waldgrundstücks in einen Garten."],"proofAnswer":2,"explanation":"Der Garten ist kein von Menschen unabhängiger Naturraum; er trägt die Spuren von Arbeit und Gestaltung."},{"title":"Der Architekt","era":"1951 mit Rückblicken","place":"Haus","anchor":"house","fact":"Der Architekt geht vor seiner Flucht aus der DDR noch einmal durch das Haus. Im Rückblick erscheint auch sein Erwerb des Grundstücks der jüdischen Nachbarn unter den Bedingungen nationalsozialistischer Verfolgung.","qa":[["Warum verlässt er das Haus?","Wegen drohender Verhaftung flieht er 1951 aus der DDR nach West-Berlin."],["Welche Rolle spielt das Nachbargrundstück?","Er hat es der jüdischen Familie deutlich unter Wert abgekauft; die Familie wollte damit ihre Ausreise ermöglichen."]],"quiz":"Welche Spannung prägt die Darstellung des Architekten im Zusammenhang mit dem Haus?","options":["Das Haus ist für ihn ein identitätsstiftender Ort; sein Besitz ist zugleich in die Verfolgung der jüdischen Nachbarn verstrickt.","Sein Haus bleibt dauerhaft ein sicherer Zufluchtsort, weil politische Umbrüche ausgeschlossen werden.","Die Rückblenden zeigen, dass er den jüdischen Nachbarn das Grundstück zurückgibt.","Der Text bewertet seine Entscheidungen ausdrücklich nur aus der Perspektive des Gärtners."],"answer":0,"flag":"","proofQuestion":"Welche Verknüpfung zweier Handlungsmomente trägt diese Lesart?","proofOptions":["Er verkauft seine Parzelle vor 1933 und hält sich danach von dem Haus fern.","1951 muss er fliehen; zuvor hat er das Grundstück der verfolgten jüdischen Nachbarn unter Wert erworben.","Er lebt bis zum Ende des Romans im Haus, ohne dass andere es nutzen."],"proofAnswer":1,"explanation":"Die Verbindung von Heimatsuche, Besitz und historisch belasteten Erwerbsbedingungen verhindert eine ungebrochene Idylle."},{"title":"Der Gärtner III","era":"1938","place":"Garten","anchor":"garden","fact":"Der Gärtner legt ein Blumenbeet an und bekämpft den Kartoffelkäfer. Die Gärtner-Kapitel stehen zwischen den Figurenkapiteln.","qa":[["Was beschäftigt ihn in diesem Abschnitt?","Die Arbeit am Garten und der Kampf gegen den Kartoffelkäfer."],["Ist die erzählte Zeit stets chronologisch?","Nein. Die Figurenkapitel und Gärtner-Kapitel springen zwischen Zeiten und Perspektiven."]],"quiz":"Welche Wirkung kann die wiederkehrende Beschreibung von Gartenarbeit zwischen den Figurenkapiteln entfalten?","options":["Sie löscht alle historischen Unterschiede zwischen den Figuren vollständig aus.","Sie ordnet den gesamten Roman streng nach Jahreszahlen.","Sie stellt jahreszeitliche Abläufe neben historische Umbrüche und macht Veränderungen gerade durch Wiederholung sichtbar.","Sie dient allein dazu, dem Gärtner alle historischen Ereignisse als direkte Rede zuzuschreiben."],"answer":2,"flag":"","proofQuestion":"Welche konkrete Beobachtung stützt das?","proofOptions":["Der Gärtner führt in jedem Kapitel ein politisches Tagebuch.","Die Gartenarbeit wird durch einen einzigen durchgehenden Monolog ersetzt.","Das Kapitel beschreibt etwa Beetanlage und Schädlingsbekämpfung in einer wiederkehrenden Reihe von Arbeitsabläufen."],"proofAnswer":2,"explanation":"Wiederholung und Variation bilden eine Gegenzeit zu den Brüchen der Figurenbiografien."},{"title":"Der Tuchfabrikant","era":"1933 bis 1940; Rückblenden","place":"Seeufer / Nachbargrundstück","anchor":"willow","fact":"Die jüdische Familie besitzt die mittlere Parzelle am See. Arthur pflanzt dort mit Angehörigen eine Weide. Ludwig und Anna fliehen nach Südafrika. Der später stark unter Wert erfolgte Grundstücksverkauf ermöglicht den übrigen Angehörigen nicht die erhoffte Flucht.","qa":[["Wer pflanzt die Weide?","Arthur zusammen mit Angehörigen, darunter seine Enkelin Doris."],["Weshalb wird das Grundstück verkauft?","Die Familie hofft, die Flucht vor nationalsozialistischer Verfolgung finanzieren zu können."],["Was geschieht mit Ludwig und Anna?","Sie fliehen nach Südafrika."]],"quiz":"Welche Deutung der Weide ist im Kontext der Familiengeschichte des Tuchfabrikanten tragfähig?","options":["Sie garantiert der Familie, dass das Grundstück trotz der Verfolgung in ihrem Besitz bleibt.","Sie markiert familiäre Verbundenheit mit einem Ort, die durch Entrechtung und Vertreibung gewaltsam unterbrochen wird.","Sie ist ein rein technisches Mittel zur Vermessung des Besitzes.","Sie steht für den freiwilligen und wirtschaftlich günstigen Verkauf des Grundstücks."],"answer":1,"flag":"Nationalsozialistische Verfolgung und Ermordung werden sachlich behandelt.","proofQuestion":"Wodurch wird diese Spannung im Text konkret?","proofOptions":["Die Familie pflanzt die Weide gemeinsam; später wird ihr Grundstück unter Verfolgungsdruck weit unter Wert verkauft.","Das Haus und alle Bäume werden von der jüdischen Familie über Generationen behalten.","Die Weide wird erst nach der Rückerstattung des Grundstücks angepflanzt."],"proofAnswer":0,"explanation":"Ein gemeinschaftlicher Akt des Verwurzelns steht in Spannung zum erzwungenen Verlust von Heimat."},{"title":"Der Gärtner IV","era":"Nach 1939","place":"Früheres Nachbargrundstück","anchor":"orchard","fact":"Nach dem Kauf des Nachbargrundstücks rodet der Gärtner dort Gehölze und pflanzt Obstbäume im Auftrag des Architekten.","qa":[["Wer beauftragt ihn?","Der Architekt."],["Was geschieht mit dem Grundstück?","Es wird gerodet und mit Obstbäumen bepflanzt."]],"quiz":"Wie verändert sich die Bedeutung der Obstbaumpflanzungen durch die Vorgeschichte des Grundstücks?","options":["Die Pflanzung ist unverbunden mit den Eigentumsverhältnissen, weil sie in der Eiszeit spielt.","Sie dient als Beweis dafür, dass Natur alle politischen Gewaltverhältnisse ausgleicht.","Sie folgt der Rückgabe des Bodens an die vertriebene Familie.","Die neue Nutzung überformt ein Grundstück, dessen Besitzer durch nationalsozialistische Verfolgung zum Verkauf gedrängt wurden."],"answer":3,"flag":"","proofQuestion":"Welche zwei Textinformationen müssen dazu zusammengedacht werden?","proofOptions":["Der Architekt übernimmt das Nachbargrundstück; der Gärtner rodet dort und pflanzt Obstbäume.","Die Schriftstellerin lässt zuerst die Bäume roden und verkauft dann das Haus.","Die Obstwiese wird von Doris im Warschauer Ghetto angelegt."],"proofAnswer":0,"explanation":"Die sichtbare Gestaltung des Grundstücks verdeckt nicht seine vorausgegangene Enteignungs- und Verlustgeschichte."},{"title":"Die Frau des Architekten","era":"1951; Erinnerungen an 1945","place":"Haus / Versteck","anchor":"wardrobe","fact":"Die Frau erinnert sich vor dem Verlassen des Hauses an das gemeinsame Leben dort und an eine traumatische Begegnung mit einem sowjetischen Soldaten 1945, als sie sich im begehbaren Kleiderschrank versteckt hatte.","qa":[["Wo versucht sie 1945 Schutz zu finden?","Im begehbaren Kleiderschrank des Hauses."],["Welche Zeitebenen verbinden sich?","Der Abschied 1951 und Erinnerungen an frühere Jahre, besonders 1945."]],"quiz":"Wie prägt die Erinnerung an 1945 die erzählte Gegenwart der Frau des Architekten?","options":["Der Abschied 1951 wird ausschließlich in neutraler chronologischer Reihenfolge berichtet.","Das frühere Gewalterlebnis beeinflusst ihre Wahrnehmung des Hauses und ihres Abschieds; Zeitebenen greifen ineinander.","Ihre Erinnerungen behandeln ausschließlich den Kauf des Hauses.","Der Text macht 1945 rückgängig, indem er die Begegnung auslässt."],"answer":1,"flag":"Hinweis: Diese Kapitel enthalten sexualisierte Gewalt. Das Spiel stellt sie nicht nach.","proofQuestion":"Welche formale Beobachtung unterstützt die Deutung?","proofOptions":["Die Frau verlässt das Haus 1951; der Text verbindet ihren Abschied mit Erinnerungen an das Versteck 1945.","Die Frau berichtet als neutrale Historikerin ausschließlich über den Prolog.","Die Szene aus dem Kleiderschrank wird erst im Epilog erfunden."],"proofAnswer":0,"explanation":"Das Kapitel erzählt nicht nur Ereignisse nacheinander, sondern verknüpft gegenwärtige Wahrnehmung und traumatische Erinnerung."},{"title":"Der Gärtner V","era":"Um 1940","place":"Bienenhaus","anchor":"bees","fact":"Auf dem übernommenen Grundstück entsteht ein Bienenhaus. Der Gärtner widmet sich auch der Imkerei und wohnt zeitweise im Schleuderraum.","qa":[["Welche neue Tätigkeit übernimmt er?","Die Imkerei."],["Wo wohnt er zeitweise?","Im Schleuderraum des Bienenhauses."]],"quiz":"Welche Bedeutung hat die Einrichtung des Bienenhauses im wiederkehrenden Gärtner-Erzählstrang?","options":["Sie beendet die Gartenarbeit und ersetzt den Gärtner durch eine neue Hauptfigur.","Sie zeigt, dass mit neuen Nutzungen des Grundstücks auch die Routinen des Gärtners um neue Arbeiten erweitert werden.","Sie beweist, dass das Grundstück außerhalb der politischen Geschichte steht.","Sie ist eine nachträgliche Rückkehr des jüdischen Tuchfabrikanten an den See."],"answer":1,"flag":"","proofQuestion":"Welcher konkrete Befund ist einschlägig?","proofOptions":["Der Gärtner baut im Warschauer Ghetto Bienenstöcke auf.","Das Bienenhaus existiert nur als Traum der Schriftstellerin.","Auf dem übernommenen Grundstück entsteht ein Bienenhaus; der Gärtner betreibt Imkerei und wohnt zeitweise im Schleuderraum."],"proofAnswer":2,"explanation":"Die scheinbar gleichförmige Arbeit verändert sich mit der materiellen und sozialen Geschichte des Ortes."},{"title":"Das Mädchen","era":"1942/43; Erinnerungen","place":"Erinnerungsort am See","anchor":"willow","fact":"Doris ist die Enkelin von Arthur und Hermine. Im Warschauer Ghetto versteckt sie sich und erinnert sich unter anderem an den See und die Weide. Sie wird entdeckt und von den Nationalsozialisten ermordet. Ihr eigentlicher Handlungsort liegt nicht am See.","qa":[["Wo befindet sich Doris im Figurenkapitel?","Im Warschauer Ghetto, nicht am See."],["Woran erinnert sie sich?","Unter anderem an die gemeinsamen Aufenthalte am See und die Weide."],["Wie endet ihr Schicksal?","Sie wird deportiert und von den Nationalsozialisten ermordet."]],"quiz":"Welche Funktion erhält die Erinnerung an den See im Kapitel über Doris?","options":["Sie ersetzt die historische Realität der Verfolgung vollständig durch ein glückliches Gegenwartsbild.","Sie liefert den Beleg, Doris halte sich während des Kapitels tatsächlich am See auf.","Der erinnerte Ort steht der existenziellen Bedrohung im Ghetto gegenüber und eröffnet eine innere, nicht reale Gegenwelt.","Sie bestätigt, dass Heimkehr für Doris am Ende gelingt."],"answer":2,"flag":"Hinweis: Dieses Kapitel behandelt den Holocaust. Keine nachgespielte Verfolgung.","proofQuestion":"Welche Kombination von Handlungsebenen stützt dies?","proofOptions":["Doris kehrt aus Südafrika ins Haus zurück und besucht die Weide.","Doris versteckt sich im Warschauer Ghetto und erinnert sich an frühere Aufenthalte am See.","Doris arbeitet im Bienenhaus und erzählt den übrigen Bewohnern ihre Geschichte."],"proofAnswer":1,"explanation":"Gerade der Unterschied zwischen tatsächlichem Handlungsort und erinnerter Heimat macht den Verlust sichtbar."},{"title":"Der Gärtner VI","era":"1944/45","place":"Garten","anchor":"garden","fact":"Vor dem Einmarsch der Roten Armee hilft der Gärtner beim Sichern von Wertgegenständen. Pferde der sowjetischen Armee beschädigen den Garten.","qa":[["Welche Veränderung trifft den Garten?","Die Pferde der vorrückenden Armee verwüsten Teile der Anlage."],["Was tut der Gärtner zuvor?","Er hilft dabei, Wertgegenstände zu sichern."]],"quiz":"Inwiefern verändert der Krieg die Bedeutung des Gartens in diesem Abschnitt?","options":["Der Garten bleibt ein von Kriegsereignissen vollständig abgetrennter, geschützter Naturraum.","Die Kriegshandlungen werden ausschließlich durch spätere Gerichtsakten vermittelt.","Der Gärtner übernimmt die Rolle eines historisch allwissenden Berichterstatters.","Der Krieg greift materiell in einen zuvor gepflegten Ort ein: Sichern und Zerstören treten neben die bisherigen Pflegehandlungen."],"answer":3,"flag":"","proofQuestion":"Welcher Textbefund belegt das?","proofOptions":["Der Gärtner hilft beim Sichern von Wertgegenständen; Pferde der sowjetischen Armee beschädigen den Garten.","Das Kapitel zeigt ausschließlich den Verkauf der ursprünglichen Parzellen.","Die Gartenarbeit findet ohne Berührung mit den Ereignissen von 1944/45 statt."],"proofAnswer":0,"explanation":"Die Eingriffe in den Garten lassen die sogenannte große Geschichte auf der Ebene konkreter Dinge erfahrbar werden."},{"title":"Der Rotarmist","era":"1945","place":"Haus / Versteck","anchor":"wardrobe","fact":"Das Kapitel verlagert die Perspektive auf einen jungen sowjetischen Offizier, der die Frau des Architekten in ihrem Versteck entdeckt. Dieselben Ereignisse werden aus einer anderen Perspektive erzählt.","qa":[["Welche Figur rückt in den Mittelpunkt?","Ein junger sowjetischer Offizier."],["Welche Verbindung gibt es zum vorigen Figurenkapitel?","Beide Kapitel beziehen sich auf die Begegnung im Haus 1945, erzählen sie aber aus unterschiedlicher Perspektive."]],"quiz":"Was leistet die erneute Darstellung der Begegnung von 1945 aus der Perspektive des Rotarmisten?","options":["Sie hebt die frühere Darstellung auf und liefert eine eindeutige, allgemein verbindliche Entschuldigung der Gewalt.","Sie setzt beide Perspektiven in ein Verhältnis und macht die Bindung von Wahrnehmung an eine Figur erkennbar, ohne das Gewalterlebnis dadurch aufzuheben.","Sie ändert den Zeitpunkt und Ort der Ereignisse vollständig.","Sie ersetzt die Figurenwahrnehmung durch ein sachliches Gerichtsprotokoll."],"answer":1,"flag":"Hinweis: Im Roman geht es hier um sexualisierte Gewalt. Keine Inszenierung im Spiel.","proofQuestion":"Welches erzähltechnische Verfahren ist dafür zentral?","proofOptions":["Eine Folge unabhängiger Naturbeschreibungen ohne Figurenfokalisierung.","Eine chronologische Zusammenfassung aller nachfolgenden Kapitel.","Ein Wechsel der fokalisierten Figur bei der Darstellung miteinander verbundener Ereignisse von 1945."],"proofAnswer":2,"explanation":"Ein Perspektivwechsel macht unterschiedliche Wahrnehmungen sichtbar; er darf nicht mit einer Relativierung erlebter Gewalt verwechselt werden."},{"title":"Der Gärtner VII","era":"Nach 1945 / 1951","place":"Haus und Garten","anchor":"garden","fact":"Der Gärtner bleibt am Grundstück, obwohl die Eigentums- und Nutzungsverhältnisse wechseln. Nach der Flucht des Architekten übernehmen neue Pächter das Haus.","qa":[["Was bleibt über verschiedene Zeiten hinweg?","Die Arbeit des Gärtners auf dem Grundstück."],["Was ändert sich?","Die Bewohner sowie die rechtlichen Besitz- und Nutzungsverhältnisse."]],"quiz":"Welche strukturelle Funktion erfüllt der Gärtner beim Wechsel der Nutzer des Hauses?","options":["Er garantiert dauerhaft unveränderte Eigentumsverhältnisse.","Er erzählt sämtliche politischen Entscheidungen im Namen der Bewohner.","Seine fortgesetzte Arbeit verbindet unterschiedliche Bewohnerzeiten, ohne die historischen Brüche aufzuheben.","Er überträgt nach 1951 das Haus durch Kauf an die Schriftstellerin."],"answer":2,"flag":"","proofQuestion":"Welche Ereignisse zeigen diese doppelte Struktur von Kontinuität und Bruch?","proofOptions":["Der Gärtner bleibt, während nach der Flucht des Architekten andere Personen das Haus nutzen.","Der Gärtner flieht zusammen mit dem Architekten nach West-Berlin.","Die Besitz- und Nutzungsverhältnisse bleiben im gesamten Roman gleich."],"proofAnswer":0,"explanation":"Die Figur bildet einen Kontinuitätsfaden, der gerade die Veränderungen im Hintergrund sichtbar macht."},{"title":"Die Schriftstellerin","era":"DDR-Zeit; Schwerpunkt 1973","place":"Haus","anchor":"house","fact":"Eine kommunistische Schriftstellerin, die während der NS-Zeit in der Sowjetunion im Exil gewesen war, nutzt das Haus nach der Flucht des Architekten. Im Kapitel spielen Erinnerung und der Umgang mit ihrer Vergangenheit eine Rolle.","qa":[["Welche Erfahrungen prägen ihre Biografie?","Die Verfolgung beziehungsweise das Exil in der Zeit des Nationalsozialismus und die Rückkehr in die DDR."],["Wie gelangt sie an das Haus?","Sie nutzt das nach der Flucht des Architekten staatlich übernommene Haus als Pächterin."]],"quiz":"Wie problematisiert das Kapitel der Schriftstellerin die Vorstellung einer endgültigen Heimkehr?","options":["Das Exil wird als folgenlose Unterbrechung dargestellt; Erinnerung spielt keine Rolle.","Heimkehr wird ausschließlich als erfolgreicher Rückerwerb des eigenen Hauses definiert.","Die Rückkehr nach Deutschland hebt Brüche der Verfolgungs- und Exilgeschichte nicht einfach auf.","Die Schriftstellerin hat keinerlei Bezug zur deutschen Geschichte des 20. Jahrhunderts."],"answer":2,"flag":"","proofQuestion":"Welche biografische Konstellation liegt dieser Deutung zugrunde?","proofOptions":["Sie wurde aus Masuren vertrieben und erbt unmittelbar das Haus des Großbauern.","Sie hat im Nationalsozialismus in der Sowjetunion im Exil gelebt und nutzt später das Haus in der DDR.","Sie flieht 1951 als Architektin nach West-Berlin."],"proofAnswer":1,"explanation":"Der politische Ortswechsel beendet nicht automatisch die Arbeit an Erinnerung, Verlust und Zugehörigkeit."},{"title":"Der Gärtner VIII","era":"1960er Jahre","place":"Garten / Obstbäume","anchor":"orchard","fact":"Bei der Kirschernte verunglückt der Gärtner und ist danach in seiner Arbeit beeinträchtigt. Sein körperlicher Zustand verändert sich, während die Gartenarbeit fortgesetzt wird.","qa":[["Welches Ereignis verändert seine Arbeit?","Ein Unfall bei der Kirschernte."],["Wodurch unterscheidet er sich von den anderen Figuren?","Seine Tätigkeit verknüpft die vielen Zeiten und Lebensgeschichten."]],"quiz":"Welche Funktion hat der Unfall bei der Kirschernte für die Darstellung des Gärtners?","options":["Er unterbricht die Vorstellung einer völlig unveränderlichen Figur und zeigt den Körper als Teil vergangener Zeit.","Er beweist, dass die Gärtnerfigur außerhalb jeder biologischen Zeit existiert.","Er führt zur sofortigen Übergabe des Hauses an die Familie Wurrach.","Er erklärt abschließend das bis dahin unbekannte Herkunftsland des Gärtners."],"answer":0,"flag":"","proofQuestion":"Welcher Befund stützt die zeitliche Lesart?","proofOptions":["Der Gärtner wird im Text weder müde noch verletzt.","Die Kirschernte findet in Doris' Erinnerung an das Warschauer Ghetto statt.","Der Gärtner verunglückt bei der Arbeit und bleibt danach beeinträchtigt."],"proofAnswer":2,"explanation":"Die wiederkehrenden Arbeitsabläufe dürfen nicht als körperliche Unsterblichkeit des Gärtners missverstanden werden."},{"title":"Die Besucherin","era":"DDR-Zeit; Schwerpunkt 1973","place":"Garten / See","anchor":"garden","fact":"Die Besucherin ist die Großmutter der Schwiegertochter der Schriftstellerin. Sie wurde am Ende des Zweiten Weltkriegs aus Masuren vertrieben. Der Aufenthalt am See verbindet sich mit Erinnerungen an den Verlust ihrer Heimat.","qa":[["Woher stammt die Besucherin?","Aus Masuren."],["Welches Thema bestimmt ihre Erinnerungen?","Vertreibung und der Verlust des bisherigen Lebensortes."]],"quiz":"Welche Beziehung zwischen dem See und Masuren prägt das Kapitel der Besucherin?","options":["Der neue Ort löst ihre Erinnerung an die verlorene Herkunftsregion vollständig auf.","Der Aufenthalt am See aktiviert Erinnerungen an einen anderen, verlorenen Ort; zwei Raumebenen überlagern sich.","Die Besucherin ist Eigentümerin beider Grundstücke.","Das Kapitel verlegt die Haupthandlung des Romans dauerhaft nach Masuren."],"answer":1,"flag":"","proofQuestion":"Welche Beobachtung trägt diese Deutung?","proofOptions":["Die Besucherin ist wegen des Zweiten Weltkriegs aus Masuren vertrieben worden; der Aufenthalt am See verbindet sich mit diesem Verlust.","Sie baut das Haus am märkischen See und zieht ohne Ortsverlust dort ein.","Sie verwechselt das Haus mit der Jagdhütte des Gärtners."],"proofAnswer":0,"explanation":"Der besuchte Ort wird zur Resonanzfläche eines anderen, nicht mehr erreichbaren Herkunftsraums."},{"title":"Der Gärtner IX","era":"1970er Jahre","place":"Werkstatt / Grundstücksgrenze","anchor":"workshop","fact":"Die Nachbarschaftsverhältnisse ändern sich; es gibt einen Grenzzaun. Die Werkstatt am See wird einem Paar als Wochenendhaus verpachtet.","qa":[["Was wird aus der Werkstatt?","Sie wird als Wochenendhaus verpachtet."],["Was markiert die Grenze?","Ein Zaun zwischen den Grundstücken."]],"quiz":"Wie lassen sich Grenzzaun und Umnutzung der Werkstatt als Motive lesen?","options":["Beide zeigen, dass Grenzen und Nutzungsansprüche in der Geschichte des Grundstücks stets unverändert bleiben.","Sie belegen, dass nur der Gärtner das Grundstück besitzen darf.","Sie markieren, dass der Raum durch neue Abgrenzungen und Gebrauchsweisen immer wieder neu geordnet wird.","Sie verdeutlichen eine Rückkehr der natürlichen Waldlandschaft ohne menschliche Eingriffe."],"answer":2,"flag":"","proofQuestion":"Welcher Textbefund lässt diese Lesart zu?","proofOptions":["Die Werkstatt wird nach Kriegsende abgerissen und nie wieder genutzt.","Eine Grundstücksgrenze wird durch einen Zaun kenntlich; die Werkstatt wird als Wochenendhaus verpachtet.","Die alten Parzellen werden zu einem unveränderlichen Naturschutzgebiet zusammengelegt."],"proofAnswer":1,"explanation":"Raum wird durch Besitz, Grenzen und Nutzung wiederholt sozial definiert."},{"title":"Die Unterpächter","era":"Späte DDR- und Nachwendezeit","place":"Werkstatt","anchor":"workshop","fact":"Ein Paar nutzt die ehemalige Werkstatt als Wochenendhaus am See. Die Biografien beider sind durch Krieg, Flucht und DDR-Verhältnisse geprägt; nach 1989 treten neue Erkenntnisse über die eigene Vergangenheit hinzu.","qa":[["Was pachten die beiden?","Die zum Wochenendhaus umgenutzte Werkstatt am See."],["Welche übergeordnete Rolle spielt die Zeit nach 1989?","Sie verändert den Blick auf persönliche Vergangenheit und bestehende Verhältnisse."]],"quiz":"Wie verändert der historische Umbruch von 1989 den Blick auf die Unterpächter?","options":["Er macht ihre Biografien und Erfahrungen von Krieg, Flucht und DDR-Zeit erneut deutungsbedürftig.","Er lässt die zuvor erzählten Lebensläufe vollständig aus dem Text verschwinden.","Er beendet jede Verbindung zwischen persönlicher Vergangenheit und gesellschaftlichen Ereignissen.","Er führt dazu, dass die Unterpächter das gesamte Anwesen bereits vor 1933 besitzen."],"answer":0,"flag":"","proofQuestion":"Welcher Handlungskomplex untermauert die Deutung?","proofOptions":["Die Unterpächter führen den Großbauern durch die Eiszeit.","Die beiden benutzen die Werkstatt als Wochenendhaus; nach 1989 kommen neue Erkenntnisse über die Vergangenheit hinzu.","Die Unterpächter siedeln unmittelbar aus dem Warschauer Ghetto an den See."],"proofAnswer":1,"explanation":"Die Nachwendezeit bewirkt eine Neubewertung bereits gelebter Biografien, nicht ihre Tilgung."},{"title":"Der Gärtner X","era":"1980er Jahre / Rückblicke","place":"Baum / Werkstatt","anchor":"orchard","fact":"Unter den Wurzeln einer gefällten Tanne wird eine Kiste mit Porzellan gefunden. Dinge aus früheren Zeiten tauchen beim Arbeiten am Grundstück wieder auf.","qa":[["Was kommt ans Licht?","Eine Kiste mit Porzellan."],["Was zeigt der Fund?","Frühere Lebensphasen hinterlassen materielle Spuren im Boden."]],"quiz":"Welche erzählerische Funktion lässt sich dem Porzellanfund unter den Wurzeln zuschreiben?","options":["Er dient nur als Beweis für eine zufällige, erzähltechnisch bedeutungslose Gartentätigkeit.","Er klärt endgültig sämtliche ungeklärten Figurenbiografien.","Er stellt die Vergangenheit als materiell im Boden hinterlassene Spur dar, die später unvermittelt wieder sichtbar wird.","Er dokumentiert einen juristisch gültigen neuen Eigentümer des Grundstücks."],"answer":2,"flag":"","proofQuestion":"Welche konkrete Beobachtung stützt den Deutungsvorschlag?","proofOptions":["Bei der Gartenarbeit wird unter den Wurzeln einer gefällten Tanne eine Kiste mit Porzellan gefunden.","Eine Figur liest aus einem vollständigen Tagebuch alle Jahrzehnte lückenlos ab.","Der See wird trockengelegt und gibt den Kaufvertrag des Großbauern frei."],"proofAnswer":0,"explanation":"Der Fund ist ein materielles Zeichen für geschichtete Erinnerungs- und Besitzspuren des Ortes."},{"title":"Der Kinderfreund","era":"Um die Jahrtausendwende","place":"Haus","anchor":"house","fact":"Der frühere Kinderfreund der Enkelin der Schriftstellerin kümmert sich um kleinere Reparaturen im lange leer stehenden Haus. Das Kapitel verbindet gemeinsame Kindheit und Erinnerung mit dem Verfall des Gebäudes.","qa":[["Was tut der Kinderfreund am Haus?","Er nimmt kleinere Reparaturen vor."],["Wen kennt er aus Kindertagen?","Die Enkelin der Schriftstellerin."]],"quiz":"Wie verbindet das Kapitel des Kinderfreundes unterschiedliche Zeitebenen?","options":["Das leer stehende Haus wird ausschließlich aus der Perspektive seines ursprünglichen Bauherrn beschrieben.","Die Rückblicke des Kinderfreundes ersetzen jede Gegenwartsbeschreibung.","Reparaturen und Verfall in der Gegenwart treffen auf Erinnerungen an eine frühere gemeinsame Kindheit.","Die erzählte Zeit kehrt vollständig zum geologischen Prolog zurück."],"answer":2,"flag":"Hinweis: Der Roman enthält auch hier Berichte über sexualisierte Gewalt; diese werden nicht nachgespielt.","proofQuestion":"Welcher Befund bildet die Grundlage dieser Lesart?","proofOptions":["Der Kinderfreund erwirbt das Haus als erster Eigentümer.","Der frühere Freund der Enkelin kümmert sich um Reparaturen im lange leer stehenden Gebäude.","Der Gärtner erzählt von den Tagen der Weimarer Republik als Ich-Erzähler."],"proofAnswer":1,"explanation":"Die Gegenwart des alternden Hauses wird mit der Erinnerung an frühere Erfahrungen überblendet."},{"title":"Der Gärtner XI","era":"1990er Jahre","place":"Garten / Waldrand","anchor":"woods","fact":"Der Gärtner zieht sich zunehmend zurück. Schließlich verschwindet er; der Roman klärt nicht auf, wohin.","qa":[["Weiß man, was aus ihm wird?","Nein. Sein weiterer Verbleib bleibt offen."],["Welche Funktion hat sein Verschwinden?","Mit ihm verschwindet eine über die Zeiten hinweg bestehende Verbindung des Grundstücks."]],"quiz":"Welche Bedeutung hat das ungeklärte Verschwinden des Gärtners für die Romankomposition?","options":["Es beendet einen wiederkehrenden Orientierungspunkt, ohne ihn durch eine geschlossene biografische Auflösung zu ersetzen.","Es löst alle zuvor dargestellten Eigentumskonflikte rückwirkend auf.","Es beweist, dass der Gärtner eigentlich der Architekt war.","Es leitet eine neue Reihe gleichförmiger Gärtner-Kapitel ein."],"answer":0,"flag":"","proofQuestion":"Welche Beobachtung bestätigt diese Lesart?","proofOptions":["Sein vollständiger weiterer Lebenslauf wird bis zum Tod dokumentiert.","Der Gärtner kehrt als rechtmäßiger Besitzer zurück.","Der Gärtner zieht sich zurück und verschwindet; wohin er geht, bleibt offen."],"proofAnswer":2,"explanation":"Der Text belässt eine zentrale Figur als Leerstelle und beendet damit die Wiederkehr seiner Kapitel."},{"title":"Die unberechtigte Eigenbesitzerin","era":"Nach 1989","place":"Haus","anchor":"house","fact":"Die Enkelin der Schriftstellerin muss das Haus nach einem Restitutionsverfahren aufgeben. Vor der Übergabe räumt sie das Gebäude und erinnert sich an ihre Zeit dort.","qa":[["Wer ist die unberechtigte Eigenbesitzerin?","Die Enkelin der Schriftstellerin."],["Weshalb verliert sie das Haus?","Die Rechtslage nach der Wiedervereinigung und die geltend gemachten Ansprüche der Erben der Architektenfrau führen zur Rückgabe."]],"quiz":"Welche Spannung wird durch den Titel »Die unberechtigte Eigenbesitzerin« sichtbar?","options":["Die juristische Bewertung des Besitzes und das subjektive Erleben des Hauses als vertrauter Lebensort fallen auseinander.","Die Erzählerin nennt die Figur so, weil sie das Gebäude selbst erbaut hat.","Der Titel bestätigt, dass die Enkelin niemals im Haus gewesen ist.","Der Titel erklärt sämtliche Ansprüche der früheren jüdischen Besitzer für irrelevant."],"answer":0,"flag":"","proofQuestion":"Welcher Kontrast im Kapitel stützt dies?","proofOptions":["Die Enkelin kauft das Grundstück beim Großbauern und verlässt es freiwillig.","Die Enkelin muss infolge des Restitutionsverfahrens gehen und räumt das Haus unter Erinnerungen an ihre Zeit dort.","Das Haus gehört ununterbrochen der Schriftstellerin und bleibt ihr auch nach der Wiedervereinigung."],"proofAnswer":1,"explanation":"Der rechtliche Terminus steht einer persönlich gewachsenen Zugehörigkeit gegenüber, ohne die Besitzgeschichte zu vereinfachen."},{"title":"Epilog","era":"Nach den Lebensgeschichten","place":"Grundstück nach dem Abriss","anchor":"house","fact":"Der Epilog beschreibt den Abriss des Hauses und die Eingriffe in das Grundstück. Die Landschaft bleibt; das Bauwerk verschwindet.","qa":[["Was geschieht mit dem Haus?","Es wird abgerissen."],["Wie steht der Epilog zum Prolog?","Beide richten den Blick auf die Landschaft jenseits der Lebenszeit der Bewohner."]],"quiz":"Welche Gesamtwirkung entsteht aus der Gegenüberstellung von Prolog und Epilog?","options":["Der Abriss beendet auch die geologische Geschichte des Sees.","Die Rahmung erklärt alle historischen Konflikte für bloße Missverständnisse.","Die zeitliche Rahmung relativiert menschliche Lebens- und Besitzspannen: Das Haus wird gebaut und beseitigt, während der Landschaftsraum fortbesteht.","Der Epilog führt den Roman zu einer stabilen Eigentümerfamilie zurück."],"answer":2,"flag":"","proofQuestion":"Welche Beobachtung ist dafür entscheidend?","proofOptions":["Der Prolog schildert den Bau des Hauses, der Epilog die Hochzeit des Großbauern.","Der Prolog richtet den Blick auf die Entstehung des Sees; der Epilog beschreibt den Abriss des Hauses.","Beide Rahmenkapitel erzählen aus der Ich-Perspektive der Schriftstellerin."],"proofAnswer":1,"explanation":"Die Verbindung von Erdgeschichte und Abriss lässt die Dauer menschlicher Eingriffe begrenzt erscheinen."}]</script>
@@ -387,7 +414,7 @@ $('#npcTalkBtn').onclick=openNpcDialogue;
 $('#npcMarker').onclick=openNpcDialogue;
 
 function updateHUD(){let c=chapters[state.chapter],unlocked=highestUnlocked();$('#chapterSelect').value=state.chapter;$('#era').textContent=c.era;$('#storyPlace').textContent=c.place;$('#chapterCount').textContent=String(state.chapter+1).padStart(2,'0')+' / 24';$('#prev').disabled=state.chapter===0;$('#next').disabled=state.chapter===23||state.chapter>=unlocked;$('#progress').style.width=100*state.solved.size/24+'%';$('#progressNum').textContent=state.solved.size+' / 24 Kapitel gelöst';for(const [i,o] of [...$('#chapterSelect').options].entries()){o.disabled=i>unlocked;o.textContent=(i===0?'Prolog':i===23?'Epilog':String(i).padStart(2,'0')+' · '+chapters[i].title)+(state.solved.has(i)?' ✓':i>unlocked?' 🔒':'')};for(let x of document.querySelectorAll('.marker'))x.classList.toggle('primary',x.dataset.id===c.anchor)}
-function setChapter(i,stayHere=false){if(state.advanceTimer!==null){clearTimeout(state.advanceTimer);state.advanceTimer=null;}closeNpcDialogue();state.chapter=Math.max(0,Math.min(highestUnlocked(),i));updateHUD();updateWorld();closePanel();if(!stayHere){let anchor=STATIONS.find(s=>s.id===chapters[state.chapter].anchor);if(anchor){state.px=Math.min(40,Math.max(-40,anchor.x-4));state.pz=Math.min(35,Math.max(-12,anchor.z+8));}state.yaw=0;state.facing=state.yaw;if(['house','wardrobe'].includes(cH())&&state.chapter!==23){state.px=-4;state.pz=-10;state.yaw=Math.PI;state.facing=state.yaw}window.heimsuchungFixSpawn?.()}function cH(){return chapters[state.chapter].anchor}$('#footer').innerHTML='Kapitel <b>'+(state.chapter+1)+'/24</b>: '+escapeHtml(chapters[state.chapter].title)+' · Finde den gold markierten Ort und beantworte die Frage.'}
+function setChapter(i,stayHere=false){if(typeof boatState!=='undefined'&&boatState.active)boatDisembark(true);if(state.advanceTimer!==null){clearTimeout(state.advanceTimer);state.advanceTimer=null;}closeNpcDialogue();state.chapter=Math.max(0,Math.min(highestUnlocked(),i));updateHUD();updateWorld();closePanel();if(!stayHere){let anchor=STATIONS.find(s=>s.id===chapters[state.chapter].anchor);if(anchor){state.px=Math.min(40,Math.max(-40,anchor.x-4));state.pz=Math.min(35,Math.max(-12,anchor.z+8));}state.yaw=0;state.facing=state.yaw;if(['house','wardrobe'].includes(cH())&&state.chapter!==23){state.px=-4;state.pz=-10;state.yaw=Math.PI;state.facing=state.yaw}window.heimsuchungFixSpawn?.()}function cH(){return chapters[state.chapter].anchor}$('#footer').innerHTML='Kapitel <b>'+(state.chapter+1)+'/24</b>: '+escapeHtml(chapters[state.chapter].title)+' · Finde den gold markierten Ort und beantworte die Frage.'}
 function escapeHtml(t){return String(t).replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
 function openPanel(title,eyebrow,html){state.panel=true;$('#panelTitle').textContent=title;$('#panelEyebrow').textContent=eyebrow;$('#panelBody').innerHTML=html;$('#infoPanel').classList.add('open')}
 function closePanel(){if(state.npcOpen)closeNpcDialogue();state.panel=false;$('#infoPanel').classList.remove('open')}
@@ -696,7 +723,7 @@ const introSoundtrack=setupIntroSoundtrack();
 
 if(highestUnlocked()>0)$('#startBtn').textContent='Spiel fortsetzen · Kapitel '+(highestUnlocked()+1);$('#startBtn').onclick=()=>{introSoundtrack.stop();state.started=true;$('#intro').style.display='none';setChapter(highestUnlocked());traceUpdateHud()};
 
-window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','e','t','escape'].includes(k))e.preventDefault();state.keys.add(k);if(k==='e'&&!state.panel){if(state.miniActive&&state.nearBug!==null)catchBeetle(state.nearBug);else if(state.near)openStation(state.near.id)};if(k==='t'&&!state.panel)openNpcDialogue();if(k==='escape'){if(state.npcOpen)closeNpcDialogue();else closePanel()}});window.addEventListener('keyup',e=>state.keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>state.keys.clear());
+window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','e','t','b','f','escape'].includes(k))e.preventDefault();state.keys.add(k);if(k==='e'&&!state.panel){if(state.miniActive&&state.nearBug!==null)catchBeetle(state.nearBug);else if(state.near)openStation(state.near.id)};if(k==='t'&&!state.panel)openNpcDialogue();if(k==='b'&&!state.panel&&state.started){e.preventDefault();boatToggle()}if(k==='f'&&boatState.active&&!state.panel){e.preventDefault();boatInspectNearby()}if(k==='escape'){if(state.npcOpen)closeNpcDialogue();else closePanel()}});window.addEventListener('keyup',e=>state.keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>state.keys.clear());
 const joy=$('#movePad'),stick=$('#stick');let joyId=null;
 function joyMove(e){let r=joy.getBoundingClientRect();let cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=(e.clientX-cx)/(r.width*.33),dy=(e.clientY-cy)/(r.width*.33);let v=Math.max(1,Math.hypot(dx,dy));state.joyX=dx/v;state.joyY=dy/v;stick.style.transform=`translate(${state.joyX*35}px,${state.joyY*35}px)`}
 joy.addEventListener('pointerdown',e=>{e.preventDefault();joyId=e.pointerId;joy.setPointerCapture(joyId);joyMove(e)});joy.addEventListener('pointermove',e=>{if(joyId===e.pointerId)joyMove(e)});function joyRelease(e){if(joyId!==e.pointerId)return;joyId=null;state.joyX=state.joyY=0;stick.style.transform='translate(0,0)'}joy.addEventListener('pointerup',joyRelease);joy.addEventListener('pointercancel',joyRelease);
@@ -776,13 +803,14 @@ for(let i=0;i<11;i++){
  cloudCluster(Math.cos(a)*radius,19+(i%4)*4,Math.sin(a)*radius,5.3+(i%3)*1.4,i*.87);
 }
 // Terrainschichten: Gelände, Ufer und Wasser werden bewusst atmosphärischer gestaltet.
-box(0,-.54,16,130,.92,85,[.31,.45,.33,1]);
+box(0,-.54,16,130,.92,50,[.31,.45,.33,1]); // Südgrenze z=-9: Land verdeckt den See nicht mehr.
 box(-8,-.51,12,64,.08,33,[.34,.49,.35,1]);
 box(21,-.50,10,52,.08,28,[.35,.50,.36,1]);
 box(-26,-.49,24,38,.07,18,[.38,.51,.35,1]);
 // See und Uferzone.
-box(0,-.45,-31,130,.26,49,[.18,.42,.52,1]);
-box(0,-.37,-30.2,130,.08,46,[.23,.50,.60,.78],'water');
+// Der Seegrund liegt unter der Wasseroberfläche. Vorher lag er fast auf Wasserniveau.
+box(0,-2.41,-31,130,.32,49,[.24,.37,.38,1],'lakebed');
+box(0,-.37,-30.2,130,.08,46,[.23,.50,.60,.54],'water');
 box(0,-.31,-7.3,130,.22,1.9,[.63,.60,.43,1]);
 box(0,-.23,-9.1,130,.07,1.2,[.71,.68,.54,.92]);
 // Bodenvariationen und sanfte Erhebungen.
@@ -832,8 +860,45 @@ add(roof,-3,3.775,3.1,1,1,1,[.37,.31,.28,1],'roof');
 box(-3,.15,-4.45,11.5,.23,4.2,[.69,.62,.51,1],'house');for(let i=0;i<3;i++)box(-3,-.08-i*.12,-6.45-i*.36,5.2,.10,.56,[.7,.63,.52,1],'house');
 // Werkstatt und Holzschuppen, später Wochenendhaus.
 box(-17,1.5,-4.0,7,3.2,5.6,[.59,.54,.46,1],'built');box(-17,3.1,-4.0,8,1.2,6.2,[.37,.32,.29,1],'built');box(-17,1.4,-6.86,2.1,2.6,.12,[.35,.28,.22,1],'built');box(-26,1.20,-2.0,5,2.5,4,[.45,.39,.32,1],'built');box(-26,2.65,-2,5.8,.75,4.7,[.35,.30,.28,1],'built');
-// Bootshaus + Steg, von der Familiengeschichte gedeckt; die Form ist nur ikonisch.
-box(13,1.2,-5.1,5.7,2.5,4.9,[.47,.44,.37,1],'built');box(13,2.5,-5.1,6.3,.8,5.5,[.29,.33,.31,1],'built');box(13,.16,-12.0,2.1,.25,13.3,[.55,.43,.31,1],'built');for(let zz of [-11.5,-16.9])for(let xx of [12,14])box(xx,-.7,zz,.2,1.7,.2,[.34,.28,.24,1],'built');
+// Bootshaus + Steg, schematisch rekonstruiert: der Steg wird in einer eigenen
+// Sichtbarkeitsgruppe geführt und kann nicht durch die Epochen-"built"-Gruppe verschwinden.
+box(13,1.2,-5.1,5.7,2.5,4.9,[.47,.44,.37,1],'built');
+box(13,2.5,-5.1,6.3,.8,5.5,[.29,.33,.31,1],'built');
+const dock17Parts=[];
+function dock17(mesh,x,y,z,sx,sy,sz,col,rot=0){
+ const o=add(mesh,x,y,z,sx,sy,sz,col,'dock17',rot);dock17Parts.push(o);return o;
+}
+function dock17Box(x,y,z,w,h,d,col,rot=0){return dock17(cube,x,y,z,w,h,d,col,rot)}
+// Solide Unterkonstruktion von z=-7 bis -24.7, klar über der Wasseroberfläche.
+// Die letzte Bohle liegt ungefähr 15.6 m vor der Uferkante im See.
+dock17Box(13,.27,-15.67,2.37,.28,18.25,[.32,.225,.145,1]);
+for(let zz=-7.0,i=0;zz>=-24.47;zz-=.58,i++){
+ const variation=(i%5)*.018;
+ dock17Box(13,.459,zz,2.31,.095,.50,[.66-variation,.455-variation*.7,.267-variation*.45,1]);
+ // Dunkle Fugen + witterungsbedingte Maserung über der Bohle.
+ dock17Box(13,.513,zz,2.18,.013,.014,[.39,.26,.16,1]);
+ if(i%2===0)for(const xx of [12.04,13.96])dock17(cylinder,xx,.52,zz,.055,.012,.055,[.32,.30,.25,1]);
+}
+// Längsbalken und Querverstrebungen bleiben von der Wasserseite gut sichtbar.
+for(const xx of [11.94,14.06]){
+ dock17Box(xx,.257,-15.67,.16,.25,18.27,[.35,.245,.15,1]);
+ dock17Box(xx,.522,-15.67,.075,.040,18.25,[.44,.295,.18,1]);
+}
+for(const zz of [-9.0,-12.8,-16.6,-20.4,-24.1]){
+ dock17Box(13,.075,zz,2.57,.18,.23,[.38,.275,.18,1]);
+ for(const xx of [11.75,14.25]){
+  // Tief gegründete Pfähle reichen bis zum Seeboden (y≈-2.25).
+  dock17(cylinder,xx,-.86,zz,.34,3.06,.34,[.39,.285,.185,1]);
+  dock17(cylinder,xx,.635,zz,.38,.17,.38,[.72,.52,.32,1]);
+  dock17(cylinder,xx,.74,zz,.16,.06,.16,[.30,.30,.27,1]);
+ }
+}
+// Klammern zur Seite des Bootes und ein sichtbarer Abschluss am Stegkopf.
+dock17Box(13,.524,-24.67,2.44,.12,.19,[.72,.53,.32,1]);
+for(const zz of [-23.40,-19.86]){
+ dock17Box(14.15,.62,zz,.25,.19,.39,[.74,.70,.53,1]);
+ dock17Box(14.15,.735,zz,.42,.065,.09,[.79,.72,.55,1]);
+}
 // Vorübergehende Bepflanzung / Obstbäume im anderen Grundstücksbereich.
 for(let i=0;i<7;i++){let x=24+(i%3)*4.1,z=12+Math.floor(i/3)*5.1;add(cylinder,x,1.4,z,.3,2.8,.3,[.42,.29,.19,1],'orchard');ball(x,3.3,z,3.25,3.4,3.0,[.40,.55,.32,1],'orchard')}
 // Weide als Erinnerungsmotiv am Ufer.
@@ -1300,8 +1365,10 @@ function detail(x,y,z,w,h,d,color,stages,roofDetail=false,rot=0){
 }
 function eraPebble(x,y,z,w,h,d,color,stages){return eraBall(x,y,z,w,h,d,color,stages)}
 // Vor der Besiedlung ein schroffer, fast vegetationsloser Gletscherboden.
-eraBox(0,-.01,17,126,.095,60,[.80,.85,.83,1],['ice']);
-eraBox(0,-.25,-29,127,.08,45,[.65,.78,.83,1],['ice']);
+// Die Uferkante endet bei z≈-9; das Eiszeit-Gelände darf den See nicht verdecken.
+eraBox(0,-.01,17,126,.095,52,[.80,.85,.83,1],['ice']);
+// Blassblauer Seeboden liegt UNTER Fischen, Krebsen und Wasseroberfläche.
+eraBox(0,-2.09,-29,127,.08,45,[.65,.78,.83,1],['ice']);
 for(let i=0;i<22;i++){
  let x=-46+(i*11.43)%92,z=1+(i*7.13)%32;
  eraPebble(x,.18,z,.6+(i%4)*.36,.3,.45+(i%3)*.42,[.60,.65,.64,1],['ice']);
@@ -1932,7 +1999,24 @@ function oppositeMapHeading(x,y,yaw,w,h){
   const mag=Math.hypot(tx,ty)||1;
   return [x+15*tx/mag,y+15*ty/mag];
 }
-function mapdraw(){const w=mapCanvas.width,h=mapCanvas.height;mapCtx.clearRect(0,0,w,h);mapCtx.fillStyle='#243f37';mapCtx.fillRect(0,0,w,h);mapCtx.fillStyle='#235969';mapCtx.fillRect(0,195,w,55);mapCtx.fillStyle='#b6a87b';mapCtx.fillRect(0,187,w,7);let calc=(x,z)=>[w*(x+48)/96,h*(38-z)/56];for(let s of STATIONS){if(s.id==='wardrobe'||s.id==='dock')continue;let [x,y]=calc(s.x,s.z);mapCtx.beginPath();mapCtx.fillStyle=s.id===chapters[state.chapter].anchor?'#efd18e':s.id==='beetlegame'?'#ffb364':'#d2dfd4';mapCtx.arc(x,y,s.id===chapters[state.chapter].anchor?6:3.5,0,6.283);mapCtx.fill()}let [x,y]=calc(state.px,state.pz);mapCtx.fillStyle='#fff';mapCtx.beginPath();mapCtx.arc(x,y,6,0,6.283);mapCtx.fill();mapCtx.strokeStyle='#fff';mapCtx.lineWidth=2;mapCtx.beginPath();mapCtx.moveTo(x,y);
+
+function boatDrawMap(){
+ const ctx=mapCtx,w=mapCanvas.width,h=mapCanvas.height;
+ ctx.clearRect(0,0,w,h);ctx.fillStyle='#245b68';ctx.fillRect(0,0,w,h);
+ const xy=(x,z)=>[(x+48)/96*w,(-z-8)/47*h];
+ ctx.fillStyle='#395a42';ctx.fillRect(0,0,w,20);
+ ctx.fillStyle='#e2c89d';ctx.fillRect(0,19,w,4);
+ const dock=xy(13,-15.45);ctx.strokeStyle='#c9b388';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(dock[0],3);ctx.lineTo(dock[0],dock[1]);ctx.stroke();
+ for(let i=0;i<BOAT_DISCOVERIES.length;i++){
+  if(boatState.found.has(i))continue;
+  const d=BOAT_DISCOVERIES[i],p=xy(d.x,d.z);ctx.fillStyle='#ffe29d';ctx.beginPath();ctx.arc(p[0],p[1],6,0,Math.PI*2);ctx.fill();
+ }
+ const p=xy(boatState.x,boatState.z);ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(p[0],p[1],6,0,Math.PI*2);ctx.fill();
+ ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(p[0]+Math.sin(boatState.yaw)*18,p[1]+Math.cos(boatState.yaw)*18);ctx.stroke();
+ ctx.font='700 12px system-ui';ctx.fillStyle='#e7f1e6';ctx.fillText('SEE · RUDERROUTE',12,h-12);
+}
+
+function mapdraw(){if(boatState.active){boatDrawMap();return}const w=mapCanvas.width,h=mapCanvas.height;mapCtx.clearRect(0,0,w,h);mapCtx.fillStyle='#243f37';mapCtx.fillRect(0,0,w,h);mapCtx.fillStyle='#235969';mapCtx.fillRect(0,195,w,55);mapCtx.fillStyle='#b6a87b';mapCtx.fillRect(0,187,w,7);let calc=(x,z)=>[w*(x+48)/96,h*(38-z)/56];for(let s of STATIONS){if(s.id==='wardrobe'||s.id==='dock')continue;let [x,y]=calc(s.x,s.z);mapCtx.beginPath();mapCtx.fillStyle=s.id===chapters[state.chapter].anchor?'#efd18e':s.id==='beetlegame'?'#ffb364':'#d2dfd4';mapCtx.arc(x,y,s.id===chapters[state.chapter].anchor?6:3.5,0,6.283);mapCtx.fill()}let [x,y]=calc(state.px,state.pz);mapCtx.fillStyle='#fff';mapCtx.beginPath();mapCtx.arc(x,y,6,0,6.283);mapCtx.fill();mapCtx.strokeStyle='#fff';mapCtx.lineWidth=2;mapCtx.beginPath();mapCtx.moveTo(x,y);
 const [tipX,tipY]=oppositeMapHeading(x,y,state.yaw,w,h);
 mapCtx.lineTo(tipX,tipY);mapCtx.stroke();mapCtx.font='16px system-ui';mapCtx.fillStyle='#eee';mapCtx.fillText('SEEUFER',12,221)}
 
@@ -1957,7 +2041,9 @@ function wallPointBlocked(x,z,cx,cz,w,d,rot=0,r=WALK_RADIUS){
  return (localX-nearX)**2+(localZ-nearZ)**2<r*r;
 }
 function canWalkAt(x,z){
- if(x<-48+WALK_RADIUS||x>48-WALK_RADIUS||z<-15+WALK_RADIUS||z>39-WALK_RADIUS)return false;
+ // Auf dem bis ins Wasser reichenden Steg (x≈13) darf man weiter laufen als an Land.
+  const onDeck=state.chapter>=4&&state.chapter!==23&&x>=11.93&&x<=14.07&&z>=-24.60&&z<=-7.0;
+  if(x<-48+WALK_RADIUS||x>48-WALK_RADIUS||(z<-15+WALK_RADIUS&&!onDeck)||z>39-WALK_RADIUS)return false;
  const stage=eraStages[state.chapter];
  const houseExists=!['ice','forest','parcels','construction','demolition'].includes(stage);
  if(houseExists){
@@ -2010,20 +2096,526 @@ function safeChapterSpawn(){
  }
 }
 window.heimsuchungFixSpawn=safeChapterSpawn;
-// Separater Vorschau-Testzugriff ohne Möglichkeit zur Kapitel-Freischaltung.
-window.__wallTest151=()=>({chapter:state.chapter,x:state.px,z:state.pz,stage:eraStages[state.chapter],
-  frontWall:canWalkAt(-6,-2.05),entrance:canWalkAt(-3,-2.05),inside:canWalkAt(-3,3),
-  backWall:canWalkAt(-3,8.25),outside:canWalkAt(-10.5,2),sofa:canWalkAt(.77,6.75),
-  canStand:(x,z)=>canWalkAt(x,z),npc:activeNpcEncounter(),
-  npcTap:(()=>{let n=activeNpcEncounter();if(!n||!state.vp)return null;let h=project([n.x,3.45,n.z],state.vp),f=project([n.x,.25,n.z],state.vp);return h&&f?{head:h,feet:f,center:[(h[0]+f[0])*.5,(h[1]+f[1])*.5]}:null})()});
+// V17: Steuerbares Ruderboot. Erweiterung der bestehenden Welt – keine neuen Server oder Frameworks.
+// Die Entdeckungen sind didaktische Perspektivaufgaben und keine zusätzlichen Textbehauptungen.
+const boatState={active:false,x:15.86,z:-21.25,yaw:0,speed:0,found:new Set(),nearest:-1,stroke:0,atDock:true,lookBack:false};
+// Boot parallel rechts vom verlängerten Steg, begehbare Spitze links davon.
+const BOAT_HOME={x:15.86,z:-21.25},BOAT_DOCK={x:13,z:-21.00};
+const BOAT_DISCOVERIES=[
+ {x:-23,z:-29,name:'Blick auf das Haus',title:'Eine Ansicht – viele Zeiten',
+  observation:'Vom Wasser aus lässt sich das Grundstück als Ganzes betrachten. Das Haus erscheint in jedem Romanabschnitt anders, die Uferlinie bleibt als räumlicher Bezug erkennbar.',
+  question:'Welche Erzählfunktion lässt sich aus dem wiederholten Blick auf denselben Ort erschließen?',
+  options:[
+   ['Der See ist vor allem eine unveränderliche Kulisse ohne eigene Bedeutung.','Das unterschätzt die Rolle der Landschaft als längerfristiger Bezugspunkt der erzählten Lebensgeschichten.',false],
+   ['Die räumliche Kontinuität lässt die historischen Brüche und wechselnden Zugehörigkeiten hervortreten.','Genau: Der Ort stiftet Zusammenhang, während Ansprüche, Erinnerungen und Lebenswege wechseln.',true],
+   ['Die Lage des Hauses erlaubt eine eindeutige, objektive Sicht auf alle Figuren.','Der Standort bietet einen Überblick über den Raum, aber keine allwissende Deutung der Menschen.',false]
+  ]},
+ {x:18,z:-29,name:'Parzellen vom See',title:'Grenzen und Zugehörigkeit',
+  observation:'Vom Wasser aus liegen die benachbarten Grundstücke im selben Bild. Im Roman ist ihre Geschichte jedoch von Trennung, Kauf, Enteignung und Verlust geprägt.',
+  question:'Worin liegt der interpretatorische Gegensatz zwischen Landschaft und Eigentumsgrenzen?',
+  options:[
+   ['Grenzen wirken rechtlich eindeutig, während Zugehörigkeit und Gerechtigkeit historisch umkämpft bleiben.','Tragfähig: Juristische Besitzordnungen und menschliche Bindungen fallen im Roman nicht selbstverständlich zusammen.',true],
+   ['Weil die Parzellen am selben See liegen, besitzen alle Bewohner vergleichbare Handlungsmöglichkeiten.','Gerade die unterschiedlichen historischen Zwänge machen diese Annahme problematisch.',false],
+   ['Die Natur bestätigt den rechtmäßigen Besitz unabhängig von politischen Systemen.','Der Roman zeigt eher die Instabilität solcher Legitimationsversuche als ihre Bestätigung.',false]
+  ]},
+ {x:33,z:-42,name:'Ferne Uferperspektive',title:'Erinnern aus der Distanz',
+  observation:'Mit zunehmender Entfernung schrumpfen Haus und Steg zu Details der Landschaft. Die von den Figuren erfahrene Geschichte verschwindet dadurch nicht.',
+  question:'Wie könnte die räumliche Distanz als Bild für das Erzählen in „Heimsuchung“ gelesen werden?',
+  options:[
+   ['Die Entfernung löscht die Vergangenheit aus; der Roman legt daher Vergessen nahe.','Die Geschichte wird aus der Distanz nicht gelöscht, sondern in wechselnden Perspektiven rekonstruiert.',false],
+   ['Aus der Ferne werden alle historischen Konflikte unwichtig.','Der perspektivische Wechsel kann Unterschiede verdeutlichen, hebt sie aber nicht auf.',false],
+   ['Distanz verändert Wahrnehmung; die Erzählung macht zugleich sichtbar, was hinter einer scheinbar ruhigen Landschaft verborgen liegt.','Überzeugend: Die äußere Ruhe kontrastiert mit individuellen und gesellschaftlichen Brüchen.',true]
+  ]}
+];
+const boatParts=[],boatWake=[],boatClues=[];
+function boatPart(mesh,lx,ly,lz,sx,sy,sz,col,part='hull',rotation=0){
+ const o=add(mesh,BOAT_HOME.x+lx,-.17+ly,BOAT_HOME.z+lz,sx,sy,sz,col,'rowingBoat',rotation);
+ o.boatLocal=[lx,ly,lz];o.boatPart=part;o.boatRotation=rotation;o.hidden=true;boatParts.push(o);return o;
+}
+// Geschlossener 3D-Bootsrumpf: Boden, Außenwand, innere Schale, Süllrand und dichte Stirnwände.
+// Jede Verbindung besitzt vollständige Polygonflächen statt voneinander getrennter Ovale.
+function boatHullMesh(){
+ const profiles=[[-2.55,.12],[-2.27,.40],[-1.89,.70],[-1.35,.98],[-.66,1.12],[0,1.16],[.66,1.10],[1.35,.95],[1.90,.67],[2.28,.40],[2.55,.12]];
+ const faces=[];
+ const ring=(i,side,layer)=>{
+  const [z,w]=profiles[i];
+  if(layer==='outer')return [side*w,.40,z];
+  if(layer==='chine')return [side*w*.76,-.12,z];
+  if(layer==='keel')return [side*w*.25,-.48,z];
+  if(layer==='rim')return [side*Math.max(.025,w-.13),.365,z];
+  return [side*w*.57,-.08,z]; // innere Bodenlinie
+ };
+ const quad=(a,b,c,d)=>faces.push(face([a,b,c,d]));
+ for(let i=0;i<profiles.length-1;i++){
+  for(const side of [-1,1]){
+   quad(ring(i,side,'outer'),ring(i+1,side,'outer'),ring(i+1,side,'chine'),ring(i,side,'chine'));
+   quad(ring(i,side,'chine'),ring(i+1,side,'chine'),ring(i+1,side,'keel'),ring(i,side,'keel'));
+   quad(ring(i,side,'outer'),ring(i,side,'rim'),ring(i+1,side,'rim'),ring(i+1,side,'outer'));
+   quad(ring(i,side,'rim'),ring(i,side,'floor'),ring(i+1,side,'floor'),ring(i+1,side,'rim'));
+  }
+  quad(ring(i,-1,'keel'),ring(i,1,'keel'),ring(i+1,1,'keel'),ring(i+1,-1,'keel'));
+  quad(ring(i,-1,'floor'),ring(i+1,-1,'floor'),ring(i+1,1,'floor'),ring(i,1,'floor'));
+ }
+ for(const i of [0,profiles.length-1]){
+  // Versiegelter Bug und Heck einschließlich des inneren Abschlussbretts.
+  quad(ring(i,-1,'outer'),ring(i,1,'outer'),ring(i,1,'chine'),ring(i,-1,'chine'));
+  quad(ring(i,-1,'chine'),ring(i,1,'chine'),ring(i,1,'keel'),ring(i,-1,'keel'));
+  quad(ring(i,-1,'rim'),ring(i,1,'rim'),ring(i,1,'floor'),ring(i,-1,'floor'));
+ }
+ // Doppelte Flächenorientierung verhindert Culling-Lücken bei Kamerablick von innen.
+ return makeMesh(faces.flatMap(([vertices])=>[face(vertices),face(vertices.slice().reverse())]));
+}
+const BOAT_WOOD=[.34,.205,.115,1],BOAT_LIGHT=[.63,.43,.245,1],BOAT_DARK=[.18,.155,.135,1];
+const BOAT_INSIDE=[.49,.345,.21,1],BOAT_GOLD=[.81,.69,.44,1];
+boatPart(boatHullMesh(),0,0,0,1,1,1,BOAT_WOOD);
+// Die Oberfläche im Bootsinnern liegt sichtbar unter den Bordwänden; kein Loch im Boden.
+boatPart(cube,0,-.067,0,1.18,.070,3.68,BOAT_INSIDE,'floor');
+for(const z of [-1.68,-1.15,-.62,0,.62,1.15,1.68]){
+ boatPart(cube,0,-.015,z,1.16,.035,.056,[.31,.22,.14,1],'floorRib');
+}
+// Durchgehende, gebogene Scheuerleisten (in mehreren dicht anschließenden Segmenten).
+const trimProfiles=[[-2.27,.40],[-1.89,.70],[-1.35,.98],[-.66,1.12],[0,1.16],[.66,1.10],[1.35,.95],[1.90,.67],[2.28,.40]];
+// Gerundeter, geschlossener Schaft mit breiter werdendem Blatt; geneigter Außenarm
+// taucht beim Zug ins Wasser. Eine einzige Ruderform kann nicht auseinanderfallen.
+let reusableBoatOarMesh=null;
+function boatOarMesh(){
+ if(reusableBoatOarMesh)return reusableBoatOarMesh;
+ const rings=[[-1.06,.12,.12,.08],[-.69,.12,.12,.06],[-.52,.115,.115,.04],
+  [-.10,.11,.11,0],[.45,.10,.10,-.15],[.94,.20,.09,-.33],
+  [1.28,.45,.085,-.47],[1.60,.49,.074,-.55],[1.84,.29,.062,-.62],[1.96,.07,.045,-.63]];
+ const faces=[],SEG=9;
+ const ring=(r,j)=>{let a=j*Math.PI*2/SEG;return [Math.sin(a)*r[1]*.5,r[3]+Math.cos(a)*r[2]*.5,r[0]]};
+ for(let i=0;i<rings.length-1;i++)for(let j=0;j<SEG;j++){
+  const f=face([ring(rings[i],j),ring(rings[i+1],j),ring(rings[i+1],(j+1)%SEG),ring(rings[i],(j+1)%SEG)]);
+  faces.push(f,face(f[0].slice().reverse()));
+ }
+ for(const i of [0,rings.length-1]){
+  const vertices=Array.from({length:SEG},(_,j)=>ring(rings[i],j));
+  faces.push(face(vertices),face(vertices.slice().reverse()));
+ }
+ return reusableBoatOarMesh=makeMesh(faces);
+}
+for(const side of [-1,1]){
+ for(let i=0;i<trimProfiles.length-1;i++){
+  const [z0,w0]=trimProfiles[i],[z1,w1]=trimProfiles[i+1],xx=side*(w0+w1)*.5;
+  boatPart(cube,xx,.408,(z0+z1)/2,.11,.11,Math.abs(z1-z0)+.035,BOAT_LIGHT,'rail');
+  boatPart(cube,xx*.94,.16,(z0+z1)/2,.055,.047,Math.abs(z1-z0)+.01,[.57,.34,.18,1],'strake');
+ }
+ // Einziehbare Riemen in Metall-Dollen und gepolsterten Halterungen.
+ boatPart(cylinder,side*1.08,.56,.20,.20,.31,.20,BOAT_DARK,'oarlock');
+ boatPart(cylinder,side*1.08,.74,.20,.09,.06,.09,BOAT_GOLD,'oarlock');
+ // Ruderschaft und gewölbtes Blatt sind EIN durchgehendes Mesh mit sauberer Verbindung.
+ const oar=boatPart(boatOarMesh(),side*1.60,.55,.20,1,1,1,[.67,.45,.25,1],'oar',side*Math.PI/2);
+ oar.oarSide=side;oar.oarKind='solidOar';
+}
+// Stabile Duchten, Sitzpolster und verzierte Bug-/Heckpartien.
+for(const z of [-1.30,.19,1.47]){
+ boatPart(cube,0,.20,z,1.67,.15,.43,[.62,.415,.23,1],'bench');
+ boatPart(cube,0,.284,z,1.25,.036,.31,[.70,.52,.33,1],'benchInlay');
+}
+for(const z of [-2.27,2.27]){
+ boatPart(cube,0,.39,z,.38,.09,.30,BOAT_LIGHT,'endCap');
+ boatPart(cylinder,0,.48,z,.20,.10,.20,BOAT_GOLD,'cleat');
+}
+for(const side of [-1,1])for(const z of [-1.8,1.8]){
+ boatPart(cube,side*.53,.12,z,.27,.20,.10,BOAT_DARK,'knee');
+ boatPart(cube,side*.53,.23,z,.26,.04,.22,[.80,.65,.38,1],'kneeTrim');
+}
+// Ruderer 17.1: die VOLLSTÄNDIGE Original-Spielfigur wird als eigenständiges, sitzendes Modell geklont.
+// Details wie Haarlocken, Baseballcap, Hemdmuster, Uhr und Schuhe bleiben erhalten.
+const boatRowerParts=[];
+for(const sourcePart of player){
+ const copy=boatPart(sourcePart.mesh,sourcePart.hx,sourcePart.hy,sourcePart.hz,
+                     sourcePart.sx,sourcePart.sy,sourcePart.sz,sourcePart.col,'rower');
+ copy.seatOriginal=[sourcePart.hx,sourcePart.hy,sourcePart.hz];
+ copy.seatRole=sourcePart.piece;copy.seatSide=sourcePart.side;
+ boatRowerParts.push(copy);
+}
+// Mit sichtbarem Sicherheitsgurt/Rettungsweste (die Kleidung bleibt darunter erhalten).
+for(const side of [-1,1]){
+ const panel=boatPart(cube,side*.325,1.25,-.35,.31,.63,.12,[.76,.43,.19,1],'rowerVest');
+ panel.seatRole='vest';panel.seatSide=side;boatRowerParts.push(panel);
+ const reflector=boatPart(cube,side*.325,1.38,-.424,.26,.095,.036,[.93,.84,.54,1],'rowerVest');
+ reflector.seatRole='vest';reflector.seatSide=side;boatRowerParts.push(reflector);
+}
+const vestBuckle=boatPart(cube,0,1.20,-.445,.13,.10,.065,BOAT_DARK,'rowerVest');
+vestBuckle.seatRole='vest';vestBuckle.seatSide=0;boatRowerParts.push(vestBuckle);
+for(let i=0;i<11;i++){
+ const side=i%2?1:-1,foam=boatPart(sphere,side*(.36+(i%4)*.22),-.21,1.6+(i%6)*.44,.16,.028,.42,[.80,.94,.96,.44],'wake');
+ foam.boatWakeIndex=i;boatWake.push(foam);
+}
+// Drei im Wasser verankerte Entdeckungspunkte mit 3D-Lichtsignaturen.
+for(let i=0;i<BOAT_DISCOVERIES.length;i++){
+ const d=BOAT_DISCOVERIES[i];
+ const halo=add(cylinder,d.x,-.23,d.z,1.82,.025,1.82,[.90,.77,.38,.45],'boatClue');
+ const core=add(cylinder,d.x,.21,d.z,.60,.90,.60,[.83,.64,.23,.88],'boatClue');
+ const gem=add(sphere,d.x,1.12,d.z,.64,.66,.64,[1,.88,.48,1],'boatClue');
+ const beam=add(cylinder,d.x,1.85,d.z,.12,1.22,.12,[.83,.91,.82,.46],'boatClue');
+ boatClues.push({parts:[halo,core,gem,beam],i});
+ const btn=document.createElement('button');btn.type='button';btn.className='boat-discovery';btn.textContent='🔍 '+d.name;btn.addEventListener('click',()=>boatInspect(i));btn.dataset.boatClue=i;$('#markers').append(btn);d.button=btn;
+}
+// V17.2: Kleine Unterwasserwelt aus eigenen WebGL-Meshes. Alle Objekte bleiben lokal
+// und sind nur als Naturatmosphäre gedacht; keine zusätzliche Romanhandlung.
+const seaFish=[],seaCrabs=[],seaLifeObjects=[];
+const SEA_EYE=[.055,.083,.075,1];
+function seaPart(mesh,x,y,z,sx,sy,sz,col){
+ const p=add(mesh,x,y,z,sx,sy,sz,col,'seaLife');seaLifeObjects.push(p);return p;
+}
+function seaFinMesh(kind){
+ // Zweifache Flächenorientierung: Flossen sind aus jedem Blickwinkel geschlossen.
+ const profile=kind==='tail'?
+  [[0,0,-.04],[-.35,.30,.52],[0,.03,.39],[.35,-.27,.54]]:
+  [[0,0,-.31],[0,.39,.08],[0,0,.49]];
+ const faces=[face(profile),face([...profile].reverse())];
+ return makeMesh(faces);
+}
+const seaTailMesh=seaFinMesh('tail'),seaDorsalMesh=seaFinMesh('dorsal');
+const fishSchools=[
+ [-7,-17,2.0,1.25],[3,-19,2.3,1.40],[9,-25,2.25,1.45],[19,-26,2.5,1.7],
+ [-14,-29,2.7,2.1],[28,-21,2.7,1.45],[1,-34,3.4,2.2],[16,-37,2.4,2.0],
+ [31,-36,3.0,2.6],[-26,-39,3.0,2.2],[11,-17,1.25,.95],[23,-43,3.1,2.1]
+];
+fishSchools.forEach(([cx,cz,rx,rz],i)=>{
+ const size=.70+(i%4)*.115,phase=i*1.67,speed=.30+(i%5)*.035;
+ const colors=[
+  [[.64,.74,.61,1],[.33,.54,.45,1]],
+  [[.65,.69,.75,1],[.35,.48,.59,1]],
+  [[.74,.62,.43,1],[.49,.43,.29,1]],
+  [[.54,.71,.71,1],[.26,.49,.54,1]]
+ ][i%4];
+ const parts=[];
+ const one=(mesh,x,y,z,sx,sy,sz,col,role='fixed')=>{
+  const o=seaPart(mesh,0,0,0,sx*size,sy*size,sz*size,col);
+  o.lifeLocal=[x*size,y*size,z*size];o.lifeRole=role;parts.push(o);
+ };
+ one(smoothSphere(),0,0,0,.56,.30,1.28,colors[0]);
+ one(smoothSphere(),0,-.08,-.05,.49,.13,.95,colors[1]);
+ one(seaDorsalMesh,0,.16,.0,.74,.68,.54,colors[1],'dorsal');
+ one(seaTailMesh,0,0,.63,1,.95,.77,colors[1],'tail');
+ for(const side of [-1,1]){
+  one(smoothSphere(),side*.264,.047,-.43,.082,.078,.08,[.95,.91,.71,1]);
+  one(smoothSphere(),side*.302,.047,-.455,.041,.044,.045,SEA_EYE);
+  one(smoothSphere(),side*.25,-.12,.18,.14,.055,.32,colors[1],'fin');
+ }
+ seaFish.push({parts,cx,cz,rx,rz,speed,phase,size,depth:-.71-(i%3)*.095});
+});
 
+// Kleine Kies-/Sandbänke sind durch das transparente Wasser zu sehen.
+const crabBanks=[[5,-12.7],[-12,-15.4],[25,-17.5],[29,-30.5],[2,-30.8]];
+for(let i=0;i<crabBanks.length;i++){
+ const [x,z]=crabBanks[i];
+ const bank=seaPart(smoothSphere(),x,-1.48,z,4.2,.36,2.7,[.39,.38,.30,1]);bank.lifeStatic=true;
+ for(let k=0;k<5;k++){
+  const pebble=seaPart(smoothSphere(),x-1.7+k*.71,-1.31,z+Math.sin(i+k)*.70,.21,.09,.16,[.57,.53,.42,1]);pebble.lifeStatic=true;
+ }
+ // Die Krabben gleiten seitwärts auf den Sandbänken; Scheren, Augen und Beine bewegen sich.
+ const parts=[],base=[x,z],shell=i%2?[.55,.305,.20,1]:[.61,.37,.235,1];
+ function crabP(mesh,lx,ly,lz,sx,sy,sz,col,role='shell',side=0){
+  const p=seaPart(mesh,0,0,0,sx,sy,sz,col);p.lifeLocal=[lx,ly,lz];p.lifeRole=role;p.lifeSide=side;parts.push(p);
+ }
+ crabP(smoothSphere(),0,.18,0,.73,.26,.55,shell);
+ crabP(smoothSphere(),0,.045,-.07,.58,.12,.43,[.35,.20,.13,1]);
+ for(const side of [-1,1]){
+  for(let k=0;k<3;k++){
+   const z0=-.27+k*.27;
+   crabP(cylinder,side*(.41+k*.07),.09,z0,.09,.15,.09,[.64,.42,.27,1],'leg',side);
+   crabP(cylinder,side*(.73+k*.08),-.02,z0+.09,.09,.21,.09,[.51,.35,.235,1],'foot',side);
+  }
+  crabP(smoothSphere(),side*.64,.20,-.41,.47,.14,.14,[.55,.33,.21,1],'arm',side);
+  crabP(smoothSphere(),side*.93,.24,-.57,.37,.26,.36,[.75,.49,.29,1],'claw',side);
+  crabP(smoothSphere(),side*1.06,.22,-.79,.26,.095,.13,[.86,.59,.33,1],'clawtip',side);
+  crabP(smoothSphere(),side*.15,.37,-.25,.095,.085,.095,[.93,.83,.64,1],'eyestalk',side);
+  crabP(smoothSphere(),side*.15,.39,-.308,.063,.063,.070,SEA_EYE);
+ }
+ seaCrabs.push({base,parts,phase:i*1.29,heading:(i%2)*Math.PI});
+}
+function seaLifeAnimate(now){
+ const t=now*.001;
+ // Die Seetiere gehören zur dauerhaften Welt, unabhängig von der menschlichen Epoche.
+ const living=true;
+ for(const f of seaFish){
+  const a=t*f.speed+f.phase,x=f.cx+Math.cos(a)*f.rx,z=f.cz+Math.sin(a)*f.rz;
+  const vx=-Math.sin(a)*f.rx,vz=Math.cos(a)*f.rz;
+  const heading=Math.atan2(vx,-vz),c=Math.cos(heading),sn=Math.sin(heading);
+  const y=f.depth+Math.sin(t*1.35+f.phase)*.065;
+  for(const p of f.parts){
+   const [lx,ly,lz]=p.lifeLocal,tailWag=p.lifeRole==='tail'?Math.sin(t*9+f.phase)*.34:0;
+   const finWag=p.lifeRole==='fin'?Math.sin(t*8+f.phase)*.08:0;
+   p.x=x+c*lx-sn*lz;p.y=y+ly+finWag;p.z=z+sn*lx+c*lz;
+   p.rot=-heading+tailWag;p.hidden=!living;
+  }
+ }
+ for(const crab of seaCrabs){
+  const move=t*.37+crab.phase,x=crab.base[0]+Math.sin(move)*.65,z=crab.base[1]+Math.sin(move*.55)*.22;
+  for(const p of crab.parts){
+   const [lx,ly,lz]=p.lifeLocal,side=p.lifeSide;
+   const step=(p.lifeRole==='leg'||p.lifeRole==='foot')?Math.sin(t*5.4+crab.phase+lx*7)*.075:0;
+   p.x=x+lx;p.y=-1.24+ly+step;p.z=z+lz;
+   p.rot=crab.heading+(p.lifeRole==='claw'?side*.14*Math.sin(t*2.7+crab.phase):0);
+   p.hidden=!living;
+  }
+ }
+ for(const o of seaLifeObjects)if(o.lifeStatic)o.hidden=!living;
+ iceFloesAnimate(now);
+}
+
+// V17.3: Eiszeitszene mit unregelmäßigen, geschlossenen Eisschollen.
+// Nur im Prolog (stage="ice") vorhanden; die Seetiere bleiben darunter sichtbar.
+const iceFloes=[], iceFloeParts=[];
+function floePolygonMesh(seed){
+ const count=10, rim=[], crown=[], keel=[];
+ for(let i=0;i<count;i++){
+  const a=i*Math.PI*2/count;
+  const jitter=1+.125*Math.sin(a*3.1+seed*.71)+.09*Math.cos(a*5.9+seed*1.33);
+  const x=Math.cos(a)*.50*jitter,z=Math.sin(a)*.50*jitter;
+  rim.push([x,.10,z]);
+  crown.push([x*.83,.24+(i%3)*.012,z*.83]);
+  keel.push([x*.91,-.15,z*.91]);
+ }
+ const faces=[];
+ const addBoth=vertices=>{faces.push(face(vertices),face([...vertices].reverse()))};
+ addBoth([...crown].reverse());
+ addBoth(keel);
+ for(let i=0;i<count;i++){
+  const j=(i+1)%count;
+  addBoth([crown[i],crown[j],rim[j],rim[i]]);
+  addBoth([rim[i],rim[j],keel[j],keel[i]]);
+ }
+ return makeMesh(faces);
+}
+const iceSites=[
+ [-36,-18,4.9,3.2],[-22,-25,5.9,3.7],[-10,-40,4.2,3.0],
+ [3,-21,4.6,3.3],[11,-39,5.8,3.5],[23,-18,4.2,2.8],
+ [32,-30,5.4,3.7],[40,-43,3.8,2.6],[-35,-42,4.4,3.0]
+];
+iceSites.forEach(([cx,cz,width,depth],i)=>{
+ const group=[],mesh=floePolygonMesh(i+1),initialRot=(i%4-1.5)*.22;
+ const put=(obj,lx,ly,lz)=>{
+  obj.iceGroup=i;obj.iceLocal=[lx,ly,lz];obj.iceStart=[cx,cz,initialRot];
+  group.push(obj);iceFloeParts.push(obj);return obj;
+ };
+ const iceTone=i%3===0?[.87,.94,.97,1]:i%3===1?[.78,.89,.95,1]:[.91,.96,.98,1];
+ put(eraSet(add(mesh,cx,-.32,cz,width,1,depth,iceTone,'iceFloe',initialRot),'ice'),0,-.32,0);
+ // Sanfte Schneefelder, in die Eisoberfläche eingearbeitet statt aufgesetzter Quader.
+ put(eraSet(add(smoothSphere(),cx-.16*width,-.067,cz,.28*width,.026,.25*depth,[.96,.98,1,1],'iceFloe'),'ice'),-.16*width,-.067,0);
+ put(eraSet(add(smoothSphere(),cx+.16*width,-.075,cz+.13*depth,.15*width,.024,.16*depth,[.91,.97,.99,1],'iceFloe'),'ice'),.16*width,-.075,.13*depth);
+ // Dünne blaugraue natürliche Bruchkante / Eisriss.
+ put(eraSet(add(cube,cx+.025*width,-.052,cz-.10*depth,.024,.011,.31*depth,[.52,.73,.82,1],'iceFloe',initialRot+.40),'ice'),.025*width,-.052,-.10*depth);
+ iceFloes.push({parts:group,index:i,cx,cz,rot:initialRot,phase:i*1.23});
+});
+function iceFloesAnimate(now){
+ if(eraStages[state.chapter]!=='ice')return;
+ const t=now*.001;
+ for(const floe of iceFloes){
+  const driftX=Math.sin(t*.28+floe.phase)*.11;
+  const driftZ=Math.cos(t*.22+floe.phase)*.09;
+  const angle=floe.rot+Math.sin(t*.13+floe.phase)*.025;
+  const c=Math.cos(angle),si=Math.sin(angle);
+  const bob=Math.sin(t*.9+floe.phase)*.020;
+  for(const o of floe.parts){
+   const [x,y,z]=o.iceLocal;
+   o.x=floe.cx+driftX+c*x-si*z;
+   o.z=floe.cz+driftZ+si*x+c*z;
+   o.y=y+bob;
+   o.rot=angle+(o.mesh===cube?.40:0);
+  }
+ }
+}
+function boatEnabled(){
+ // Ein Angebot ausgewählter Romanzeiten, nicht jeder Kapitel-/Naturansicht.
+ return eraStages[state.chapter]==='garden1930'||eraStages[state.chapter]==='ddr';
+}
+function boatNearDock(){return Math.hypot(boatState.x-BOAT_HOME.x,boatState.z-BOAT_HOME.z)<3.8;}
+function boatWithinWater(x,z){return x>-45&&x<45&&z>-50&&z<-13.25&&!(x>10.8&&x<15.40&&z>-25.65&&z<-6.0);}
+function boatResetAtDock(){boatState.x=BOAT_HOME.x;boatState.z=BOAT_HOME.z;boatState.yaw=0;boatState.speed=0;boatState.atDock=true;boatState.lookBack=false;}
+function boatBoard(){
+ if(!state.started||state.panel||state.miniActive||traceState.active||!boatEnabled()||boatState.active)return;
+ if(Math.hypot(state.px-BOAT_DOCK.x,state.pz-BOAT_DOCK.z)>4.0)return;
+ boatState.active=true;boatState.speed=0;boatState.yaw=0;
+ state.px=boatState.x;state.pz=boatState.z;state.yaw=boatState.yaw;state.facing=boatState.yaw;boatState.lookBack=false;
+ state.keys.clear();state.joyX=state.joyY=0;state.moving=false;
+ document.body.classList.add('boat-mode');$('#boatBoard').textContent='↩ Am Steg aussteigen';
+ $('#footer').innerHTML='<b>🚣 Ruderboot:</b> W/S oder Joystick vor/zurück · A/D oder Drehtasten steuern · <b>Entdeckungen auf dem Wasser suchen</b>.';
+ boatUpdateHud();
+}
+function boatDisembark(force=false){
+ if(!boatState.active)return;
+ if(!force&&!boatNearDock()){$('#boatHelp').textContent='Zum Aussteigen zurück zum Steg rudern (goldene Boje).';return;}
+ boatState.active=false;boatState.speed=0;document.body.classList.remove('boat-mode');
+ state.px=BOAT_DOCK.x;state.pz=BOAT_DOCK.z;state.yaw=0;state.facing=0;state.joyX=state.joyY=0;
+ state.keys.clear();boatResetAtDock();
+ for(const p of player)p.hidden=false;for(const part of boatRowerParts)part.hidden=true;
+ $('#boatHud').style.display='none';$('#boatBoard').style.display='none';
+ if(!force)$('#footer').innerHTML='<b>Wieder an Land.</b> Das Boot liegt am Steg. Deine Lektüreaufgaben bleiben unverändert.';
+}
+function boatToggle(){
+ if(boatState.active){boatDisembark(false);return;}
+ boatBoard();
+}
+$('#boatBoard').addEventListener('click',boatToggle);
+$('#boatDockMarker').addEventListener('click',boatBoard);
+function boatMove(dt){
+ if(!boatState.active||state.panel)return;
+ const forward=(state.keys.has('w')||state.keys.has('arrowup')?1:0)-(state.keys.has('s')||state.keys.has('arrowdown')?1:0)-state.joyY;
+ const turn=(state.keys.has('d')||state.keys.has('arrowright')?1:0)-(state.keys.has('a')||state.keys.has('arrowleft')?1:0)+state.joyX+state.turnDir;
+ const thrust=Math.max(-1,Math.min(1,forward)),rudder=Math.max(-1,Math.min(1,turn));
+ boatState.speed+=thrust*dt*(thrust>=0?3.0:2.1);
+ boatState.speed*=Math.exp(-dt*(thrust?0.52:1.10));
+ boatState.speed=Math.max(-2.4,Math.min(6.1,boatState.speed));
+ boatState.yaw+=rudder*dt*(.45+.10*Math.abs(boatState.speed));
+ const nextX=boatState.x+Math.sin(boatState.yaw)*boatState.speed*dt;
+ const nextZ=boatState.z-Math.cos(boatState.yaw)*boatState.speed*dt;
+ if(boatWithinWater(nextX,nextZ)){boatState.x=nextX;boatState.z=nextZ;}
+ else{boatState.speed*= -.12;}
+ boatState.stroke+=dt*(.8+Math.abs(boatState.speed)*2.8);
+ state.px=boatState.x;state.pz=boatState.z;state.facing=boatState.yaw;state.moving=Math.abs(boatState.speed)>.2;
+ if(!state.lookDragging){const desired=boatState.yaw+(boatState.lookBack?Math.PI:0);const angle=Math.atan2(Math.sin(desired-state.yaw),Math.cos(desired-state.yaw));state.yaw+=angle*Math.min(1,dt*2.6);}
+}
+function boatAnimate(now){
+ const t=now*.001,bob=Math.sin(t*2.15+boatState.x*.13)*.045+Math.sin(t*1.28)*.024;
+ const c=Math.cos(boatState.yaw),sn=Math.sin(boatState.yaw);
+ const active=boatState.active,effort=active?Math.min(1,Math.abs(boatState.speed)/2.8+.25):0;
+ const beat=boatState.stroke,stroke=Math.sin(beat)*effort,recover=Math.cos(beat)*effort;
+ // Wellen kippen das ganze Boot sachte um die Querachse, nicht nur den Rumpf.
+ const wavePitch=.018*Math.sin(t*1.8+boatState.z*.11)+.012*Math.sin(t*.93),wpC=Math.cos(wavePitch),wpS=Math.sin(wavePitch);
+ for(const p of boatParts){
+  let [lx,ly,lz]=p.boatLocal,pitch=0,yawExtra=0;
+  if(p.oarSide){
+   // Alle Teile eines Ruders drehen um exakt dieselbe Dolle; Griff und Paddel
+   // bleiben verbunden. Ein- und Austauchen erfolgen gemeinsam.
+   const pivotX=p.oarSide*1.08,pivotZ=.20;
+   const dx=lx-pivotX,dz=lz-pivotZ,swing=p.oarSide*.31*stroke;
+   lx=pivotX+dx*Math.cos(swing)-dz*Math.sin(swing);
+   lz=pivotZ+dx*Math.sin(swing)+dz*Math.cos(swing);
+   yawExtra=swing;
+   ly+=(-.06+.13*recover)*Math.max(.1,Math.min(1.5,Math.abs(dx)/1.9));
+   pitch=.07*stroke*p.oarSide;
+  }
+  if(p.seatOriginal){
+   // Sitzhaltung mit angewinkelten Hüften und Knien; der gesamte Avatar
+   // besitzt dieselbe Mesh-Auflösung und Farbdetails wie die Spielfigur.
+   const [x,y,z]=p.seatOriginal,side=p.seatSide,role=p.seatRole;
+   if(role==='thigh'){
+    lx=x;ly=.53; lz=-.52+(.11*recover);pitch=-1.03+.06*stroke;
+   }else if(role==='shin'){
+    lx=x;ly=.20;lz=-1.09+.07*recover;pitch=.16-.11*stroke;
+   }else if(role==='foot'){
+    lx=x;ly=.075+(y-.21)*.28;lz=-1.48+(z+.19)*.50+.055*recover;pitch=-.03;
+   }else if(role==='armUpper'){
+    lx=x;ly=y-.67-.045*stroke;lz=z-.10-.16*stroke;pitch=-.36-.28*stroke;
+   }else if(role==='armLower'){
+    lx=x;ly=y-.64-.08*stroke;lz=z+.045-.10*stroke;pitch=-.49-.25*stroke;
+   }else if(role==='hand'){
+    lx=x*.93;ly=.55+.025*recover;lz=.20-.16*stroke;pitch=-.10;
+   }else if(role==='head'){
+    lx=x;ly=y-.68+.025*stroke;lz=z-.04-.07*stroke;pitch=.035*stroke;
+   }else{
+    lx=x;ly=y-.67+.025*Math.sin(t*1.4);lz=z-.035-.07*stroke;pitch=.075*stroke;
+   }
+   // Subtile gemeinsame Gewichtsverlagerung des Ruderers.
+   ly+=.008*Math.sin(t*2.1);
+  }else if(p.boatPart==='rowerVest'){
+   ly+=.012*Math.sin(t*1.4);lz-=.055*stroke;
+  }
+  if(p.boatPart!=='wake'){
+   const originalY=ly,originalZ=lz;
+   ly=originalY*wpC-originalZ*wpS;
+   lz=originalY*wpS+originalZ*wpC;
+  }
+  p.x=boatState.x+c*lx-sn*lz;
+  p.z=boatState.z+sn*lx+c*lz;
+  p.y=-.17+ly+bob;
+  p.rot=-boatState.yaw+p.boatRotation+yawExtra;
+  p.rx=pitch+(p.boatPart==='wake'?0:wavePitch);
+  if(p.boatPart==='rower'||p.boatPart==='rowerVest')p.hidden=!active;
+  if(p.boatPart==='wake'){
+   p.hidden=!active||Math.abs(boatState.speed)<.95;
+   p.y=-.28+.01*Math.sin(t*3+p.boatWakeIndex);
+  }
+ }
+ for(const obj of boatClues){
+  obj.parts[2].y=1.12+.16*Math.sin(t*2.2+obj.i);
+  obj.parts[3].sy=1.0+.23*Math.sin(t*1.7+obj.i);
+ }
+ for(const p of player)p.hidden=active;
+}
+function boatSyncWorld(){
+ const visible=boatEnabled();
+ // Gehweg und Boote unabhängig von der standardisierten "built"-Sichtbarkeit.
+ for(const part of dock17Parts)part.hidden=state.chapter<4||state.chapter===23;
+ for(const part of boatParts)part.hidden=!visible||(['rower','rowerVest'].includes(part.boatPart)&&!boatState.active)||(part.boatPart==='wake'&&!boatState.active);
+ for(const clue of boatClues)for(const part of clue.parts)part.hidden=!visible||boatState.found.has(clue.i);
+ if(!visible&&boatState.active)boatDisembark(true);
+}
+const boatOldUpdateWorld=updateWorld;
+updateWorld=function(){boatOldUpdateWorld();boatSyncWorld()};window.updateWorld=updateWorld;
+function boatNearestDiscovery(){
+ if(!boatState.active)return null;let best=null;
+ BOAT_DISCOVERIES.forEach((d,i)=>{
+  if(boatState.found.has(i))return;
+  const distance=Math.hypot(boatState.x-d.x,boatState.z-d.z);
+  if(!best||distance<best.distance)best={index:i,distance};
+ });return best;
+}
+function boatInspectNearby(){const near=boatNearestDiscovery();if(near?.distance<7.7)boatInspect(near.index);}
+function boatInspect(index){
+ if(!boatState.active||state.panel||state.miniActive)return;
+ const d=BOAT_DISCOVERIES[index];if(!d||Math.hypot(boatState.x-d.x,boatState.z-d.z)>8.0)return;
+ boatState.found.add(index);boatSyncWorld();boatUpdateHud();
+ const options=d.options.map((opt,i)=>`<button type="button" class="boat-answer" data-boat-answer="${i}" style="display:block;width:100%;min-height:53px;margin:9px 0;padding:12px 15px;border:1px solid #a3c8ba;border-radius:12px;background:#234751;color:#f5f7ee;text-align:left;line-height:1.45;touch-action:manipulation">${escapeHtml(opt[0])}</button>`).join('');
+ openPanel(d.title,'🚣 Entdeckung '+(index+1)+' / 3 · Freiwillige See-Expedition',
+  `<p>${escapeHtml(d.observation)}</p><div class="sourcebox"><b>Literarische Einordnung:</b> Die Szene ist eine frei gestaltete Beobachtungsaufgabe; sie enthält kein Zitat und keine neue Romanepisode.</div><h3>Deutungsfrage</h3><p><b>${escapeHtml(d.question)}</b></p><div id="boatAnswerOptions">${options}</div><div id="boatAnswerFeedback" role="status"></div>`);
+ for(const button of document.querySelectorAll('[data-boat-answer]'))button.onclick=()=>{
+  const opt=d.options[Number(button.dataset.boatAnswer)];
+  $('#boatAnswerFeedback').innerHTML=`<div class="sourcebox" style="margin-top:12px"><b>${opt[2]?'Stimmige Deutung':'Weiterdenken'}</b><p>${escapeHtml(opt[1])}</p></div>`;
+  for(const b of document.querySelectorAll('[data-boat-answer]'))b.disabled=true;
+  button.style.borderColor=opt[2]?'#a8d1a8':'#f1c891';
+ };
+}
+$('#boatInspectBtn').onclick=boatInspectNearby;
+$('#boatLookBack').onclick=()=>{if(!boatState.active)return;boatState.lookBack=!boatState.lookBack;$('#boatLookBack').textContent=boatState.lookBack?'🧭 Blick in Fahrtrichtung':'🏠 Zum Haus blicken';};
+function boatUpdateHud(){
+ const boardBtn=$('#boatBoard'),dockMarker=$('#boatDockMarker');
+ if(!state.started){boardBtn.style.display='none';$('#boatHud').style.display='none';dockMarker.style.display='none';return;}
+ const nearLand=Math.hypot(state.px-BOAT_DOCK.x,state.pz-BOAT_DOCK.z)<4.0;
+ const showBoard=boatEnabled()&&!state.panel&&!state.miniActive&&!traceState.active&&(boatState.active||nearLand);
+ boardBtn.style.display=showBoard?'block':'none';
+ if(boatState.active){
+  boardBtn.textContent=boatNearDock()?'↩ Am Steg aussteigen':'🚣 Zum Steg zurückrudern';
+  boardBtn.title=boatNearDock()?'Anlegen und aussteigen':'Zum Aussteigen an den Steg zurückkehren';
+  $('#boatHud').style.display='block';
+  const closest=boatNearestDiscovery(),n=boatState.found.size;
+  $('#boatProgress').textContent=n+' / 3 Beobachtungen gesichert';
+  $('#boatHelp').textContent=n===3?'Alle drei Perspektiven erkundet! Rudere zum Steg zurück.':
+   closest?'Joystick ↑/↓ oder W/S: rudern · ↶/↷ oder A/D: steuern. Spur: '+Math.ceil(closest.distance)+' m.':'Erkunde die Wasserperspektive auf das Grundstück.';
+  const inspect=$('#boatInspectBtn');inspect.style.display=closest&&closest.distance<7.7&&!state.panel?'block':'none';
+  if(closest)inspect.textContent='🔎 '+BOAT_DISCOVERIES[closest.index].name+' untersuchen';
+ }else $('#boatHud').style.display='none';
+ if(state.panel){boardBtn.style.display='none';dockMarker.style.display='none'}
+}
+function boatUpdateMarkers(vp){
+ const dockMarker=$('#boatDockMarker');
+ const nearLand=!boatState.active&&boatEnabled()&&!state.panel&&!state.miniActive&&!traceState.active&&Math.hypot(state.px-BOAT_DOCK.x,state.pz-BOAT_DOCK.z)<4.5;
+ const dock=nearLand?project([BOAT_HOME.x,1.5,BOAT_HOME.z],vp):null;
+ const shown=dock&&dock[0]>55&&dock[0]<innerWidth-55&&dock[1]>90&&dock[1]<innerHeight-90;
+ dockMarker.style.display=shown?'block':'none';
+ if(shown){dockMarker.style.left=dock[0]+'px';dockMarker.style.top=dock[1]+'px'}
+ for(let i=0;i<BOAT_DISCOVERIES.length;i++){
+  const d=BOAT_DISCOVERIES[i],btn=d.button;
+  if(!boatState.active||state.panel||boatState.found.has(i)){btn.style.display='none';continue;}
+  const dist=Math.hypot(boatState.x-d.x,boatState.z-d.z),p=dist<11?project([d.x,2.2,d.z],vp):null;
+  const visible=p&&dist<8.0&&p[0]>80&&p[0]<innerWidth-80&&p[1]>100&&p[1]<innerHeight-95;
+  btn.style.display=visible?'block':'none';
+  if(visible){btn.style.left=p[0]+'px';btn.style.top=p[1]+'px'}
+ }
+}
 let frameCounter=0;
 function frame(now){requestAnimationFrame(frame);if(!state.started)return;let dt=Math.min(.05,(now-state.last)/1000||.017);state.last=now;
 if(state.miniActive){
  if(now>=state.miniDeadline)finishBeetleGame(false);
  else if(frameCounter%5===0)updateMiniHud(now);
 }
-if(!state.panel){
+if(boatState.active){boatMove(dt)}else if(!state.panel){
  const turn=(state.keys.has('arrowright')?1:0)-(state.keys.has('arrowleft')?1:0)+state.turnDir;
  state.yaw+=Math.max(-1,Math.min(1,turn))*dt*2.1;
  let f=(state.keys.has('w')||state.keys.has('arrowup')?1:0)-(state.keys.has('s')||state.keys.has('arrowdown')?1:0)-state.joyY;
@@ -2056,10 +2648,10 @@ for(const o of items){
    o.sx=o.baseSX*(0.96+0.06*Math.sin(now*0.0009*o.waveSpeed+o.wavePhase));
  }
 }
-env15Animate(now,dt);
+env15Animate(now,dt);boatAnimate(now);seaLifeAnimate(now);
 // Gelenkbewegung: gegenläufige Beine und Arme, ruhiger Körper im Stand.
 let running=false;const kF=(state.keys.has('w')||state.keys.has('arrowup')?1:0)-(state.keys.has('s')||state.keys.has('arrowdown')?1:0)-state.joyY,kR=(state.keys.has('d')?1:0)-(state.keys.has('a')?1:0)+state.joyX;
-running=!state.panel&&!!state.moving;state.walkTime+=dt*(running?8.4:1.2);
+running=!state.panel&&!boatState.active&&!!state.moving;state.walkTime+=dt*(running?8.4:1.2);
 for(const p of player){let swing=Math.sin(state.walkTime)*(.38*(running?1:0)),a=p.side*swing;let x=p.hx,y=p.hy,z=p.hz,pitch=0;
  if(['thigh','shin','foot'].includes(p.piece)){let q=p.piece==='thigh'?1:p.piece==='shin'?.55:.75;z-=a*.42*q;if(p.piece==='foot')y+=Math.max(0,-a)*.18;pitch=-a*(p.piece==='shin'?.50:1)}
  if(p.piece==='armUpper'||p.piece==='armLower'||p.piece==='hand'){z+=a*(p.piece==='hand'?.40:.20);pitch=a*.78}
@@ -2069,24 +2661,29 @@ for(const p of player){let swing=Math.sin(state.walkTime)*(.38*(running?1:0)),a=
   p.x=state.px+co*x-si*z;p.y=y;p.z=state.pz+si*x+co*z;
   p.rot=-state.facing;p.rx=pitch;
 }
-const roofObj=items.find(o=>o.tag==='roof');roofObj.hidden=state.chapter<3||state.chapter===23||eraStages[state.chapter]==='construction'||Math.hypot(state.px+3,state.pz-3)<11;for(const r of eraRoofPieces)r.hidden=!r.eraStages.includes(eraStages[state.chapter])||Math.hypot(state.px+3,state.pz-3)<11;let cameraDir=cameraBasis(state.yaw),dx=cameraDir.fx,dz=cameraDir.fz;let eye=[state.px-dx*10.4,7.4+state.pitch*9,state.pz-dz*10.4];let target=[state.px+dx*3,2.18,state.pz+dz*3];state.eye=eye;let W=gl.drawingBufferWidth,H=gl.drawingBufferHeight;gl.viewport(0,0,W,H);gl.clearColor(env15Render.sky[0],env15Render.sky[1],env15Render.sky[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);let proj=persp(55*Math.PI/180,W/H,.1,150),vp=matMul(proj,lookAt(eye,target));state.vp=vp;gl.uniformMatrix4fv(U.VP,false,vp);gl.uniform3fv(U.Eye,eye);gl.uniform3fv(U.Fog,env15Render.fog);gl.uniform3fv(U.Sun,env15Render.sun);gl.uniform1f(U.Ambient,env15Render.ambient);npcAnimate(now);for(let o of items){if(o.hidden)continue;drawMesh(o)}
+const roofObj=items.find(o=>o.tag==='roof');roofObj.hidden=state.chapter<3||state.chapter===23||eraStages[state.chapter]==='construction'||Math.hypot(state.px+3,state.pz-3)<11;for(const r of eraRoofPieces)r.hidden=!r.eraStages.includes(eraStages[state.chapter])||Math.hypot(state.px+3,state.pz-3)<11;let cameraDir=cameraBasis(state.yaw),dx=cameraDir.fx,dz=cameraDir.fz;let eye=boatState.active?[state.px-dx*11.9,5.9+state.pitch*7,state.pz-dz*11.9]:[state.px-dx*10.4,7.4+state.pitch*9,state.pz-dz*10.4];let target=boatState.active?[state.px+dx*5.5,1.05,state.pz+dz*5.5]:[state.px+dx*3,2.18,state.pz+dz*3];state.eye=eye;let W=gl.drawingBufferWidth,H=gl.drawingBufferHeight;gl.viewport(0,0,W,H);gl.clearColor(env15Render.sky[0],env15Render.sky[1],env15Render.sky[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);let proj=persp(55*Math.PI/180,W/H,.1,150),vp=matMul(proj,lookAt(eye,target));state.vp=vp;gl.uniformMatrix4fv(U.VP,false,vp);gl.uniform3fv(U.Eye,eye);gl.uniform3fv(U.Fog,env15Render.fog);gl.uniform3fv(U.Sun,env15Render.sun);gl.uniform1f(U.Ambient,env15Render.ambient);npcAnimate(now);
+for(const o of items){if(o.hidden||o.tag==='water'||o.tag==='wave')continue;drawMesh(o)}
+gl.depthMask(false);
+for(const o of items){if(!o.hidden&&o.tag==='water')drawMesh(o)}
+for(const o of items){if(!o.hidden&&o.tag==='wave')drawMesh(o)}
+gl.depthMask(true);
 
-traceAnimate(now,vp);
+traceAnimate(now,vp);boatUpdateMarkers(vp);
 const npcScene=activeNpcEncounter();
 const npcDist=npcScene?Math.hypot(state.px-npcScene.x,state.pz-npcScene.z):Infinity;
-const npcCanTalk=Boolean(npcScene)&&npcDist<NPC_TALK_RADIUS&&!state.miniActive&&!state.panel;
+const npcCanTalk=Boolean(npcScene)&&npcDist<NPC_TALK_RADIUS&&!state.miniActive&&!state.panel&&!boatState.active;
 state.nearNpc=npcCanTalk;
 const npcButton=$('#npcTalkBtn');npcButton.style.display=npcCanTalk?'block':'none';
 if(npcCanTalk){npcButton.textContent='💬 Gespräch mit '+NPC_CHARACTERS[npcScene.who].short+' öffnen';npcButton.setAttribute('aria-label','Gespräch mit '+NPC_CHARACTERS[npcScene.who].name+' öffnen');}
 const npcMarker=$('#npcMarker');
-if(npcScene&&!state.miniActive){
+if(npcScene&&!state.miniActive&&!boatState.active){
   const screen=project([npcScene.x,3.55,npcScene.z],vp);
   const visible=screen&&npcCanTalk&&screen[0]>30&&screen[0]<innerWidth-30&&screen[1]>60&&screen[1]<innerHeight-25;
   npcMarker.style.display=visible?'block':'none';
   if(visible){npcMarker.style.left=screen[0]+'px';npcMarker.style.top=screen[1]+'px';npcMarker.textContent='💬 '+NPC_CHARACTERS[npcScene.who].short+' ansprechen';}
 }else npcMarker.style.display='none';
 
-let closest=null,min=1e9;for(let s of STATIONS){let dist=Math.hypot(state.px-s.x,state.pz-s.z);if(dist<min){min=dist;closest=s}let xy=project([s.x,2.4,s.z],vp);let visible=xy&&dist<28&&xy[0]>45&&xy[0]<innerWidth-45&&xy[1]>95&&xy[1]<innerHeight-35;let el=s.element;el.style.display=visible?'block':'none';if(visible){el.style.left=xy[0]+'px';el.style.top=xy[1]+'px';el.innerHTML=(chapters[state.chapter].anchor===s.id?'<span class="star">✦</span>':'')+escapeHtml(s.name)}}let closestBug=null,closestBugDist=Infinity;
+let closest=null,min=1e9;for(let s of STATIONS){let dist=Math.hypot(state.px-s.x,state.pz-s.z);if(dist<min){min=dist;closest=s}let xy=project([s.x,2.4,s.z],vp);let visible=!boatState.active&&xy&&dist<28&&xy[0]>45&&xy[0]<innerWidth-45&&xy[1]>95&&xy[1]<innerHeight-35;let el=s.element;el.style.display=visible?'block':'none';if(visible){el.style.left=xy[0]+'px';el.style.top=xy[1]+'px';el.innerHTML=(chapters[state.chapter].anchor===s.id?'<span class="star">✦</span>':'')+escapeHtml(s.name)}}let closestBug=null,closestBugDist=Infinity;
 for(let i=0;i<BEETLE_SITES.length;i++){
  const b=BEETLE_SITES[i],el=miniMarkers[i],d=Math.hypot(state.px-b[0],state.pz-b[1]);
  const active=state.miniActive&&!state.miniCaught.has(i);
@@ -2097,10 +2694,10 @@ for(let i=0;i<BEETLE_SITES.length;i++){
  if(active&&d<closestBugDist){closestBug=i;closestBugDist=d}
 }
 state.nearBug=(closestBugDist<3.6?closestBug:null);
-let goal=STATIONS.find(s=>s.id===chapters[state.chapter].anchor);let goalDistance=Math.hypot(state.px-goal.x,state.pz-goal.z);state.near=goalDistance<6?goal:(min<6?closest:null);$('#actionBtn').disabled=!(state.near||state.nearBug!==null);
+let goal=STATIONS.find(s=>s.id===chapters[state.chapter].anchor);let goalDistance=Math.hypot(state.px-goal.x,state.pz-goal.z);state.near=goalDistance<6?goal:(min<6?closest:null);$('#actionBtn').disabled=boatState.active||!(state.near||state.nearBug!==null);
 $('#actionBtn').textContent=state.nearBug!==null?'🐞 Käfer fangen':state.near?'Untersuchen: '+state.near.name:'Ort untersuchen';
 $('#nearText').textContent=state.nearBug!==null?'Käfer in Reichweite – jetzt einsammeln!':state.near?'Jetzt Ort untersuchen':state.miniActive?'Folge den orangefarbenen Käfermarkierungen.':'Gehe zuerst bis zur goldenen Markierung.';
-if(frameCounter++%8===0)mapdraw()}
+boatUpdateHud();if(frameCounter++%8===0)mapdraw()}
 function resize(){let dpr=Math.min(1.6,devicePixelRatio||1);canvas.width=Math.min(2300,Math.round(innerWidth*dpr));canvas.height=Math.min(1600,Math.round(innerHeight*dpr));canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px'}window.addEventListener('resize',resize);resize();updateWorld();updateHUD();requestAnimationFrame(frame);
 }
 </script>
